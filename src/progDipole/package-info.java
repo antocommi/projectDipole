@@ -5,4 +5,4 @@
  * @author antonellasola
  *
  */
-package progDipolejè;
+package progDipole;
