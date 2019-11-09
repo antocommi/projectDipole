@@ -31,7 +31,8 @@ public class Casella implements Serializable{
 	
 	
 	public boolean equals(Casella c){
-		if(this==null && c==null) return true;
+		if(this==null && c==null) 
+			return true;
 		if(this.riga==c.riga && this.colonna==c.colonna) return true;
 		return false;
 	}
