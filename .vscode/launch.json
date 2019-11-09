@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - DipoleLogica",
+            "request": "launch",
+            "mainClass": "progDipole.DipoleLogica",
+            "projectName": "progDipole"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - dipole",
             "request": "launch",
             "mainClass": "progDipole.dipole",

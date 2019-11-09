@@ -1,7 +1,7 @@
 package progDipole;
 
 class DipoleLogica{
-    
+
     String prova(){
         return "";
     }
@@ -13,4 +13,5 @@ class DipoleLogica{
     public static void main(String[] args){
         System.out.println("ciao");
     }
+    
 }
