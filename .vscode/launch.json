@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - dipole",
+            "request": "launch",
+            "mainClass": "progDipole.dipole",
+            "projectName": "progDipole"
+        }
+    ]
+}
