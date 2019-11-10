@@ -1,4 +1,4 @@
-package dipoleF;
+package progDipole;
 
 public class Cella {
 
