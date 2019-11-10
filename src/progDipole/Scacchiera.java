@@ -179,8 +179,8 @@ public class Scacchiera {
 		int[] pos = estrai_indici(pos_iniziale);
 		Cella partenza = scacchiera[pos[0]][pos[1]];
 		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
-		STACK_BIANCO - nCelleMove;
-		STACK_NERO - ncelleMove;
+		//STACK_BIANCO - nCelleMove;
+		//STACK_NERO - nCelleMove;
 		if ( checkPosOut(pos_finale[0], pos_finale[1]) )
 			return false;
 
