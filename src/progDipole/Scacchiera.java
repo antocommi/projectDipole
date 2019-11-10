@@ -16,8 +16,8 @@ public class Scacchiera {
 	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
 	private static final int CELLA_NERA = 1;
-	private static final int STACK_BIANCO = 12;
-	private static final int STACK_NERO = 12;
+	private int STACK_BIANCO = 12;
+	private int STACK_NERO = 12;
 	private static final int NORTH = 0;
 	private static final int NORTHEAST = 1;
 	private static final int EAST = 2;
@@ -121,9 +121,7 @@ public class Scacchiera {
 	/**
 	 * Controlla se la riga i e la colonna j sono all'interno della scacchiera.
 	 */
-	public boolean checkPosOut(Cella c) {
-		int i = c.getRiga();
-		int j = c.getColonna();
+	public boolean checkPosOut(int i, int j) {
 		if (i > 7 || j > 7 || i < 0 || j < 0)
 			return false;
 		return true;
@@ -131,32 +129,33 @@ public class Scacchiera {
 
 	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
-		res[0] = riga.get(posizione.charAt(0));
+		res[0] = riga.get(posizione.charAt(0)+"");
 		res[1] = Integer.parseInt(posizione.substring(1));
 		return res;
 	}
 
 	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
-
+		return new int[2];
 	}
 
 	/**
 	 * Verifica se la posizione della prossima mossa � valida. ***DA MODIFICARE***
 	 */
 	public boolean muovi(String pos_iniziale, int dir, int nCelleMove) {
+		
 		int[] pos = calcola_indici(pos_iniziale);
 		Cella partenza = scacchiera[pos[0]][pos[1]];
-//		Cella destinazione = scacchiera[rigaEnd][colEnd];
 		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
+		Cella destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
+		
 		// GESTIONE DEI TURNI
 		if (turnoGiocatore && partenza.getColorePedina() == PEDINA_NERA)
 			return false;
 		if (!turnoGiocatore && partenza.getColorePedina() == PEDINA_BIANCA)
 			return false;
-
 		if (partenza.getnPedine() == 0 || nCelleMove > partenza.getnPedine())
 			return false;
-		if (checkPosOut(rigaEnd, colEnd))
+		if ( checkPosOut(pos_finale[0], pos_finale[1]) )
 			return false;
 
 		// possibilit� DI MOSSA SICURA
@@ -171,7 +170,8 @@ public class Scacchiera {
 			// CAPTURE //
 
 		}
-
+		turnoGiocatore = !turnoGiocatore;
+		return true;
 	}
 
 	public int checkVittoria() {
