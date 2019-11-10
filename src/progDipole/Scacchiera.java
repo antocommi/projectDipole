@@ -126,16 +126,49 @@ public class Scacchiera {
 			return false;
 		return true;
 	}
-
-	private int[] calcola_indici(String posizione) {
+	/**
+	 *converte stringa ("A4")in pos indici 
+	 */
+	private int[] estrai_indici(String posizione) {
 		int[] res = new int[2];
-		res[0] = riga.get(posizione.charAt(0)+"");
+		res[0] = riga.get(posizione.charAt(0)+"");// get da il valore della chiave che in questo caso è la lettera
 		res[1] = Integer.parseInt(posizione.substring(1));
 		return res;
 	}
 
 	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
-		return new int[2];
+		int [] ris = new int[2];
+		switch(dir){
+			case NORTH: 
+				ris[0]=i - nCelleMove; 
+				break;
+			case NORTHEAST: 
+				ris[1]=j + nCelleMove;
+				ris[0]=i - nCelleMove;	
+				break;
+			case EAST: 
+				ris[1]=j + nCelleMove;
+				break;
+			case SOUTHEAST: 
+				ris[1]=j + nCelleMove;
+				ris[0]=i + nCelleMove;	
+				break;
+			case SOUTH:  
+				ris[0]=i + nCelleMove;	
+				break;
+			case SOUTWEST:  
+				ris[1]=j - nCelleMove;
+				ris[0]=i + nCelleMove;	
+				break;
+			case WEST:  
+				ris[1]=j - nCelleMove;
+				break;
+			case NORTHWEST: 
+				ris[1]=j - nCelleMove;
+				ris[0]=i - nCelleMove;	
+				break;
+		}
+		return ris;
 	}
 
 	/**
@@ -143,9 +176,14 @@ public class Scacchiera {
 	 */
 	public boolean muovi(String pos_iniziale, int dir, int nCelleMove) {
 		
-		int[] pos = calcola_indici(pos_iniziale);
+		int[] pos = estrai_indici(pos_iniziale);
 		Cella partenza = scacchiera[pos[0]][pos[1]];
 		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
+		STACK_BIANCO - nCelleMove;
+		STACK_NERO - ncelleMove;
+		if ( checkPosOut(pos_finale[0], pos_finale[1]) )
+			return false;
+
 		Cella destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
 		
 		// GESTIONE DEI TURNI
@@ -155,13 +193,18 @@ public class Scacchiera {
 			return false;
 		if (partenza.getnPedine() == 0 || nCelleMove > partenza.getnPedine())
 			return false;
-		if ( checkPosOut(pos_finale[0], pos_finale[1]) )
-			return false;
-
-		// possibilit� DI MOSSA SICURA
-
+		
+		// possibilità DI MOSSA SICURA
+		//BASE
 		if (destinazione.getnPedine() == 0) {
-			// BASE//
+			if(turnoGiocatore && (dir==SOUTH || dir==SOUTHEAST || dir == SOUTWEST))
+				return false;
+			if(!turnoGiocatore && (dir==NORTH || dir==NORTHEAST || dir==NORTHWEST))
+				return false;
+			
+			
+			
+			
 
 		} else if (partenza.getColorePedina() == destinazione.getColorePedina()) {
 			// MERGE//
