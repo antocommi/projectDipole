@@ -16,30 +16,26 @@ public class Scacchiera {
 	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
 	private static final int CELLA_NERA = 1;
-	private int STACK_BIANCO = 12;		// indica il numero di pedine disponibili per il giocatore bianco 
-	private int STACK_NERO = 12;		// indica il numero di pedine disponibili per il giocatore nero
+	private static final int STACK_BIANCO = 12;
+	private static final int STACK_NERO = 12;
 	private static final int NORTH = 0;
-	private static final int NORTHEAST= 1;
-	private static final int EAST= 2;
-	private static final int SOUTHEAST= 3;
-	private static final int SOUTH= 4;
-	private static final int SOUTWEST= 5;
-	private static final int WEST= 6;
-	private static final int NORTHWEST= 7;
-	private static final int NESSUNA_VITTORIA  = 0;
-	private static final int VITTORIA_BIANCO  = 1;
-	private static final int VITTORIA_NERO  = 2;
-	private boolean turnoGiocatore; // Indica il giocatore che deve giocare  
-	
-	
-	
-	
+	private static final int NORTHEAST = 1;
+	private static final int EAST = 2;
+	private static final int SOUTHEAST = 3;
+	private static final int SOUTH = 4;
+	private static final int SOUTWEST = 5;
+	private static final int WEST = 6;
+	private static final int NORTHWEST = 7;
+	private static final int NESSUNA_VITTORIA = 0;
+	private static final int VITTORIA_BIANCO = 1;
+	private static final int VITTORIA_NERO = 2;
+	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
+
 	private enum tipoMossa {
 		BASE, MERGE, CAPTURE
 	};
-	
-	
-	private HashMap<String,Integer> riga;
+
+	private HashMap<String, Integer> riga;
 
 	/**
 	 * Costruttore di Default che inizializza la sessione di gioco
@@ -47,14 +43,14 @@ public class Scacchiera {
 	public Scacchiera() {
 		turnoGiocatore = true;
 		riga = new HashMap<>();
-		riga.put("A",0);
-		riga.put("B",1);
-		riga.put("C",2);
-		riga.put("D",3);
-		riga.put("E",4);
-		riga.put("F",5);
-		riga.put("G",6);
-		riga.put("H",7);
+		riga.put("A", 0);
+		riga.put("B", 1);
+		riga.put("C", 2);
+		riga.put("D", 3);
+		riga.put("E", 4);
+		riga.put("F", 5);
+		riga.put("G", 6);
+		riga.put("H", 7);
 		scacchiera = new Cella[SIZE][SIZE];
 		inizializzaScacchiera();
 	}
@@ -65,22 +61,21 @@ public class Scacchiera {
 	 */
 	public void inizializzaScacchiera() {
 		for (int i = 0; i < scacchiera.length; i++) {
-			for (int j = 0; j <scacchiera.length; j++) {
-				if ((i % 2 == 0 && j % 2 != 0)||(i % 2 != 0 && j % 2 == 0)) {
+			for (int j = 0; j < scacchiera.length; j++) {
+				if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
 					Cella c = new Cella(i, j, 0, CELLA_NERA, VUOTA);
 					scacchiera[i][j] = c;
-				}
-				else {
+				} else {
 					Cella c = new Cella(i, j, 0, CELLA_BIANCA, VUOTA);
 					scacchiera[i][j] = c;
 				}
-				
+
 			}
 		}
 		Cella c = new Cella(0, 3, STACK_NERO, CELLA_NERA, PEDINA_NERA);
 		scacchiera[0][3] = c;
 		Cella c1 = new Cella(7, 4, STACK_BIANCO, CELLA_NERA, PEDINA_BIANCA);
-		scacchiera[7][4] = c1;	
+		scacchiera[7][4] = c1;
 	}
 
 	public Cella[][] getScacchiera() {
@@ -126,47 +121,64 @@ public class Scacchiera {
 	/**
 	 * Controlla se la riga i e la colonna j sono all'interno della scacchiera.
 	 */
-	public boolean checkPosOut(int i, int j) {
+	public boolean checkPosOut(Cella c) {
+		int i = c.getRiga();
+		int j = c.getColonna();
 		if (i > 7 || j > 7 || i < 0 || j < 0)
 			return false;
 		return true;
 	}
 
+	private int[] calcola_indici(String posizione) {
+		int[] res = new int[2];
+		res[0] = riga.get(posizione.charAt(0));
+		res[1] = Integer.parseInt(posizione.substring(1));
+		return res;
+	}
+
+	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
+
+	}
+
 	/**
 	 * Verifica se la posizione della prossima mossa � valida. ***DA MODIFICARE***
 	 */
-	public boolean checkPosizione(int rigaStart, int colStart, int rigaEnd, int colEnd, int numCelle) {
-		
-		Cella partenza = scacchiera[rigaStart][colStart];
-		Cella destinazione = scacchiera[rigaEnd][colEnd];
-		
-		if (turnoGiocatore && partenza.getColorePedina()==PEDINA_NERA) return false;
-		
-		if (!turnoGiocatore && partenza.getColorePedina()==PEDINA_BIANCA) return false;
+	public boolean muovi(String pos_iniziale, int dir, int nCelleMove) {
+		int[] pos = calcola_indici(pos_iniziale);
+		Cella partenza = scacchiera[pos[0]][pos[1]];
+//		Cella destinazione = scacchiera[rigaEnd][colEnd];
+		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
+		// GESTIONE DEI TURNI
+		if (turnoGiocatore && partenza.getColorePedina() == PEDINA_NERA)
+			return false;
+		if (!turnoGiocatore && partenza.getColorePedina() == PEDINA_BIANCA)
+			return false;
 
-		if (partenza.getnPedine() == 0 || numCelle > partenza.getnPedine())
+		if (partenza.getnPedine() == 0 || nCelleMove > partenza.getnPedine())
 			return false;
 		if (checkPosOut(rigaEnd, colEnd))
-			return true;
+			return false;
 
 		// possibilit� DI MOSSA SICURA
 
 		if (destinazione.getnPedine() == 0) {
-			// BASE//TODO
-			return false;
+			// BASE//
+
 		} else if (partenza.getColorePedina() == destinazione.getColorePedina()) {
-			// MERGE//TODO
-			return false;
+			// MERGE//
+
 		} else {
-			// CAPTURE //TODO
-			return false;
+			// CAPTURE //
+
 		}
+
 	}
-	
-	
+
 	public int checkVittoria() {
-		if(STACK_BIANCO==0) return VITTORIA_NERO;
-		else if (STACK_NERO==0) return VITTORIA_BIANCO;
+		if (STACK_BIANCO == 0)
+			return VITTORIA_NERO;
+		else if (STACK_NERO == 0)
+			return VITTORIA_BIANCO;
 		return NESSUNA_VITTORIA;
 	}
 
