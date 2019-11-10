@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Scacchiera",
+            "request": "launch",
+            "mainClass": "progDipole.Scacchiera",
+            "projectName": "progDipole"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - _Start_",
+            "request": "launch",
+            "mainClass": "logica._Start_",
+            "projectName": "Dama"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - DipoleLogica",
             "request": "launch",
             "mainClass": "progDipole.DipoleLogica",

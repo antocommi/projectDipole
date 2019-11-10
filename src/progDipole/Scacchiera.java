@@ -1,7 +1,6 @@
 package progDipole;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Scacchiera {
 
@@ -17,8 +16,8 @@ public class Scacchiera {
 	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
 	private static final int CELLA_NERA = 1;
-	private static final int STACK_BIANCO = 12;
-	private static final int STACK_NERO = 12;
+	private int STACK_BIANCO = 12;		// indica il numero di pedine disponibili per il giocatore bianco 
+	private int STACK_NERO = 12;		// indica il numero di pedine disponibili per il giocatore nero
 	private static final int NORTH = 0;
 	private static final int NORTHEAST= 1;
 	private static final int EAST= 2;
@@ -163,6 +162,7 @@ public class Scacchiera {
 			return false;
 		}
 	}
+	
 	
 	public int checkVittoria() {
 		if(STACK_BIANCO==0) return VITTORIA_NERO;
