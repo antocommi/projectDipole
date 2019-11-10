@@ -18,14 +18,14 @@ public class Scacchiera {
 	private static final int CELLA_NERA = 1;
 	private int STACK_BIANCO = 12;
 	private int STACK_NERO = 12;
-	private static final int NORTH = 0;
-	private static final int NORTHEAST = 1;
-	private static final int EAST = 2;
-	private static final int SOUTHEAST = 3;
-	private static final int SOUTH = 4;
-	private static final int SOUTWEST = 5;
-	private static final int WEST = 6;
-	private static final int NORTHWEST = 7;
+	public static final int NORTH = 0;
+	public static final int NORTHEAST = 1;
+	public static final int EAST = 2;
+	public static final int SOUTHEAST = 3;
+	public static final int SOUTH = 4;
+	public static final int SOUTHWEST = 5;
+	public static final int WEST = 6;
+	public static final int NORTHWEST = 7;
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
@@ -129,10 +129,10 @@ public class Scacchiera {
 	/**
 	 *converte stringa ("A4")in pos indici 
 	 */
-	private int[] estrai_indici(String posizione) {
+	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
 		res[0] = riga.get(posizione.charAt(0)+"");// get da il valore della chiave che in questo caso è la lettera
-		res[1] = Integer.parseInt(posizione.substring(1));
+		res[1] = Integer.parseInt(posizione.substring(1))-1;
 		return res;
 	}
 
@@ -156,7 +156,7 @@ public class Scacchiera {
 			case SOUTH:  
 				ris[0]=i + nCelleMove;	
 				break;
-			case SOUTWEST:  
+			case SOUTHWEST:  
 				ris[1]=j - nCelleMove;
 				ris[0]=i + nCelleMove;	
 				break;
@@ -171,49 +171,59 @@ public class Scacchiera {
 		return ris;
 	}
 
+	private double distanzaCelle(int[] x, int[] y){
+		return Math.sqrt(Math.pow(x[0]-y[0],2)+Math.pow(x[1]-y[1],2));
+	}
+
 	/**
-	 * Verifica se la posizione della prossima mossa � valida. ***DA MODIFICARE***
+	 * Verifica se la posizione della prossima mossa e' valida. ***DA MODIFICARE***
 	 */
 	public boolean muovi(String pos_iniziale, int dir, int nCelleMove) {
 		
-		int[] pos = estrai_indici(pos_iniziale);
-		Cella partenza = scacchiera[pos[0]][pos[1]];
+		double distanzaCelle;
+		int[] pos = calcola_indici(pos_iniziale);
 		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
-		//STACK_BIANCO - nCelleMove;
-		//STACK_NERO - nCelleMove;
-		if ( checkPosOut(pos_finale[0], pos_finale[1]) )
-			return false;
-
-		Cella destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
+		Cella partenza, destinazione ;
+		System.out.format("pos: %d, %d \n",pos[0],pos[1]);
+		System.out.format("pos_finale: %d, %d \n",pos_finale[0],pos_finale[1]);
+		partenza = scacchiera[pos[0]][pos[1]];
+		destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
+		distanzaCelle = distanzaCelle(pos,pos_finale);
+		
+		if ( checkPosOut(pos_finale[0], pos_finale[1]) ){
+			if(distanzaCelle>partenza.getnPedine()) return false;
+			// altrimenti sta mettendo le pedine fuori
+		}
 		
 		// GESTIONE DEI TURNI
 		if (turnoGiocatore && partenza.getColorePedina() == PEDINA_NERA)
 			return false;
 		if (!turnoGiocatore && partenza.getColorePedina() == PEDINA_BIANCA)
 			return false;
+		
 		if (partenza.getnPedine() == 0 || nCelleMove > partenza.getnPedine())
 			return false;
 		
-		// possibilità DI MOSSA SICURA
 		//BASE
 		if (destinazione.getnPedine() == 0) {
-			if(turnoGiocatore && (dir==SOUTH || dir==SOUTHEAST || dir == SOUTWEST))
+			if(turnoGiocatore && (dir==SOUTH || dir==SOUTHEAST || dir == SOUTHWEST))
 				return false;
+			
 			if(!turnoGiocatore && (dir==NORTH || dir==NORTHEAST || dir==NORTHWEST))
 				return false;
 			
+			destinazione.base(partenza, nCelleMove);
 			
-			
-			
-
 		} else if (partenza.getColorePedina() == destinazione.getColorePedina()) {
 			// MERGE//
-
+			destinazione.mergeFrom(partenza, nCelleMove);
 		} else {
 			// CAPTURE //
-
+			destinazione.captureFrom(partenza, nCelleMove);
 		}
+		
 		turnoGiocatore = !turnoGiocatore;
+
 		return true;
 	}
 
@@ -261,6 +271,16 @@ public class Scacchiera {
 
 	public static void main(String[] args) {
 		Scacchiera s = new Scacchiera();
+		// s.stampaScacchiera();
+		// Cella b = s.scacchiera[0][3];
+		// Cella a = s.scacchiera[7][4];
+		// System.out.println(a);
+		// System.out.println(b);
+		// System.out.println("");
+		// System.out.println(a);
+		// System.out.println(b);
+		// b.captureFrom(a, 12);
+		System.out.println(s.muovi("H5", Scacchiera.NORTH, 2));
 		s.stampaScacchiera();
 	}
 
