@@ -174,10 +174,10 @@ public class Scacchiera {
 		}
 		return ris;
 	}
-
-	private double distanzaCelle(int[] x, int[] y){
+ //calcola la distanza euclidea
+	/*private double distanzaCelle(int[] x, int[] y){
 		return Math.sqrt(Math.pow(x[0]-y[0],2)+Math.pow(x[1]-y[1],2));
-	}
+	}*/
 
 	/**
 	 * Verifica se la posizione della prossima mossa e' valida. ***DA MODIFICARE***
@@ -189,25 +189,28 @@ public class Scacchiera {
 		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
 		Cella partenza, destinazione ;
 		System.out.format("pos: %d, %d \n",pos[0],pos[1]);
+		if(turnoGiocatore)System.out.println("bianco gioca");
+		else System.out.println("nero gioca");
 		System.out.format("pos_finale: %d, %d \n",pos_finale[0],pos_finale[1]);
 		partenza = scacchiera[pos[0]][pos[1]];
-		distanzaCelle = distanzaCelle(pos,pos_finale);
+		//distanzaCelle = distanzaCelle(pos,pos_finale);
 		
-		
-		
-		
-		
-		
-		
+	 //remove
 		if ( checkPosOut(pos_finale[0], pos_finale[1]) ){
-			if(distanzaCelle>partenza.getnPedine()) return false;
+			
+			if(nCelleMove>partenza.getnPedine()) {System.out.println("problema");return false;}
 			else {
 				partenza.removeFromStack(nCelleMove);
+				if (turnoGiocatore)
+					STACK_BIANCO=STACK_BIANCO - nCelleMove;
+				else STACK_NERO=STACK_NERO - nCelleMove;
 				
 				return true;
 			}
 		}
+		
 		destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
+		
 		if (destinazione.getColoreCella()!= CELLA_NERA) {
 			System.out.println("cella di destinazione bianca non valida");
 			return false;
@@ -247,13 +250,11 @@ public class Scacchiera {
 			destinazione.mergeFrom(partenza, nCelleMove);
 		} else {
 			// CAPTURE // 
-		
-			destinazione.captureFrom(partenza, nCelleMove);
-			
-			if (!turnoGiocatore && destinazione.getColorePedina() == PEDINA_NERA)
+			if (turnoGiocatore && destinazione.getColorePedina() == PEDINA_NERA)
 				STACK_NERO=STACK_NERO - nCelleMove;
-			if (turnoGiocatore && destinazione.getColorePedina() == PEDINA_BIANCA)
+			else if (!turnoGiocatore && destinazione.getColorePedina() == PEDINA_BIANCA)
 				STACK_BIANCO=STACK_BIANCO - nCelleMove;
+			destinazione.captureFrom(partenza, nCelleMove);
 		}
 		
 		turnoGiocatore = !turnoGiocatore;
@@ -319,9 +320,11 @@ public class Scacchiera {
 		System.out.println(s.muovi("E2", Scacchiera.NORTH, 2));
 		System.out.println(s.muovi("C4", Scacchiera.WEST, 2));
 		System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 1));
-		System.out.println(s.muovi("C2", Scacchiera.SOUTHWEST, 2));
-		System.out.println(STACK_NERO);
-		System.out.println(STACK_BIANCO);
+		System.out.println(s.muovi("C2", Scacchiera.SOUTHWEST, 1));
+		System.out.println(s.muovi("H5", Scacchiera.NORTH, 2));
+		System.out.println(s.muovi("D1", Scacchiera.SOUTHWEST, 1));
+		System.out.println("stack nero=" + STACK_NERO);
+		System.out.println("stack bianco="+ STACK_BIANCO);
 		
 		s.stampaScacchiera();
 	}
