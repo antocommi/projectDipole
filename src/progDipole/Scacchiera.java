@@ -16,8 +16,8 @@ public class Scacchiera {
 	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
 	private static final int CELLA_NERA = 1;
-	private int STACK_BIANCO = 12;
-	private int STACK_NERO = 12;
+	private static int STACK_BIANCO = 12;
+	private static int STACK_NERO = 12;
 	public static final int NORTH = 0;
 	public static final int NORTHEAST = 1;
 	public static final int EAST = 2;
@@ -123,8 +123,8 @@ public class Scacchiera {
 	 */
 	public boolean checkPosOut(int i, int j) {
 		if (i > 7 || j > 7 || i < 0 || j < 0)
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 	/**
 	 *converte stringa ("A4")in pos indici 
@@ -141,6 +141,7 @@ public class Scacchiera {
 		switch(dir){
 			case NORTH: 
 				ris[0]=i - nCelleMove; 
+				ris[1]= j;
 				break;
 			case NORTHEAST: 
 				ris[1]=j + nCelleMove;
@@ -148,6 +149,7 @@ public class Scacchiera {
 				break;
 			case EAST: 
 				ris[1]=j + nCelleMove;
+				ris[0]= i;
 				break;
 			case SOUTHEAST: 
 				ris[1]=j + nCelleMove;
@@ -155,6 +157,7 @@ public class Scacchiera {
 				break;
 			case SOUTH:  
 				ris[0]=i + nCelleMove;	
+				ris[1]= j;
 				break;
 			case SOUTHWEST:  
 				ris[1]=j - nCelleMove;
@@ -162,6 +165,7 @@ public class Scacchiera {
 				break;
 			case WEST:  
 				ris[1]=j - nCelleMove;
+				ris[0]= i;
 				break;
 			case NORTHWEST: 
 				ris[1]=j - nCelleMove;
@@ -187,14 +191,27 @@ public class Scacchiera {
 		System.out.format("pos: %d, %d \n",pos[0],pos[1]);
 		System.out.format("pos_finale: %d, %d \n",pos_finale[0],pos_finale[1]);
 		partenza = scacchiera[pos[0]][pos[1]];
-		destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
 		distanzaCelle = distanzaCelle(pos,pos_finale);
+		
+		
+		
+		
+		
+		
 		
 		if ( checkPosOut(pos_finale[0], pos_finale[1]) ){
 			if(distanzaCelle>partenza.getnPedine()) return false;
-			// altrimenti sta mettendo le pedine fuori
+			else {
+				partenza.removeFromStack(nCelleMove);
+				
+				return true;
+			}
 		}
-		
+		destinazione = scacchiera[pos_finale[0]][pos_finale[1]];
+		if (destinazione.getColoreCella()!= CELLA_NERA) {
+			System.out.println("cella di destinazione bianca non valida");
+			return false;
+		}
 		// GESTIONE DEI TURNI
 		if (turnoGiocatore && partenza.getColorePedina() == PEDINA_NERA)
 			return false;
@@ -203,6 +220,9 @@ public class Scacchiera {
 		
 		if (partenza.getnPedine() == 0 || nCelleMove > partenza.getnPedine())
 			return false;
+		if (destinazione.getColoreCella()!= CELLA_NERA)
+			return false;
+		
 		
 		//BASE
 		if (destinazione.getnPedine() == 0) {
@@ -211,15 +231,29 @@ public class Scacchiera {
 			
 			if(!turnoGiocatore && (dir==NORTH || dir==NORTHEAST || dir==NORTHWEST))
 				return false;
-			
+				
 			destinazione.base(partenza, nCelleMove);
+			
 			
 		} else if (partenza.getColorePedina() == destinazione.getColorePedina()) {
 			// MERGE//
+			if(turnoGiocatore && (dir==SOUTH || dir==SOUTHEAST || dir == SOUTHWEST))
+				return false;
+			
+			if(!turnoGiocatore && (dir==NORTH || dir==NORTHEAST || dir==NORTHWEST))
+				return false;
+			
+			
 			destinazione.mergeFrom(partenza, nCelleMove);
 		} else {
-			// CAPTURE //
+			// CAPTURE // 
+		
 			destinazione.captureFrom(partenza, nCelleMove);
+			
+			if (!turnoGiocatore && destinazione.getColorePedina() == PEDINA_NERA)
+				STACK_NERO=STACK_NERO - nCelleMove;
+			if (turnoGiocatore && destinazione.getColorePedina() == PEDINA_BIANCA)
+				STACK_BIANCO=STACK_BIANCO - nCelleMove;
 		}
 		
 		turnoGiocatore = !turnoGiocatore;
@@ -280,7 +314,15 @@ public class Scacchiera {
 		// System.out.println(a);
 		// System.out.println(b);
 		// b.captureFrom(a, 12);
-		System.out.println(s.muovi("H5", Scacchiera.NORTH, 2));
+		System.out.println(s.muovi("H5", Scacchiera.NORTHWEST, 3));
+		System.out.println(s.muovi("A4", Scacchiera.SOUTH, 2));
+		System.out.println(s.muovi("E2", Scacchiera.NORTH, 2));
+		System.out.println(s.muovi("C4", Scacchiera.WEST, 2));
+		System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 1));
+		System.out.println(s.muovi("C2", Scacchiera.SOUTHWEST, 2));
+		System.out.println(STACK_NERO);
+		System.out.println(STACK_BIANCO);
+		
 		s.stampaScacchiera();
 	}
 

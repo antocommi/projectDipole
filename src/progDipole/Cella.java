@@ -16,6 +16,11 @@ public class Cella {
 		this.colorePedina = colPedina;
 	}
 
+	public void removeFromStack(int pedineDaEliminare){
+		this.setnPedine(this.getNPedine()-pedineDaEliminare);
+		if(this.getnPedine()==0) this.setColorePedina(-1);
+	}
+	
 	public void base(Cella cellaSorgente, int pedineSpostate){
 		int pedineRimanenti = cellaSorgente.getnPedine()-pedineSpostate;
 		this.colorePedina = cellaSorgente.colorePedina;
@@ -38,8 +43,6 @@ public class Cella {
 		if(pedineRimanenti==0) cellaSorgente.setColorePedina(-1); // imposta a colore vuoto
 		cellaSorgente.setnPedine(pedineRimanenti);
 	}
-
-	
 
 	public int getRiga() {
 		return riga;
