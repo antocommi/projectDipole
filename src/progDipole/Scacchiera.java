@@ -1,6 +1,7 @@
 package progDipole;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Scacchiera {
 
@@ -30,6 +31,9 @@ public class Scacchiera {
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
 	private static int MAX_MOSSE= 60;
+	LinkedList<Mossa> BASE= new LinkedList<>();
+	LinkedList<Mossa> MERGE= new LinkedList<>();
+	LinkedList<Mossa> CAPTURE= new LinkedList<>();
 	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
 
 	private enum tipoMossa {
@@ -265,7 +269,45 @@ public class Scacchiera {
 
 		return true;
 	}
-
+	public boolean verificaBase(Mossa m) {
+		if(m.getDirection())
+		
+	}
+	public boolean verificaMerge() {
+		
+	}
+	public boolean verificaCapture() {
+	
+	}
+	
+	public HashMap<Integer,LinkedList<Mossa>> calcolaMossePossibiliDa(String posizione, Mossa m){
+		int [] pos =calcola_indici(posizione);
+		LinkedList<Mossa> BASE= new LinkedList<>();
+		LinkedList<Mossa> MERGE= new LinkedList<>();
+		LinkedList<Mossa> CAPTURE= new LinkedList<>();
+		if(scacchiera[pos[0]][pos[1]].getColoreCella() == VUOTA) return null;
+		else if(scacchiera[pos[0]][pos[1]].getColorePedina() == PEDINA_BIANCA){
+			if(pos[0]==0 && pos[1]==3 && scacchiera[pos[0]][pos[1]].getnPedine()==12) {
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));	
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
+//					{{1,2},{2,1},{3,0},{2,4},{4,4},{6,4},{1,4},{2,5},{3,6}}
+				
+				
+			}
+			
+		}
+		else {
+			
+		}
+		return null;
+	}
 	public int checkVittoria() {
 		if (STACK_BIANCO == 0)
 			return VITTORIA_NERO;

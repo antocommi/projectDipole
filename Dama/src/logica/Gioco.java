@@ -19,7 +19,6 @@ public class Gioco {
 	public Scacchiera s= new Scacchiera();
 	protected Scacchiera scacchieraCopiata= new Scacchiera();
 	protected LinkedList<Casella> caselleChePossonoEssMang= new LinkedList<Casella>();
-	protected LinkedList<Mossa> mosseChePossonoMang= new LinkedList<Mossa>();//ordinata  x mossa migliore
 	protected LinkedList<Mossa> mosseChePossonoEssMang= new LinkedList<Mossa>();
 	protected LinkedList<Mossa> mosseChePossonoAvanz= new LinkedList<Mossa>();
 	protected LinkedList<Mossa> mosseChePossonoEssMangDopoAvanz= new LinkedList<Mossa>();  
