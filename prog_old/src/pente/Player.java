@@ -33,7 +33,7 @@ public class Player {
 	private int[][] captValues;
 	private int[] captureWeights;
 	private int[] captureWeightsAvv;
-	private int[] captures ;
+	private int[] captures;
 	private TTValue[] transpositionTable;
 	private int dim;
 	private boolean elapsed=false;

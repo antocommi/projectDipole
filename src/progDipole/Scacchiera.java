@@ -131,6 +131,7 @@ public class Scacchiera {
 	 */
 	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
+		
 		res[0] = riga.get(posizione.charAt(0)+"");// get da il valore della chiave che in questo caso è la lettera
 		res[1] = Integer.parseInt(posizione.substring(1))-1;
 		return res;
