@@ -29,6 +29,7 @@ public class Scacchiera {
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
+	private static int MAX_MOSSE= 60;
 	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
 
 	private enum tipoMossa {
@@ -205,7 +206,7 @@ public class Scacchiera {
 				if (turnoGiocatore)
 					STACK_BIANCO=STACK_BIANCO - nCelleMove;
 				else STACK_NERO=STACK_NERO - nCelleMove;
-				
+				MAX_MOSSE--;
 				return true;
 			}
 		}
@@ -237,7 +238,7 @@ public class Scacchiera {
 				return false;
 				
 			destinazione.base(partenza, nCelleMove);
-			
+			MAX_MOSSE--;
 			
 		} else if (partenza.getColorePedina() == destinazione.getColorePedina()) {
 			// MERGE//
@@ -249,6 +250,7 @@ public class Scacchiera {
 			
 			
 			destinazione.mergeFrom(partenza, nCelleMove);
+			MAX_MOSSE--;
 		} else {
 			// CAPTURE // 
 			if (turnoGiocatore && destinazione.getColorePedina() == PEDINA_NERA)
@@ -256,6 +258,7 @@ public class Scacchiera {
 			else if (!turnoGiocatore && destinazione.getColorePedina() == PEDINA_BIANCA)
 				STACK_BIANCO=STACK_BIANCO - nCelleMove;
 			destinazione.captureFrom(partenza, nCelleMove);
+			MAX_MOSSE--;
 		}
 		
 		turnoGiocatore = !turnoGiocatore;
@@ -268,6 +271,10 @@ public class Scacchiera {
 			return VITTORIA_NERO;
 		else if (STACK_NERO == 0)
 			return VITTORIA_BIANCO;
+		else if(MAX_MOSSE==0) {
+			if(STACK_BIANCO>STACK_NERO) return VITTORIA_BIANCO;
+			else return VITTORIA_NERO;
+		}
 		return NESSUNA_VITTORIA;
 	}
 
