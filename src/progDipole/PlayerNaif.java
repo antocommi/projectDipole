@@ -12,11 +12,9 @@ public class PlayerNaif{
 		int posizione1= r.nextInt(8);
 		int posizione2= r.nextInt(8);
 		int dir = r.nextInt(8);
-		
 		String pos =calcolaLettera(posizione1) + posizione2;
 		int cont=10;
 		s.muovi("H5", s.NORTHWEST, 3);
-		
 		while(cont>0) {
 				if(!s.muovi(pos,1,1))
 			{
@@ -29,8 +27,5 @@ public class PlayerNaif{
 			s.stampaScacchiera();
 			cont--;
 		}
-	
-		
-		
 	}
 }
