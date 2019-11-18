@@ -7,6 +7,11 @@ public class Mossa {
 	private int spostamento;
 	private Cella partenza;
 	
+	@Override
+	public String toString() {
+		return "Mossa [x=" + x + ", y=" + y + ", direction=" + direction + ", spostamento=" + spostamento
+				+ ", partenza=" + partenza + "]";
+	}
 	public Mossa(Cella partenza,int direction){
 		this (partenza.getRiga(),partenza.getColonna(), direction, partenza.getnPedine() );
 	}
