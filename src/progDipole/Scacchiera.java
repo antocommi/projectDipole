@@ -31,9 +31,6 @@ public class Scacchiera {
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
 	private static int MAX_MOSSE= 60;
-	LinkedList<Mossa> BASE= new LinkedList<>();
-	LinkedList<Mossa> MERGE= new LinkedList<>();
-	LinkedList<Mossa> CAPTURE= new LinkedList<>();
 	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
 
 	private enum tipoMossa {
@@ -236,6 +233,7 @@ public class Scacchiera {
 		//BASE
 		if (destinazione.getnPedine() == 0) {
 			if(turnoGiocatore && (dir==SOUTH || dir==SOUTHEAST || dir == SOUTHWEST))
+				
 				return false;
 			
 			if(!turnoGiocatore && (dir==NORTH || dir==NORTHEAST || dir==NORTHWEST))
@@ -269,15 +267,67 @@ public class Scacchiera {
 
 		return true;
 	}
-	public boolean verificaBase(Mossa m) {
-		if(m.getDirection())
-		
-	}
-	public boolean verificaMerge() {
-		
-	}
-	public boolean verificaCapture() {
 	
+	public void verificaMosseAmm(Mossa m) {
+		int contrb=-1;
+		int contcb=-1;
+		int contrn=-1;
+		int contcn=-1;
+		LinkedList<Mossa> BASE= new LinkedList<>();
+		LinkedList<Mossa> MERGE= new LinkedList<>();
+		LinkedList<Mossa> CAPTURE= new LinkedList<>();
+		if(m.getPartenza().getColorePedina()==VUOTA) return;
+		else if(turnoGiocatore && m.getPartenza().getColorePedina() == PEDINA_BIANCA) {
+				for (int i = 0; i < scacchiera.length; i++) {
+					contrb++;
+					for (int j = 0; j < scacchiera.length; j++) {
+						contcb++;
+						if(m.getPartenza().getnPedine()>=contrb && m.getPartenza().getnPedine()>=contcb) {
+							if((m.getDirection()==SOUTH ||m.getDirection()==SOUTHEAST || m.getDirection()==SOUTHEAST)){
+								if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m);
+								else if(m.getPartenza().getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
+							else {
+								if(scacchiera[i][j].getColorePedina()==PEDINA_NERA) CAPTURE.add(m);
+	
+							}
+						}
+						
+					}
+				}
+			}
+			
+		}
+		else {
+			for (int i = 0; i < scacchiera.length; i++) {
+				contrn++;
+				for (int j = 0; j < scacchiera.length; j++) {
+					contcn++;
+					if(m.getPartenza().getnPedine()>=contrn && m.getPartenza().getnPedine()>=contcn) {
+						if((m.getDirection()==NORTH||m.getDirection()==NORTHEAST || m.getDirection()==NORTHEAST)){
+							if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m);
+							else if(m.getPartenza().getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
+						else {
+							if(scacchiera[i][j].getColorePedina()==PEDINA_BIANCA) CAPTURE.add(m);
+	
+							}
+						}
+					}
+				}
+			}
+		
+		}return;
+	}
+	public void generatoreMosseAmm() {
+		for (int i = 0; i < scacchiera.length; i++) {
+			for (int j = 0; j < scacchiera.length; j++) {
+				if (scacchiera[i][j].getColorePedina()!=VUOTA) {
+					//ci rinuncio
+					Mossa m= new Mossa(i,j, int direction, int spostamento);
+					
+				}
+			}
+		}
+		
 	}
 	
 	public HashMap<Integer,LinkedList<Mossa>> calcolaMossePossibiliDa(String posizione, Mossa m){
@@ -299,15 +349,11 @@ public class Scacchiera {
 				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
 //					{{1,2},{2,1},{3,0},{2,4},{4,4},{6,4},{1,4},{2,5},{3,6}}
 				
-				
 			}
-			
-		}
-		else {
-			
 		}
 		return null;
 	}
+	
 	public int checkVittoria() {
 		if (STACK_BIANCO == 0)
 			return VITTORIA_NERO;
