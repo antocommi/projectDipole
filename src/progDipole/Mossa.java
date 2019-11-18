@@ -7,8 +7,7 @@ public class Mossa {
 	private int spostamento;
 	private Cella partenza;
 	
-	public
-	Mossa(Cella partenza,int direction){
+	public Mossa(Cella partenza,int direction){
 		this (partenza.getRiga(),partenza.getColonna(), direction, partenza.getnPedine() );
 	}
 	public Cella getPartenza() {

@@ -43,6 +43,7 @@ public class Cella {
 		if(pedineRimanenti==0) cellaSorgente.setColorePedina(-1); // imposta a colore vuoto
 		cellaSorgente.setnPedine(pedineRimanenti);
 	}
+	
 
 	public int getRiga() {
 		return riga;
