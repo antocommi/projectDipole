@@ -291,6 +291,15 @@ public class Scacchiera {
 		m = Math.abs(b-y);
 		return k>=m ? k : m;	
 	}
+	public static boolean verDiagonale(int i,int j,int x,int y)
+	{
+		int offsetA,offsetB;
+		offsetA = Math.abs(i-x);
+		offsetB = Math.abs(j-y);
+		if(offsetA==offsetB) return true;
+		if((offsetA%2==0 && offsetB==0) || (offsetA==0 && offsetB%2==0)) return true;
+		return false;
+	}
 	
 	
 	public static void verificaMosseAmm(int x,int y) {
@@ -299,17 +308,19 @@ public class Scacchiera {
 		LinkedList<Mossa> MERGE= new LinkedList<>();
 		LinkedList<Mossa> CAPTURE= new LinkedList<>();
 		if(scacchiera[x][y].getColorePedina()==VUOTA) return;
-		if(turnoGiocatore && scacchiera[x][y].getColorePedina() == PEDINA_BIANCA) {
+		if(turnoGiocatore && scacchiera[x][y].getColorePedina() == PEDINA_NERA) {
 				for (int i = 0; i < scacchiera.length; i++) {
-					for (int j = 0; j < scacchiera.length; j++) {
-						int contaSpost=calcolaSpostamento(x,y,i,j);
+					for (int j = i%2==0? 1 : 0 ; j < scacchiera.length; j+=2) {
 						if (scacchiera[i][j].getColoreCella()==CELLA_NERA) {
-							if(scacchiera[x][y].getnPedine()>=contaSpost) {
-								int dir= calcolaDirezione(x,y,i,j);
+							int contaSpost=calcolaSpostamento(x,y,i,j);
+							int dir= calcolaDirezione(x,y,i,j);
+							System.out.println("i"+ i +"j"+j +"spost" + contaSpost);
+							if(scacchiera[x][y].getnPedine()>=contaSpost && verDiagonale(i,j,x,y)) {
 								
+								System.out.println(dir);
 								Mossa m= new Mossa(x,y,dir,contaSpost);
 								if(dir==SOUTH || dir==SOUTHEAST||dir==SOUTHWEST){
-									if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m);
+									if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m); 
 									else if(scacchiera[x][y].getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
 								}
 								else {
@@ -325,13 +336,12 @@ public class Scacchiera {
 				for (int j = 0; j < scacchiera.length; j++) {
 					if (scacchiera[i][j].getColoreCella()==CELLA_NERA) {
 						int contaSpost=calcolaSpostamento(x,y,i,j);
-						if(scacchiera[x][y].getnPedine()>=contaSpost) {
-							int dir= calcolaDirezione(x,y,i,j);
-							
+						int dir= calcolaDirezione(x,y,i,j);
+						if(scacchiera[x][y].getnPedine()>=contaSpost && verDiagonale(i,j,x,y)) {
 							Mossa m= new Mossa(x,y,dir,contaSpost);
 							if(dir==NORTH|| dir==NORTHEAST||dir==NORTHWEST){
 								if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m);
-								else if (m.getPartenza().getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
+								else if (scacchiera[x][y].getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
 							}
 							else {
 									if(scacchiera[i][j].getColorePedina()==PEDINA_NERA) CAPTURE.add(m);
@@ -342,7 +352,7 @@ public class Scacchiera {
 			}
 		}
 		
-		System.out.println(BASE);
+		System.out.println(BASE.size());
 		System.out.println(MERGE);
 		System.out.println(CAPTURE);
 		return;
@@ -440,17 +450,17 @@ public class Scacchiera {
 		// System.out.println(a);
 		// System.out.println(b);
 		// b.captureFrom(a, 12);
-//		System.out.println(s.muovi("H5", Scacchiera.NORTHWEST, 3));
-//		System.out.println(s.muovi("A4", Scacchiera.SOUTH, 2));
-//		System.out.println(s.muovi("E2", Scacchiera.NORTH, 2));
-//		System.out.println(s.muovi("C4", Scacchiera.WEST, 2));
-//		System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 1));
-//		System.out.println(s.muovi("C2", Scacchiera.SOUTHWEST, 1));
-//		System.out.println(s.muovi("H5", Scacchiera.NORTH, 2));
-//		System.out.println(s.muovi("D1", Scacchiera.SOUTHWEST, 1));
-//		System.out.println("stack nero=" + STACK_NERO);
-//		System.out.println("stack bianco="+ STACK_BIANCO);
-		verificaMosseAmm(7,4);
+		System.out.println(s.muovi("H5", Scacchiera.NORTHWEST, 3));
+		System.out.println(s.muovi("A4", Scacchiera.SOUTH, 2));
+		//System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 2));
+		//System.out.println(s.muovi("C4", Scacchiera.WEST, 2));
+		//System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 1));
+		//System.out.println(s.muovi("C2", Scacchiera.SOUTHWEST, 1));
+		//System.out.println(s.muovi("H5", Scacchiera.NORTH, 2));
+		//System.out.println(s.muovi("D1", Scacchiera.SOUTHWEST, 1));
+		System.out.println("stack nero=" + STACK_NERO);
+		System.out.println("stack bianco="+ STACK_BIANCO);
+		verificaMosseAmm(4,1);
 		s.stampaScacchiera();
 	}
 
