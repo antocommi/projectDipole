@@ -34,7 +34,10 @@ public class Scacchiera {
 	private static final int VITTORIA_NERO = 2;
 	private static int MAX_MOSSE= 60;
 	private static boolean turnoGiocatore; // Indica il giocatore che deve giocare
-
+	private LinkedList<Mossa> BASE;
+	private LinkedList<Mossa> MERGE;
+	private LinkedList<Mossa> CAPTURE;
+	
 	private enum tipoMossa {
 		BASE, MERGE, CAPTURE
 	};
@@ -45,6 +48,11 @@ public class Scacchiera {
 	 * Costruttore di Default che inizializza la sessione di gioco
 	 */
 	public Scacchiera() {
+
+		BASE = new LinkedList<>();
+		MERGE = new LinkedList<>();
+		CAPTURE = new LinkedList<>();
+		
 		turnoGiocatore = true;
 		riga = new HashMap<>();
 		riga.put("A", 0);
@@ -56,6 +64,7 @@ public class Scacchiera {
 		riga.put("G", 6);
 		riga.put("H", 7);
 		scacchiera = new Cella[SIZE][SIZE];
+	
 		inizializzaScacchiera();
 	}
 
@@ -92,6 +101,116 @@ public class Scacchiera {
 
 	public int getSIZE() {
 		return SIZE;
+	}
+
+	
+	
+	public LinkedList<Mossa> getBASE() {
+		return BASE;
+	}
+
+	public void setBASE(LinkedList<Mossa> bASE) {
+		BASE = bASE;
+	}
+
+	public LinkedList<Mossa> getMERGE() {
+		return MERGE;
+	}
+
+	public void setMERGE(LinkedList<Mossa> mERGE) {
+		MERGE = mERGE;
+	}
+
+	public LinkedList<Mossa> getCAPTURE() {
+		return CAPTURE;
+	}
+
+	public void setCAPTURE(LinkedList<Mossa> cAPTURE) {
+		CAPTURE = cAPTURE;
+	}
+
+	public static int getVuota() {
+		return VUOTA;
+	}
+
+	public static int getPedinaBianca() {
+		return PEDINA_BIANCA;
+	}
+
+	public static int getPedinaNera() {
+		return PEDINA_NERA;
+	}
+
+	public static int getCellaBianca() {
+		return CELLA_BIANCA;
+	}
+
+	public static int getCellaNera() {
+		return CELLA_NERA;
+	}
+
+	public static int getSTACK_BIANCO() {
+		return STACK_BIANCO;
+	}
+
+	public static int getSTACK_NERO() {
+		return STACK_NERO;
+	}
+
+	public static int getNorth() {
+		return NORTH;
+	}
+
+	public static int getNortheast() {
+		return NORTHEAST;
+	}
+
+	public static int getEast() {
+		return EAST;
+	}
+
+	public static int getSoutheast() {
+		return SOUTHEAST;
+	}
+
+	public static int getSouth() {
+		return SOUTH;
+	}
+
+	public static int getSouthwest() {
+		return SOUTHWEST;
+	}
+
+	public static int getWest() {
+		return WEST;
+	}
+
+	public static int getNorthwest() {
+		return NORTHWEST;
+	}
+
+	public static int getNessunaVittoria() {
+		return NESSUNA_VITTORIA;
+	}
+
+	public static int getVittoriaBianco() {
+		return VITTORIA_BIANCO;
+	}
+
+	public static int getVittoriaNero() {
+		return VITTORIA_NERO;
+	}
+
+	public static int getMAX_MOSSE() {
+		return MAX_MOSSE;
+	}
+
+	public static boolean isTurnoGiocatore() {
+		return turnoGiocatore;
+	}
+
+	public HashMap<String, Integer> getRiga() {
+		return riga;
 	}
 
 	/**
@@ -179,10 +298,8 @@ public class Scacchiera {
 		}
 		return ris;
 	}
- //calcola la distanza euclidea
-	/*private double distanzaCelle(int[] x, int[] y){
-		return Math.sqrt(Math.pow(x[0]-y[0],2)+Math.pow(x[1]-y[1],2));
-	}*/
+	
+	
 
 	/**
 	 * Verifica se la posizione della prossima mossa e' valida. ***DA MODIFICARE***
@@ -302,11 +419,8 @@ public class Scacchiera {
 	}
 	
 	
-	public static void verificaMosseAmm(int x,int y) {
-		
-		LinkedList<Mossa> BASE= new LinkedList<>();
-		LinkedList<Mossa> MERGE= new LinkedList<>();
-		LinkedList<Mossa> CAPTURE= new LinkedList<>();
+	public void verificaMosseAmm(int x,int y) {
+		System.out.println(BASE);
 		if(scacchiera[x][y].getColorePedina()==VUOTA) return;
 		if(turnoGiocatore && scacchiera[x][y].getColorePedina() == PEDINA_NERA) {
 				for (int i = 0; i < scacchiera.length; i++) {
@@ -340,7 +454,8 @@ public class Scacchiera {
 						if(scacchiera[x][y].getnPedine()>=contaSpost && verDiagonale(i,j,x,y)) {
 							Mossa m= new Mossa(x,y,dir,contaSpost);
 							if(dir==NORTH|| dir==NORTHEAST||dir==NORTHWEST){
-								if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m);
+								if(scacchiera[i][j].getnPedine() == 0 ) 
+									BASE.add(m);
 								else if (scacchiera[x][y].getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
 							}
 							else {
@@ -406,8 +521,7 @@ public class Scacchiera {
 	}
 
 	/**
-	 * Funzione utile per debug, stampa la scacchiera.
-	 * 
+	 * Funzione utile per debug, stampa la scacchiera. 
 	 * Oss. Sia le pedine bianche che le nere si trovano su caselle di colore nero.
 	 */
 	public void stampaScacchiera() {
@@ -460,7 +574,7 @@ public class Scacchiera {
 		//System.out.println(s.muovi("D1", Scacchiera.SOUTHWEST, 1));
 		System.out.println("stack nero=" + STACK_NERO);
 		System.out.println("stack bianco="+ STACK_BIANCO);
-		verificaMosseAmm(4,1);
+		s.verificaMosseAmm(4,1);
 		s.stampaScacchiera();
 	}
 
