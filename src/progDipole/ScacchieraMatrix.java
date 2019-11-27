@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
-public class Scacchiera {
+public class ScacchieraMatrix implements ScacchieraInterface{
 
 	public final int SIZE = 8;
 	protected static Cella[][] scacchiera;
@@ -47,7 +47,7 @@ public class Scacchiera {
 	/**
 	 * Costruttore di Default che inizializza la sessione di gioco
 	 */
-	public Scacchiera() {
+	public ScacchieraMatrix() {
 
 		BASE = new LinkedList<>();
 		MERGE = new LinkedList<>();
@@ -387,7 +387,7 @@ public class Scacchiera {
 		return true;
 	}
 	
-	public static int calcolaDirezione(int a, int b, int x, int y) {
+	public int calcolaDirezione(int a, int b, int x, int y) {
 		int offsetA,offsetB;
 		offsetA = a-x;
 		offsetB = b-y;
@@ -402,7 +402,7 @@ public class Scacchiera {
 		return -1;
 	}
 	
-	public static int calcolaSpostamento(int a, int b, int x, int y) {
+	public int calcolaSpostamento(int a, int b, int x, int y) {
 		int k,m;
 		k = Math.abs(a-x);
 		m = Math.abs(b-y);
@@ -420,7 +420,7 @@ public class Scacchiera {
 	
 	
 	public void verificaMosseAmm(int x,int y) {
-		System.out.println(BASE);
+	
 		if(scacchiera[x][y].getColorePedina()==VUOTA) return;
 		if(turnoGiocatore && scacchiera[x][y].getColorePedina() == PEDINA_NERA) {
 				for (int i = 0; i < scacchiera.length; i++) {
@@ -467,7 +467,7 @@ public class Scacchiera {
 			}
 		}
 		
-		System.out.println(BASE.size());
+		System.out.println(BASE);
 		System.out.println(MERGE);
 		System.out.println(CAPTURE);
 		return;
@@ -484,29 +484,6 @@ public class Scacchiera {
 		
 	}
 	
-	public HashMap<Integer,LinkedList<Mossa>> calcolaMossePossibiliDa(String posizione, Mossa m){
-		int [] pos =calcola_indici(posizione);
-		LinkedList<Mossa> BASE= new LinkedList<>();
-		LinkedList<Mossa> MERGE= new LinkedList<>();
-		LinkedList<Mossa> CAPTURE= new LinkedList<>();
-		if(scacchiera[pos[0]][pos[1]].getColoreCella() == VUOTA) return null;
-		else if(scacchiera[pos[0]][pos[1]].getColorePedina() == PEDINA_BIANCA){
-			if(pos[0]==0 && pos[1]==3 && scacchiera[pos[0]][pos[1]].getnPedine()==12) {
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));	
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-				BASE.add(new Mossa((short) 0,(short) 3, (short) 0, 1));
-//					{{1,2},{2,1},{3,0},{2,4},{4,4},{6,4},{1,4},{2,5},{3,6}}
-				
-			}
-		}
-		return null;
-	}
 	
 	public int checkVittoria() {
 		if (STACK_BIANCO == 0)
@@ -554,7 +531,7 @@ public class Scacchiera {
 	}
 
 	public static void main(String[] args) {
-		Scacchiera s = new Scacchiera();
+		ScacchieraMatrix s = new ScacchieraMatrix();
 		// s.stampaScacchiera();
 		// Cella b = s.scacchiera[0][3];
 		// Cella a = s.scacchiera[7][4];
@@ -564,8 +541,8 @@ public class Scacchiera {
 		// System.out.println(a);
 		// System.out.println(b);
 		// b.captureFrom(a, 12);
-		System.out.println(s.muovi("H5", Scacchiera.NORTHWEST, 3));
-		System.out.println(s.muovi("A4", Scacchiera.SOUTH, 2));
+		System.out.println(s.muovi("H5", ScacchieraMatrix.NORTHWEST, 3));
+		System.out.println(s.muovi("A4", ScacchieraMatrix.SOUTH, 2));
 		//System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 2));
 		//System.out.println(s.muovi("C4", Scacchiera.WEST, 2));
 		//System.out.println(s.muovi("E2", Scacchiera.NORTHEAST, 1));
@@ -574,8 +551,16 @@ public class Scacchiera {
 		//System.out.println(s.muovi("D1", Scacchiera.SOUTHWEST, 1));
 		System.out.println("stack nero=" + STACK_NERO);
 		System.out.println("stack bianco="+ STACK_BIANCO);
-		s.verificaMosseAmm(4,1);
+		//s.verificaMosseAmm(4,1);
+		s.generatoreMosseAmm();
 		s.stampaScacchiera();
+	}
+
+	@Override
+	public LinkedList<Mossa> getListaMosse(int k) {
+		// TODO Auto-generated method stub
+		//throw new RuntimeException("Metodo non implementato");
+		return null;
 	}
 
 }
