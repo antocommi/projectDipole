@@ -9,7 +9,6 @@ public class Scacchiera {
 
 	public final int SIZE = 8;
 	protected static Cella[][] scacchiera;
-	protected static Cella[][] scacchiera2;
 	/** Codifica il contenuto di una casella vuota. */
 	private static final int VUOTA = -1;
 	/** Codifica il contenuto di una casella con pedina bianca. */
