@@ -34,10 +34,4 @@ public class ByteMap {
 		return (n & (mask << i*3)) ;//>> (8 - i)*3;
 	}
 	
-	public static void main(String[] args) {
-		ByteMap bm = new ByteMap(4);
-		bm.setValue(2,1);
-		
-		System.out.println(bm.getValue(1)+" "+bm.getbm()[0]);
-	}
 }
