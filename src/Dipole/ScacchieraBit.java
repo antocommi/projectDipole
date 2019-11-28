@@ -202,14 +202,18 @@ public class ScacchieraBit {
 		return bianco == 1 ? PEDINA_BIANCA : PEDINA_NERA;
 	}
 	
-	public void verificaMosseAmm(int x, int y) {
+	public int[] calcolaIndiciEstesi(int x, int y) {
+		
+	}
+	
+	public void calcolaMosseAmmissibili(int x, int y) {
 		// pre-condizione: x,y in [0,7]
 		int a = x-4;
 		int b = y-4;
 		int pos = a*4+b;
 		int color = getColorePedina(x,y);
 		if(scacchiera.getValue(pos)==0) return;
-		if(turnoGiocatore && color == ) {
+		if(turnoGiocatore && color == PEDINA_BIANCA){
 			
 		}
 	}
