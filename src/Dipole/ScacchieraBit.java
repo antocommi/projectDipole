@@ -9,7 +9,7 @@ public class ScacchieraBit {
 	// Due bitboard da 64 bit una per i neri e l'altra per i bianchi
 //	private int scacchiere;
 	
-	private final int DIMENSION = 8;
+	private final int DIMENSION = 4;
 	private ByteMap map;
 	private boolean turnoGiocatore;
 	private int scacchieraBianchi, scacchieraNeri;
@@ -26,12 +26,12 @@ public class ScacchieraBit {
 		return i*8+j;
 	}
 	
-	private void addOnBoard(int i, int j, int color, int qty) {
+	public void addOnBoard(int i, int j, int color, int qty) {
 		if(color==1) {
-			scacchieraBianchi =modifyBit(1, getPositionOnBoard(i,j), scacchieraBianchi);
+			scacchieraBianchi = modifyBit(1, getPositionOnBoard(i,j), scacchieraBianchi);
 		}
 		else if(color==0) {
-			scacchieraNeri = modifyBit(1, getPositionOnBoard(i,j), scacchieraNeri);
+			scacchieraNeri 	= modifyBit(1, getPositionOnBoard(i,j), scacchieraNeri);
 		}
 	}
 	
@@ -42,6 +42,7 @@ public class ScacchieraBit {
 		scacchieraNeri = 0;
 		scacchieraBianchi = modifyBit(1, getPositionOnBoard(0, 3), scacchieraBianchi);
 		scacchieraNeri = modifyBit(1, getPositionOnBoard(7, 4), scacchieraNeri);
+		map = new ByteMap(DIMENSION*DIMENSION);
 	}
 	
 	
