@@ -1,4 +1,5 @@
-package progDipole;
+package Dipole;
+
 
 import util.ByteMap;;
 
@@ -41,8 +42,6 @@ public class ScacchieraBit {
 		scacchieraNeri = 0;
 		scacchieraBianchi = modifyBit(1, getPositionOnBoard(0, 3), scacchieraBianchi);
 		scacchieraNeri = modifyBit(1, getPositionOnBoard(7, 4), scacchieraNeri);
-		whiteMap = new ByteMap(DIMENSION*DIMENSION);
-		blackMap = new ByteMap(DIMENSION*DIMENSION); 
 	}
 	
 	
