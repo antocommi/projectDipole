@@ -4,9 +4,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class PlayerNaif{
+	
 	private static String calcolaLettera(int nLettera) {
 		return "ABCDEFGH".substring(nLettera,nLettera+1);
 	}
+	
 	public static void main(String[] args) {
 		ScacchieraMatrix s = new ScacchieraMatrix();
 		Random r= new Random();

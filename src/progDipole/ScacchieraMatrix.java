@@ -391,13 +391,13 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		offsetA = a-x;
 		offsetB = b-y;
 		if(offsetA<0 && offsetB==0) return SOUTH;
-		if(offsetA<0 && offsetB<0) return SOUTHEAST;
-		if(offsetA<0 && offsetB>0) return SOUTHWEST;
+		if(offsetA<0 && offsetB<0) 	return SOUTHEAST;
+		if(offsetA<0 && offsetB>0) 	return SOUTHWEST;
 		if(offsetA==0 && offsetB<0) return EAST;
 		if(offsetA==0 && offsetB>0) return WEST;
 		if(offsetA>0 && offsetB==0) return NORTH;
-		if(offsetA>0 && offsetB<0) return NORTHEAST;
-		if(offsetA>0 && offsetB>0) return NORTHWEST;
+		if(offsetA>0 && offsetB<0) 	return NORTHEAST;
+		if(offsetA>0 && offsetB>0) 	return NORTHWEST;
 		return -1;
 	}
 	
