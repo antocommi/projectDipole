@@ -43,7 +43,6 @@ public class ScacchieraBit {
 	private final int VITTORIA_BIANCO = 1;
 	private final int VITTORIA_NERO = 2;
 	private int MAX_MOSSE= 60;
-	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
 	
 	
 	// isBlack(i,j) -> (((1 << i*8+j) & scacchieraBianchi) >> i*8+j) == 1
@@ -62,19 +61,18 @@ public class ScacchieraBit {
 	
 	public void addOnBoard(int i, int j, int color, int qty) {
 		if(color==1) {
-			scacchieraBianchi = modifyBit(1, getPositionOnBoard(i,j), scacchieraBianchi);
+			scacchieraBianchi = modifyBit(1, getPositionOnBoard(i,j/2), scacchieraBianchi);
 		}
 		else if(color==0) {
-			scacchieraNeri 	= modifyBit(1, getPositionOnBoard(i,j), scacchieraNeri);
+			scacchieraNeri 	= modifyBit(1, getPositionOnBoard(i,j/2), scacchieraNeri);
 		}
 	}
 	
 	public ScacchieraBit() {
 		turnoGiocatore = true;
-//		scacchiere = 0b01000000000000000000000000000100;
 		scacchieraBianchi = 0;
 		scacchieraNeri = 0;
-		scacchiera = new ByteMap(DIMENSION*DIMENSION);
+		scacchiera = new ByteMap(8*4);
 		posizionaPedine(0,3,12,PEDINA_NERA);
 		posizionaPedine(7,4,12,PEDINA_BIANCA);
 		riga = new HashMap<>();
@@ -109,8 +107,8 @@ public class ScacchieraBit {
 	}
 	
 	public void posizionaPedine(int i, int j, int qty, int color) {
-		int a = i - 4;
-		int b = j - 4;
+		int a = i;
+		int b = j/2;
 		
 		if(color==0) {
 			scacchieraBianchi = modifyBit(1, getPositionOnBoard(0, 3), scacchieraBianchi);
@@ -122,7 +120,7 @@ public class ScacchieraBit {
 		}
 	}
 	
-	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
+	public int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
 		int [] ris = new int[2];
 		switch(dir){
 			case NORTH: 
@@ -194,7 +192,7 @@ public class ScacchieraBit {
 	}
 	
 	public int getColorePedina(int x, int y) {
-		int pos = (x-4)*4+(y-4);
+		int pos = (x)*4+(y/2);
 		int mask=1;
 		if(scacchiera.getValue(pos)==0) return -1;
 		int bianco = (scacchieraBianchi & (mask << 16-pos) >>> 16-pos);
@@ -203,7 +201,14 @@ public class ScacchieraBit {
 	}
 	
 	public int[] calcolaIndiciEstesi(int x, int y) {
-		
+		int[] res = {x, y*2};
+		if(x%2==0) res[1]++;
+		return res;
+	}
+	
+	public int[] calcolaIndiciRidotti(int x, int y) {
+		int[] res = {x, y/2};
+		return res;
 	}
 	
 	public void calcolaMosseAmmissibili(int x, int y) {
@@ -214,7 +219,7 @@ public class ScacchieraBit {
 		int color = getColorePedina(x,y);
 		if(scacchiera.getValue(pos)==0) return;
 		if(turnoGiocatore && color == PEDINA_BIANCA){
-			
+			System.out.println("TODO");
 		}
 	}
 	
