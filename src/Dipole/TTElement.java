@@ -6,7 +6,7 @@ public class TTElement {
 	private int depth;
 	private int value;
 	private Mossa[] m;
-
+	
 	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) {
 		this.key = key;
 		this.depth = depth;
