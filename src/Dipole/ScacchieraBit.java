@@ -199,18 +199,12 @@ public class ScacchieraBit {
 	}
 	
 	public void generaMosse(int x, int y) {
-		
-		int pos = x*8+y, i, curr_pos;  	// posizione della pedina di 
-										// cui si vuole generare le mosse
-		
+		int pos = x*8+y, i, curr_pos;
 		if(checkPosOut(x, y)) 
 			throw new RuntimeException("Indici non consentiti");
-		
 		if(scacchiera.getIndex(x, y)==0)
 			throw new RuntimeException("Nessuna pedina disponibile");
-		
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
-		
 		for(int dir=0;dir<8;dir++) {
 			pos = x*8+y;
 			i=0;
@@ -220,6 +214,10 @@ public class ScacchieraBit {
 				moves.add(new Mossa(curr_pos/8, curr_pos%8, dir));
 			}
 		}
+		
+		// TODO
+		// - Aggiungere generazione mosse di eliminazione pedine dallo stack
+		
 	}
 	
 	private void calcolaMassimoSpostamento(int[] v, int x, int y) {
@@ -268,7 +266,17 @@ public class ScacchieraBit {
 		}
 	}
 	
+	public ArrayList<Mossa> getMoves() {
+		return moves;
+	}
+
+	public void setMoves(ArrayList<Mossa> moves) {
+		this.moves = moves;
+	}
+
 	public static void main(String[] args) {
-		System.out.println("Done!");
+		ScacchieraBit sb = new ScacchieraBit();
+		sb.generaMosse(0, 4);
+//		for(sb.getMoves() mossa)
 	}
 }
