@@ -1,31 +1,73 @@
 package Dipole;
 
 public class Mossa {
-	
-	private int x;			 // 3 bit
-	private int y;			 // 3 bit
-	private int direction;	 // 3 bit
-	
-	
-	public Mossa(int x, int y, int direction) {
+
+	private int iStart;
+	private int jStart;
+	private int iEnd;
+	private int jEnd;
+	private int direction;
+
+	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.iStart = iStart;
+		this.jStart = jEnd;
+		this.iEnd = iEnd;
+		this.jEnd = jEnd;
+	}
+
+	public int getiStart() {
+		return iStart;
+	}
+
+	public void setiStart(int iStart) {
+		this.iStart = iStart;
+	}
+
+	public int getjStart() {
+		return jStart;
+	}
+
+	public void setjStart(int jStart) {
+		this.jStart = jStart;
+	}
+
+	public int getiEnd() {
+		return iEnd;
+	}
+
+	public void setiEnd(int iEnd) {
+		this.iEnd = iEnd;
+	}
+
+	public int getjEnd() {
+		return jEnd;
+	}
+
+	public void setjEnd(int jEnd) {
+		this.jEnd = jEnd;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-	@Override
-	public String toString() {
-		return "Mossa [x=" + x + ", y=" + y +"]";
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + direction;
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + iEnd;
+		result = prime * result + iStart;
+		result = prime * result + jEnd;
+		result = prime * result + jStart;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -37,29 +79,21 @@ public class Mossa {
 		Mossa other = (Mossa) obj;
 		if (direction != other.direction)
 			return false;
-		if (x != other.x)
+		if (iEnd != other.iEnd)
 			return false;
-		if (y != other.y)
+		if (iStart != other.iStart)
+			return false;
+		if (jEnd != other.jEnd)
+			return false;
+		if (jStart != other.jStart)
 			return false;
 		return true;
 	}
-	public int getX() {
-		return x;
-	}
-	public void setX(int x) {
-		this.x = x;
-	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	public int getDirection() {
-		return direction;
-	}
-	public void setDirection(int direction) {
-		this.direction = direction;
-	}
-}
 
+	@Override
+	public String toString() {
+		return "Mossa [iStart=" + iStart + ", jStart=" + jStart + ", iEnd=" + iEnd + ", jEnd=" + jEnd + ", direction="
+				+ direction + "]";
+	}
+
+}

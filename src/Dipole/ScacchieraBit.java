@@ -201,6 +201,8 @@ public class ScacchieraBit {
 	public void generaMosse(int x, int y) {
 		int pos = x*8+y, i, curr_pos;
 		if(checkPosOut(x, y)) 
+
+		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
 		if(scacchiera.getIndex(x, y)==0)
 			throw new RuntimeException("Nessuna pedina disponibile");
@@ -211,7 +213,7 @@ public class ScacchieraBit {
 			curr_pos= pos;
 			while(i++<MAX_SPOSTAMENTO[dir] & curr_pos>0 & curr_pos < 64){
 				curr_pos += DIRECTIONS[dir];
-				moves.add(new Mossa(curr_pos/8, curr_pos%8, dir));
+				moves.add(new Mossa(x,y,curr_pos / 8, curr_pos % 8, dir));
 			}
 		}
 		
