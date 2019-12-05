@@ -1,4 +1,4 @@
-package progDipole;
+package cestinoDipole;
 
 public class Cella {
 

@@ -1,68 +1,71 @@
 package Dipole;
 
-public class Mossa implements Comparable<Mossa> {
+public class Mossa {
 
-	private int riga;
-	private int colonna;
-	private int player;
-	private int euristic;
+	private int iStart;
+	private int jStart;
+	private int iEnd;
+	private int jEnd;
+	private int direction;
 
-	public Mossa(int riga, int colonna, int player, int euristic) {
-		this.riga = riga;
-		this.colonna = colonna;
-		this.player = player;
-		this.euristic = euristic;
+	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
+		super();
+		this.iStart = iStart;
+		this.jStart = jEnd;
+		this.iEnd = iEnd;
+		this.jEnd = jEnd;
+		this.direction = direction;
 	}
 
-	public int getRiga() {
-		return riga;
+	public int getiStart() {
+		return iStart;
 	}
 
-	public void setRiga(int riga) {
-		this.riga = riga;
+	public void setiStart(int iStart) {
+		this.iStart = iStart;
 	}
 
-	public int getColonna() {
-		return colonna;
+	public int getjStart() {
+		return jStart;
 	}
 
-	public void setColonna(int colonna) {
-		this.colonna = colonna;
+	public void setjStart(int jStart) {
+		this.jStart = jStart;
 	}
 
-	public int getPlayer() {
-		return player;
+	public int getiEnd() {
+		return iEnd;
 	}
 
-	public void setPlayer(int player) {
-		this.player = player;
+	public void setiEnd(int iEnd) {
+		this.iEnd = iEnd;
 	}
 
-	public int getEuristic() {
-		return euristic;
+	public int getjEnd() {
+		return jEnd;
 	}
 
-	public void setEuristic(int euristic) {
-		this.euristic = euristic;
+	public void setjEnd(int jEnd) {
+		this.jEnd = jEnd;
 	}
 
-	@Override
-	public int compareTo(Mossa m) {
-		if (euristic > m.getEuristic())
-			return 1;
-		if (euristic < m.getEuristic())
-			return -1;
-		return 0;
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + colonna;
-		result = prime * result + euristic;
-		result = prime * result + player;
-		result = prime * result + riga;
+		result = prime * result + direction;
+		result = prime * result + iEnd;
+		result = prime * result + iStart;
+		result = prime * result + jEnd;
+		result = prime * result + jStart;
 		return result;
 	}
 
@@ -75,15 +78,23 @@ public class Mossa implements Comparable<Mossa> {
 		if (getClass() != obj.getClass())
 			return false;
 		Mossa other = (Mossa) obj;
-		if (colonna != other.colonna)
+		if (direction != other.direction)
 			return false;
-		if (euristic != other.euristic)
+		if (iEnd != other.iEnd)
 			return false;
-		if (player != other.player)
+		if (iStart != other.iStart)
 			return false;
-		if (riga != other.riga)
+		if (jEnd != other.jEnd)
+			return false;
+		if (jStart != other.jStart)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Mossa [iStart=" + iStart + ", jStart=" + jStart + ", iEnd=" + iEnd + ", jEnd=" + jEnd + ", direction="
+				+ direction + "]";
 	}
 
 }

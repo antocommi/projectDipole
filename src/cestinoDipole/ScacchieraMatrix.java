@@ -1,4 +1,4 @@
-package progDipole;
+package cestinoDipole;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,22 +18,16 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 	/** Codifica il COLORE DI UNA CELLA BIANCA */
 	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
-	private static final int CELLA_NERA = 1;
-	private static int STACK_BIANCO = 12;
-	private static int STACK_NERO = 12;
-	public static final int NORTH = 0;
-	public static final int NORTHEAST = 1;
-	public static final int EAST = 2;
-	public static final int SOUTHEAST = 3;
-	public static final int SOUTH = 4;
-	public static final int SOUTHWEST = 5;
-	public static final int WEST = 6;
-	public static final int NORTHWEST = 7;
-	private static final int NESSUNA_VITTORIA = 0;
-	private static final int VITTORIA_BIANCO = 1;
-	private static final int VITTORIA_NERO = 2;
-	private static int MAX_MOSSE= 60;
-	private static boolean turnoGiocatore; // Indica il giocatore che deve giocare
+	private final int CELLA_NERA = 1;
+	private int STACK_BIANCO = 12;
+	private int STACK_NERO = 12;
+
+	
+	private final int NESSUNA_VITTORIA = 0;
+	private final int VITTORIA_BIANCO = 1;
+	private final int VITTORIA_NERO = 2;
+	private int MAX_MOSSE= 60;
+	private boolean turnoGiocatore; // Indica il giocatore che deve giocare
 	private LinkedList<Mossa> BASE;
 	private LinkedList<Mossa> MERGE;
 	private LinkedList<Mossa> CAPTURE;
@@ -91,6 +85,8 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		scacchiera[7][4] = c1;
 	}
 
+	
+	
 	public Cella[][] getScacchiera() {
 		return scacchiera;
 	}
@@ -103,8 +99,6 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		return SIZE;
 	}
 
-	
-	
 	public LinkedList<Mossa> getBASE() {
 		return BASE;
 	}
@@ -254,7 +248,6 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 	 */
 	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
-		
 		res[0] = riga.get(posizione.charAt(0)+"");// get da il valore della chiave che in questo caso è la lettera
 		res[1] = Integer.parseInt(posizione.substring(1))-1;
 		return res;
@@ -392,13 +385,13 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		offsetA = a-x;
 		offsetB = b-y;
 		if(offsetA<0 && offsetB==0) return SOUTH;
-		if(offsetA<0 && offsetB<0) return SOUTHEAST;
-		if(offsetA<0 && offsetB>0) return SOUTHWEST;
+		if(offsetA<0 && offsetB<0) 	return SOUTHEAST;
+		if(offsetA<0 && offsetB>0) 	return SOUTHWEST;
 		if(offsetA==0 && offsetB<0) return EAST;
 		if(offsetA==0 && offsetB>0) return WEST;
 		if(offsetA>0 && offsetB==0) return NORTH;
-		if(offsetA>0 && offsetB<0) return NORTHEAST;
-		if(offsetA>0 && offsetB>0) return NORTHWEST;
+		if(offsetA>0 && offsetB<0) 	return NORTHEAST;
+		if(offsetA>0 && offsetB>0) 	return NORTHWEST;
 		return -1;
 	}
 	
@@ -406,8 +399,9 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		int k,m;
 		k = Math.abs(a-x);
 		m = Math.abs(b-y);
-		return k>=m ? k : m;	
+		return k >= m ? k : m;	
 	}
+	
 	public static boolean verDiagonale(int i,int j,int x,int y)
 	{
 		int offsetA,offsetB;
@@ -420,7 +414,7 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 	
 	
 	public void verificaMosseAmm(int x,int y) {
-	
+		
 		if(scacchiera[x][y].getColorePedina()==VUOTA) return;
 		if(turnoGiocatore && scacchiera[x][y].getColorePedina() == PEDINA_NERA) {
 				for (int i = 0; i < scacchiera.length; i++) {
@@ -435,10 +429,12 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 								Mossa m= new Mossa(x,y,dir,contaSpost);
 								if(dir==SOUTH || dir==SOUTHEAST||dir==SOUTHWEST){
 									if(scacchiera[i][j].getnPedine() == 0 ) BASE.add(m); 
-									else if(scacchiera[x][y].getColorePedina() == scacchiera[i][j].getColorePedina()) MERGE.add(m);
+									else if(scacchiera[x][y].getColorePedina() == scacchiera[i][j].getColorePedina()) 
+										MERGE.add(m);
 								}
 								else {
-										if(scacchiera[i][j].getColorePedina()==PEDINA_BIANCA) CAPTURE.add(m);
+										if(scacchiera[i][j].getColorePedina()==PEDINA_BIANCA) 
+											CAPTURE.add(m);
 								}
 							}
 						}
@@ -472,6 +468,8 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		System.out.println(CAPTURE);
 		return;
 	}
+
+	
 	public void generatoreMosseAmm() {
 		for (int i = 0; i < scacchiera.length; i++) {
 			for (int j = 0; j < scacchiera.length; j++) {
