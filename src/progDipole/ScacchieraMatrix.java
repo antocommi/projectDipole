@@ -21,14 +21,8 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 	private final int CELLA_NERA = 1;
 	private int STACK_BIANCO = 12;
 	private int STACK_NERO = 12;
-	public final int NORTH = 0;
-	public final int NORTHEAST = 1;
-	public final int EAST = 2;
-	public final int SOUTHEAST = 3;
-	public final int SOUTH = 4;
-	public final int SOUTHWEST = 5;
-	public final int WEST = 6;
-	public final int NORTHWEST = 7;
+
+	
 	private final int NESSUNA_VITTORIA = 0;
 	private final int VITTORIA_BIANCO = 1;
 	private final int VITTORIA_NERO = 2;
@@ -91,6 +85,8 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		scacchiera[7][4] = c1;
 	}
 
+	
+	
 	public Cella[][] getScacchiera() {
 		return scacchiera;
 	}
@@ -103,8 +99,6 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		return SIZE;
 	}
 
-	
-	
 	public LinkedList<Mossa> getBASE() {
 		return BASE;
 	}

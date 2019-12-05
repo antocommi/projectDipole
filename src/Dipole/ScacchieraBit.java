@@ -1,6 +1,7 @@
 package Dipole;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import progDipole.Cella;
@@ -31,19 +32,24 @@ public class ScacchieraBit {
 	
 	private int STACK_BIANCO = 12;
 	private int STACK_NERO = 12;
-	public final int NORTH = 0;
-	public final int NORTHEAST = 1;
-	public final int EAST = 2;
-	public final int SOUTHEAST = 3;
-	public final int SOUTH = 4;
-	public final int SOUTHWEST = 5;
-	public final int WEST = 6;
-	public final int NORTHWEST = 7;
+	
+	private final int NORTH 		= 0;
+	private final int SOUTH 		= 1;
+	private final int NORTHEAST 	= 2;
+	private final int SOUTHWEST 	= 3;
+	private final int SOUTHEAST 	= 4;
+	private final int NORTHWEST 	= 5;
+	private final int EAST 			= 6;
+	private final int WEST 			= 7;
+	
+	private int[] DIRECTIONS = {-16, 16, -7, 7, 9, -9, 2, -2};
+	private int[] MAX_SPOSTAMENTO = {3,3,6,6,6,6,3,3};
 	private final int NESSUNA_VITTORIA = 0;
 	private final int VITTORIA_BIANCO = 1;
 	private final int VITTORIA_NERO = 2;
 	private int MAX_MOSSE= 60;
 	
+	private ArrayList<Mossa> moves;
 	
 	// isBlack(i,j) -> (((1 << i*8+j) & scacchieraBianchi) >> i*8+j) == 1
 
@@ -84,6 +90,7 @@ public class ScacchieraBit {
 		riga.put("F", 5);
 		riga.put("G", 6);
 		riga.put("H", 7);
+		moves = new ArrayList<>();
 		
 	
 	}
@@ -191,6 +198,44 @@ public class ScacchieraBit {
 		return k >= m ? k : m;	
 	}
 	
+	public void generaMosse(int x, int y) {
+		
+		int pos = x*8+y, i, curr_pos;  	// posizione della pedina di 
+										// cui si vuole generare le mosse
+		
+		if(checkPosOut(x, y)) 
+			throw new RuntimeException("Indici non consentiti");
+		
+		if(scacchiera.getIndex(x, y)==0)
+			throw new RuntimeException("Nessuna pedina disponibile");
+		
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
+		
+		for(int dir=0;dir<8;dir++) {
+			pos = x*8+y;
+			i=0;
+			curr_pos= pos;
+			while(i++<MAX_SPOSTAMENTO[dir] & curr_pos>0 & curr_pos < 64){
+				curr_pos += DIRECTIONS[dir];
+				moves.add(new Mossa(curr_pos/8, curr_pos%8, dir));
+			}
+		}
+	}
+	
+	private void calcolaMassimoSpostamento(int[] v, int x, int y) {
+		
+		v[NORTH]= x/2;
+		v[SOUTH]= (7-x)/2;
+		v[EAST]	= (7-y)/2;
+		v[WEST] = y/2;
+		
+		v[NORTHWEST] = Math.min(x, y)/2;
+		v[NORTHEAST] = Math.min(x, 7-y)/2;
+		v[SOUTHEAST] = Math.min(7-x, 7-y)/2;
+		v[SOUTHWEST] = Math.min(7-x,y)/2;
+		
+	}
+
 	public int getColorePedina(int x, int y) {
 		int pos = (x)*4+(y/2);
 		int mask=1;

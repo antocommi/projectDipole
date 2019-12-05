@@ -12,15 +12,19 @@ public class Mossa {
 		return "Mossa [x=" + x + ", y=" + y + ", direction=" + direction + ", spostamento=" + spostamento
 				+ ", partenza=" + partenza + "]";
 	}
+	
 	public Mossa(Cella partenza,int direction){
 		this (partenza.getRiga(),partenza.getColonna(), direction, partenza.getnPedine() );
 	}
+	
 	public Cella getPartenza() {
 		return partenza;
 	}
+	
 	public void setPartenza(Cella partenza) {
 		this.partenza = partenza;
-	}
+	}  
+	
 	public Mossa(int x, int y, int direction, int spostamento) {
 		super();
 		this.x = x;
