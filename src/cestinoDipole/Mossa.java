@@ -1,4 +1,4 @@
-package progDipole;
+package cestinoDipole;
 
 public class Mossa {
 	private int x;

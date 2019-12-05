@@ -4,7 +4,7 @@ package Dipole;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import progDipole.Cella;
+import cestinoDipole.Cella;
 import util.ByteMap;;
 
 public class ScacchieraBit {

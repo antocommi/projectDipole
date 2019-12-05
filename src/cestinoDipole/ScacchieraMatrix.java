@@ -1,4 +1,4 @@
-package progDipole;
+package cestinoDipole;
 
 import java.util.HashMap;
 import java.util.LinkedList;

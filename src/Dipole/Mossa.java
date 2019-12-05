@@ -6,6 +6,7 @@ public class Mossa {
 	private int y;			 // 3 bit
 	private int direction;	 // 3 bit
 	
+	
 	public Mossa(int x, int y, int direction) {
 		super();
 		this.x = x;
