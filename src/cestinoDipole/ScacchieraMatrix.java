@@ -139,69 +139,6 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		return CELLA_BIANCA;
 	}
 
-	public static int getCellaNera() {
-		return CELLA_NERA;
-	}
-
-	public static int getSTACK_BIANCO() {
-		return STACK_BIANCO;
-	}
-
-	public static int getSTACK_NERO() {
-		return STACK_NERO;
-	}
-
-	public static int getNorth() {
-		return NORTH;
-	}
-
-	public static int getNortheast() {
-		return NORTHEAST;
-	}
-
-	public static int getEast() {
-		return EAST;
-	}
-
-	public static int getSoutheast() {
-		return SOUTHEAST;
-	}
-
-	public static int getSouth() {
-		return SOUTH;
-	}
-
-	public static int getSouthwest() {
-		return SOUTHWEST;
-	}
-
-	public static int getWest() {
-		return WEST;
-	}
-
-	public static int getNorthwest() {
-		return NORTHWEST;
-	}
-
-	public static int getNessunaVittoria() {
-		return NESSUNA_VITTORIA;
-	}
-
-	public static int getVittoriaBianco() {
-		return VITTORIA_BIANCO;
-	}
-
-	public static int getVittoriaNero() {
-		return VITTORIA_NERO;
-	}
-
-	public static int getMAX_MOSSE() {
-		return MAX_MOSSE;
-	}
-
-	public static boolean isTurnoGiocatore() {
-		return turnoGiocatore;
-	}
 
 	public HashMap<String, Integer> getRiga() {
 		return riga;
@@ -253,44 +190,44 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		return res;
 	}
 
-	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
-		int [] ris = new int[2];
-		switch(dir){
-			case NORTH: 
-				ris[0]=i - nCelleMove; 
-				ris[1]= j;
-				break;
-			case NORTHEAST: 
-				ris[1]=j + nCelleMove;
-				ris[0]=i - nCelleMove;	
-				break;
-			case EAST: 
-				ris[1]=j + nCelleMove;
-				ris[0]= i;
-				break;
-			case SOUTHEAST: 
-				ris[1]=j + nCelleMove;
-				ris[0]=i + nCelleMove;	
-				break;
-			case SOUTH:  
-				ris[0]=i + nCelleMove;	
-				ris[1]= j;
-				break;
-			case SOUTHWEST:  
-				ris[1]=j - nCelleMove;
-				ris[0]=i + nCelleMove;	
-				break;
-			case WEST:  
-				ris[1]=j - nCelleMove;
-				ris[0]= i;
-				break;
-			case NORTHWEST: 
-				ris[1]=j - nCelleMove;
-				ris[0]=i - nCelleMove;	
-				break;
-		}
-		return ris;
-	}
+//	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
+//		int [] ris = new int[2];
+//		switch(dir){
+//			case NORTH: 
+//				ris[0]=i - nCelleMove; 
+//				ris[1]= j;
+//				break;
+//			case NORTHEAST: 
+//				ris[1]=j + nCelleMove;
+//				ris[0]=i - nCelleMove;	
+//				break;
+//			case EAST: 
+//				ris[1]=j + nCelleMove;
+//				ris[0]= i;
+//				break;
+//			case SOUTHEAST: 
+//				ris[1]=j + nCelleMove;
+//				ris[0]=i + nCelleMove;	
+//				break;
+//			case SOUTH:  
+//				ris[0]=i + nCelleMove;	
+//				ris[1]= j;
+//				break;
+//			case SOUTHWEST:  
+//				ris[1]=j - nCelleMove;
+//				ris[0]=i + nCelleMove;	
+//				break;
+//			case WEST:  
+//				ris[1]=j - nCelleMove;
+//				ris[0]= i;
+//				break;
+//			case NORTHWEST: 
+//				ris[1]=j - nCelleMove;
+//				ris[0]=i - nCelleMove;	
+//				break;
+//		}
+//		return ris;
+//	}
 	
 	
 
@@ -301,7 +238,7 @@ public class ScacchieraMatrix implements ScacchieraInterface{
 		
 		double distanzaCelle;
 		int[] pos = calcola_indici(pos_iniziale);
-		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
+//		int[] pos_finale = calcola_indici(pos[0], pos[1], dir, nCelleMove);
 		Cella partenza, destinazione ;
 		System.out.format("pos: %d, %d \n",pos[0],pos[1]);
 		if(turnoGiocatore)System.out.println("bianco gioca");

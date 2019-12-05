@@ -91,8 +91,6 @@ public class ScacchieraBit {
 		riga.put("G", 6);
 		riga.put("H", 7);
 		moves = new ArrayList<>();
-		
-	
 	}
 	
 	private String calcolaLettera(int nLettera) {
@@ -199,14 +197,17 @@ public class ScacchieraBit {
 	}
 	
 	public void generaMosse(int x, int y) {
+		
 		int pos = x*8+y, i, curr_pos;
+		
 		if(checkPosOut(x, y)) 
-
-		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
+		
 		if(scacchiera.getIndex(x, y)==0)
 			throw new RuntimeException("Nessuna pedina disponibile");
+		
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
+		
 		for(int dir=0;dir<8;dir++) {
 			pos = x*8+y;
 			i=0;
@@ -223,17 +224,14 @@ public class ScacchieraBit {
 	}
 	
 	private void calcolaMassimoSpostamento(int[] v, int x, int y) {
-		
 		v[NORTH]= x/2;
 		v[SOUTH]= (7-x)/2;
 		v[EAST]	= (7-y)/2;
 		v[WEST] = y/2;
-		
 		v[NORTHWEST] = Math.min(x, y)/2;
 		v[NORTHEAST] = Math.min(x, 7-y)/2;
 		v[SOUTHEAST] = Math.min(7-x, 7-y)/2;
 		v[SOUTHWEST] = Math.min(7-x,y)/2;
-		
 	}
 
 	public int getColorePedina(int x, int y) {
@@ -254,18 +252,6 @@ public class ScacchieraBit {
 	public int[] calcolaIndiciRidotti(int x, int y) {
 		int[] res = {x, y/2};
 		return res;
-	}
-	
-	public void calcolaMosseAmmissibili(int x, int y) {
-		// pre-condizione: x,y in [0,7]
-		int a = x-4;
-		int b = y-4;
-		int pos = a*4+b;
-		int color = getColorePedina(x,y);
-		if(scacchiera.getValue(pos)==0) return;
-		if(turnoGiocatore && color == PEDINA_BIANCA){
-			System.out.println("TODO");
-		}
 	}
 	
 	public ArrayList<Mossa> getMoves() {
