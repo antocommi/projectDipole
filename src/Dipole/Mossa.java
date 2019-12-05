@@ -15,7 +15,7 @@ public class Mossa {
 	}
 	@Override
 	public String toString() {
-		return "Mossa [x=" + x + ", y=" + y + ", spostamento=" + spostamento + "]";
+		return "Mossa [x=" + x + ", y=" + y +"]";
 	}
 	@Override
 	public int hashCode() {
