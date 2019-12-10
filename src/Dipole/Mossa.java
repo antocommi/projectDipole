@@ -92,7 +92,7 @@ public class Mossa {
 
 	@Override
 	public String toString() {
-		return "Mossa [iStart=" + iStart + ", jStart=" + jStart + ", iEnd=" + iEnd + ", jEnd=" + jEnd + ", direction="
+		return "Mossa [("+iStart+", "+jStart+") -> ("+iEnd+", "+jEnd+"); direction="
 				+ direction + "]";
 	}
 

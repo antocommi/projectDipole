@@ -43,11 +43,11 @@ public class ScacchieraBit {
 	private final int WEST 			= 7;
 	
 	private int[] DIRECTIONS = {-16, 16, -7, 7, 9, -9, 2, -2};
-	private int[] MAX_SPOSTAMENTO = {3,3,6,6,6,6,3,3};
+	private int[] MAX_SPOSTAMENTO;
 	private final int NESSUNA_VITTORIA = 0;
 	private final int VITTORIA_BIANCO = 1;
 	private final int VITTORIA_NERO = 2;
-	private int MAX_MOSSE= 60;
+	private final int MAX_MOSSE= 60;
 	
 	private ArrayList<Mossa> moves;
 	
@@ -78,6 +78,7 @@ public class ScacchieraBit {
 		turnoGiocatore = true;
 		scacchieraBianchi = 0;
 		scacchieraNeri = 0;
+		MAX_SPOSTAMENTO= new int[8];
 		scacchiera = new ByteMap(8*4);
 		posizionaPedine(0,3,12,PEDINA_NERA);
 		posizionaPedine(7,4,12,PEDINA_BIANCA);
@@ -207,16 +208,23 @@ public class ScacchieraBit {
 			throw new RuntimeException("Nessuna pedina disponibile");
 		
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
-		
+		for (int j : MAX_SPOSTAMENTO) {
+			System.out.print(j+" ");
+		}
+		System.out.println(" ");
 		for(int dir=0;dir<8;dir++) {
+			System.out.println(dir);
 			pos = x*8+y;
 			i=0;
 			curr_pos= pos;
 			while(i++<MAX_SPOSTAMENTO[dir] & curr_pos>0 & curr_pos < 64){
+				System.out.println("\t"+i);
 				curr_pos += DIRECTIONS[dir];
 				moves.add(new Mossa(x,y,curr_pos / 8, curr_pos % 8, dir));
 			}
 		}
+		
+		
 		
 		// TODO
 		// - Aggiungere generazione mosse di eliminazione pedine dallo stack
@@ -228,10 +236,10 @@ public class ScacchieraBit {
 		v[SOUTH]= (7-x)/2;
 		v[EAST]	= (7-y)/2;
 		v[WEST] = y/2;
-		v[NORTHWEST] = Math.min(x, y)/2;
-		v[NORTHEAST] = Math.min(x, 7-y)/2;
-		v[SOUTHEAST] = Math.min(7-x, 7-y)/2;
-		v[SOUTHWEST] = Math.min(7-x,y)/2;
+		v[NORTHWEST] = Math.min(x, y);
+		v[NORTHEAST] = Math.min(x, 7-y);
+		v[SOUTHEAST] = Math.min(7-x, 7-y);
+		v[SOUTHWEST] = Math.min(7-x,y);
 	}
 
 	public int getColorePedina(int x, int y) {
@@ -261,10 +269,9 @@ public class ScacchieraBit {
 	public void setMoves(ArrayList<Mossa> moves) {
 		this.moves = moves;
 	}
-
-	public static void main(String[] args) {
-		ScacchieraBit sb = new ScacchieraBit();
-		sb.generaMosse(0, 4);
-//		for(sb.getMoves() mossa)
+	
+	public void stampaScacchiera() {
+		//TODO
+		return;
 	}
 }
