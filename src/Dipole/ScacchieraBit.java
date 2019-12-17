@@ -320,9 +320,9 @@ public class ScacchieraBit {
 					}
 				if (scacchiera.getNumeroPedine(r, c) > 0) {
 					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0))
-						System.out.print(" B ");
+						System.out.print(scacchiera.getNumeroPedine(r,c)+"B ");
 					else
-						System.out.print(" N ");
+						System.out.print(scacchiera.getNumeroPedine(r,c)+"N ");
 				}
 			}
 			System.out.println("");
@@ -333,8 +333,14 @@ public class ScacchieraBit {
 	}
 
 	public static void main(String[] args) {
-		ScacchieraMatrix scacchiera = new ScacchieraMatrix();
+		ScacchieraBit scacchiera = new ScacchieraBit();
 		scacchiera.stampaScacchiera();
+		scacchiera.generaMosse(0, 3);
+//		ArrayList<Mossa> m = stato.getMoves();
+//		System.out.println(m.size());
+//		for (Mossa mossa : m) {
+//			System.out.println(mossa);
+//		}
 	}
 
 }
