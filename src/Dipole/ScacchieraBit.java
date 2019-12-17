@@ -13,7 +13,7 @@ public class ScacchieraBit {
 	// private int scacchiere;
 
 	private final int DIMENSION = 4;
-	private ByteMap scacchiera;
+	public static ByteMap scacchiera;
 	private boolean turnoGiocatore;
 	private int scacchieraBianchi, scacchieraNeri;
 
