@@ -297,9 +297,41 @@ public class ScacchieraBit {
 		this.moves = moves;
 	}
 	
+	/**
+	 * Funzione utile per debug, stampa la scacchiera. 
+	 * Oss. Sia le pedine bianche che le nere si trovano su caselle di colore nero.
+	 */
 	public void stampaScacchiera() {
-		
-		//TODO
-		return;
+		System.out.println();
+		System.out.println("CONFIGURAZINE SCACCHIERA:");
+		System.out.println();
+		int r, c;
+		for (r = 0; r < SIZE; r++) {
+			for (c = 0; c < SIZE; c++)
+				System.out.print(" - ");
+			System.out.println("-");
+			for (c = 0; c < SIZE; c++) {
+				if (scacchiera.getNumeroPedine(r,c) == 0)
+					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0)) {
+						System.out.print(" N ");
+					} else {
+						System.out.print(" B ");
+					}
+				if (scacchiera.getNumeroPedine(r,c) > 0) {
+					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0))
+						System.out.print(" B ");
+					else
+						System.out.print(" N ");
+				}
+			}
+			System.out.println("");
+		}
+		for (c = 0; c < SIZE; c++)
+			System.out.print(" - ");
+		System.out.println(" - ");
 	}
+	
+	
+	
+	
 }
