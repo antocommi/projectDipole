@@ -36,7 +36,11 @@ public class ByteMap {
 	}
 
 	public int getNumeroPedine(int i, int j) {
-		return getValue(getIndex(i, j));
+		return getValue(i*8+j);
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 
 }

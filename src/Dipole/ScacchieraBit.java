@@ -13,46 +13,46 @@ public class ScacchieraBit {
 	// Due bitboard da 64 bit una per i neri e l'altra per i bianchi
 	// private int scacchiere;
 	
-	private final int DIMENSION = 4;
+	private static final int DIMENSION = 4;
 	private ByteMap scacchiera;
 	private boolean turnoGiocatore;
 	private int scacchieraBianchi, scacchieraNeri;
 	
-	public final int SIZE = 8;
+	public static final int SIZE = 8;
 	/** Codifica il contenuto di una casella vuota. */
 	private static final int VUOTA = -1;
 	/** Codifica il contenuto di una casella con pedina bianca. */
-	private final int PEDINA_BIANCA = 0;
+	private static final int PEDINA_BIANCA = 0;
 	/** Codifica il contenuto di una casella con pedina nera. */
-	private final int PEDINA_NERA = 1;
+	private static final int PEDINA_NERA = 1;
 	/** Codifica il COLORE DI UNA CELLA BIANCA */
-	private final int CELLA_BIANCA = 0;
+	private static final int CELLA_BIANCA = 0;
 	/** Codifica il COLORE DI UNA CELLA NERA. */
-	private final int CELLA_NERA = 1;
+	private static final int CELLA_NERA = 1;
 	
-	private int STACK_BIANCO = 12;
-	private int STACK_NERO = 12;
+	private static int STACK_BIANCO = 12;
+	private static int STACK_NERO = 12;
 	
 	private int[] numeroStackGiocatore;
 	
 	private byte[] listaPedineBianche;
 	private byte[] listaPedineNere;
 	
-	private final int NORTH 		= 0;
-	private final int SOUTH 		= 1;
-	private final int NORTHEAST 	= 2;
-	private final int SOUTHWEST 	= 3;
-	private final int SOUTHEAST 	= 4;
-	private final int NORTHWEST 	= 5;
-	private final int EAST 			= 6;
-	private final int WEST 			= 7;
+	private static final int NORTH 		= 0;
+	private static final int SOUTH 		= 1;
+	private static final int NORTHEAST 	= 2;
+	private static final int SOUTHWEST 	= 3;
+	private static final int SOUTHEAST 	= 4;
+	private static final int NORTHWEST 	= 5;
+	private static final int EAST 			= 6;
+	private static final int WEST 			= 7;
 	
-	private int[] DIRECTIONS = {-16, 16, -7, 7, 9, -9, 2, -2};
+	private static int[] DIRECTIONS = {-16, 16, -7, 7, 9, -9, 2, -2};
 	private int[] MAX_SPOSTAMENTO;
-	private final int NESSUNA_VITTORIA = 0;
-	private final int VITTORIA_BIANCO = 1;
-	private final int VITTORIA_NERO = 2;
-	private final int MAX_MOSSE= 60;
+	private static final int NESSUNA_VITTORIA = 0;
+	private static final int VITTORIA_BIANCO = 1;
+	private static final int VITTORIA_NERO = 2;
+	private static final int MAX_MOSSE= 60;
 	
 	private ArrayList<Mossa> moves;
 	
@@ -74,8 +74,6 @@ public class ScacchieraBit {
 		int positionOnBoard = getPositionOnBoard(i,j/2);
 		if(color==PEDINA_BIANCA) {
 			scacchieraBianchi = modifyBit(1, positionOnBoard, scacchieraBianchi);
-			
-			
 		}
 		else if(color==PEDINA_NERA) {
 			scacchieraNeri 	= modifyBit(1, positionOnBoard, scacchieraNeri);
@@ -123,7 +121,6 @@ public class ScacchieraBit {
 	public void posizionaPedine(int i, int j, int qty, int color) {
 		int a = i;
 		int b = j/2;
-		
 		if(color==0) {
 			scacchieraBianchi = modifyBit(1, getPositionOnBoard(0, 3), scacchieraBianchi);
 			scacchiera.setValue(qty, a*4+b);
@@ -206,18 +203,21 @@ public class ScacchieraBit {
 	}
 	
 	public void muovi(Mossa m) {
+		// PRE-CONDIZIONE: m è una mossa ammissibile.
+		
 		int oldPositionOnBoard = (byte) m.getiStart()*4+m.getjStart();
 		int newPositionOnBoard = (byte) m.getiEnd()*4+m.getjEnd();
+		if(checkPosOut(m.getiEnd(), m.getjEnd())) 
 		if(this.numeroStackGiocatore[PEDINA_BIANCA]<12) {
 			listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
-			scacchiera.getValue(scacchiera.getIndex(m.get));
-			
-			
+//			scacchiera.getValue(scacchiera.getIndex());
 			
 		} 
 		else{
 			for(int l =0;l<12;l++) {
-				if(listaPedineBianche[l]==oldPositionOnBoard)
+				if(listaPedineBianche[l]==oldPositionOnBoard) {
+					
+				}
 					//TODO
 			}
 		}
