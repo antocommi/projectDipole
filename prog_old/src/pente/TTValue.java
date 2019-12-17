@@ -70,6 +70,4 @@ public class TTValue {
 	public String toString() {
 		return "key: "+key+" depth: "+depth+" flag:"+flags+" value: "+value;
 	}
-	
-
 }

@@ -9,9 +9,9 @@ import util.ByteMap;;
 
 public class ScacchieraBit {
 	// Implementazione della scacchiera tramite bitboard. 
-	// La scacchiera è 8x8 => 64 celle
+	// La scacchiera ï¿½ 8x8 => 64 celle
 	// Due bitboard da 64 bit una per i neri e l'altra per i bianchi
-//	private int scacchiere;
+	// private int scacchiere;
 	
 	private final int DIMENSION = 4;
 	private ByteMap scacchiera;
@@ -32,6 +32,11 @@ public class ScacchieraBit {
 	
 	private int STACK_BIANCO = 12;
 	private int STACK_NERO = 12;
+	
+	private int[] numeroStackGiocatore;
+	
+	private byte[] listaPedineBianche;
+	private byte[] listaPedineNere;
 	
 	private final int NORTH 		= 0;
 	private final int SOUTH 		= 1;
@@ -66,11 +71,14 @@ public class ScacchieraBit {
 	}
 	
 	public void addOnBoard(int i, int j, int color, int qty) {
-		if(color==1) {
-			scacchieraBianchi = modifyBit(1, getPositionOnBoard(i,j/2), scacchieraBianchi);
+		int positionOnBoard = getPositionOnBoard(i,j/2);
+		if(color==PEDINA_BIANCA) {
+			scacchieraBianchi = modifyBit(1, positionOnBoard, scacchieraBianchi);
+			
+			
 		}
-		else if(color==0) {
-			scacchieraNeri 	= modifyBit(1, getPositionOnBoard(i,j/2), scacchieraNeri);
+		else if(color==PEDINA_NERA) {
+			scacchieraNeri 	= modifyBit(1, positionOnBoard, scacchieraNeri);
 		}
 	}
 	
@@ -197,6 +205,25 @@ public class ScacchieraBit {
 		return k >= m ? k : m;	
 	}
 	
+	public void muovi(Mossa m) {
+		int oldPositionOnBoard = (byte) m.getiStart()*4+m.getjStart();
+		int newPositionOnBoard = (byte) m.getiEnd()*4+m.getjEnd();
+		if(this.numeroStackGiocatore[PEDINA_BIANCA]<12) {
+			listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
+			scacchiera.getValue(scacchiera.getIndex(m.get));
+			
+			
+			
+		} 
+		else{
+			for(int l =0;l<12;l++) {
+				if(listaPedineBianche[l]==oldPositionOnBoard)
+					//TODO
+			}
+		}
+		
+	}
+	
 	public void generaMosse(int x, int y) {
 		
 		int pos = x*8+y, i, curr_pos;
@@ -271,6 +298,7 @@ public class ScacchieraBit {
 	}
 	
 	public void stampaScacchiera() {
+		
 		//TODO
 		return;
 	}
