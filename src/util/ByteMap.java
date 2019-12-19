@@ -55,11 +55,5 @@ public class ByteMap {
 		}
 	}
 	
-	public static void main(String[] args) {
-		ByteMap bm = new ByteMap(8);
-		bm.setValue(2, 16);
-		bm.printValues();
-//		System.out.println(bm.getValue(2));
-	}
 
 }

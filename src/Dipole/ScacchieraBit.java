@@ -55,9 +55,29 @@ public class ScacchieraBit {
 
 	private ArrayList<Mossa> moves;
 
-	// isBlack(i,j) -> (((1 << i*8+j) & scacchieraBianchi) >> i*8+j) == 1
-
 	private HashMap<String, Integer> riga;
+
+	public ScacchieraBit() {
+		turnoGiocatore = true;
+		scacchieraBianchi = 0;
+		scacchieraNeri = 0;
+		MAX_SPOSTAMENTO = new int[8];
+		scacchiera = new ByteMap(8 * 4);
+		posizionaPedine(0, 3, 12, PEDINA_NERA);
+		posizionaPedine(7, 4, 12, PEDINA_BIANCA);
+		riga = new HashMap<>();
+		riga.put("A", 0);
+		riga.put("B", 1);
+		riga.put("C", 2);
+		riga.put("D", 3);
+		riga.put("E", 4);
+		riga.put("F", 5);
+		riga.put("G", 6);
+		riga.put("H", 7);
+		moves = new ArrayList<>();
+		listaPedineBianche = new byte[12];
+		listaPedineNere = new byte[12];
+	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
 		int mask = 1 << posizione;
@@ -83,26 +103,6 @@ public class ScacchieraBit {
 
 	public void setScacchiera(ByteMap scacchiera) {
 		this.scacchiera = scacchiera;
-	}
-
-	public ScacchieraBit() {
-		turnoGiocatore = true;
-		scacchieraBianchi = 0;
-		scacchieraNeri = 0;
-		MAX_SPOSTAMENTO = new int[8];
-		scacchiera = new ByteMap(8 * 4);
-		posizionaPedine(0, 3, 12, PEDINA_NERA);
-		posizionaPedine(7, 4, 12, PEDINA_BIANCA);
-		riga = new HashMap<>();
-		riga.put("A", 0);
-		riga.put("B", 1);
-		riga.put("C", 2);
-		riga.put("D", 3);
-		riga.put("E", 4);
-		riga.put("F", 5);
-		riga.put("G", 6);
-		riga.put("H", 7);
-		moves = new ArrayList<>();
 	}
 
 	private String calcolaLettera(int nLettera) {
@@ -215,13 +215,28 @@ public class ScacchieraBit {
 		return k >= m ? k : m;
 	}
 
+	public boolean verifacaMossaAmmissibile(Mossa m) {
+		// TODO
+		return false;
+	}
+
+	private int cercaPedina(byte posizione, int colorePedina) {
+		byte[] v = colorePedina == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
+		for (int i = 0; i < numeroStackGiocatore[colorePedina]; i++) {
+			if (v[i] == posizione)
+				return posizione;
+		}
+		return -1;
+	}
+
 	public void muovi(Mossa m) {
 		// PRE-CONDIZIONE: m è una mossa ammissibile.
 
-		int oldPositionOnBoard = (byte) m.getiStart() * 4 + m.getjStart();
-		int newPositionOnBoard = (byte) m.getiEnd() * 4 + m.getjEnd();
-		if (checkPosOut(m.getiEnd(), m.getjEnd()))
-			if (this.numeroStackGiocatore[PEDINA_BIANCA] < 12) {
+		int oldPositionOnBoard = m.getiStart() * 8 + m.getjStart();
+		int newPositionOnBoard = m.getiEnd() * 8 + m.getjEnd();
+		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
+			
+			if (numeroStackGiocatore[PEDINA_BIANCA] < 12) {
 				listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
 				// scacchiera.getValue(scacchiera.getIndex());
 
@@ -233,7 +248,7 @@ public class ScacchieraBit {
 					// TODO
 				}
 			}
-
+		}
 	}
 
 	public void generaMosse(int x, int y) {
@@ -342,15 +357,15 @@ public class ScacchieraBit {
 			System.out.print(" - ");
 		System.out.println(" - ");
 	}
-	
+
 	public static void main(String[] args) {
-		  ScacchieraBit scacchiera = new ScacchieraBit();
-		  scacchiera.stampaScacchiera();
-		  scacchiera.generaMosse(0, 3);
-		//  ArrayList<Mossa> m = stato.getMoves();
-		//  System.out.println(m.size());
-		//  for (Mossa mossa : m) {
-		//   System.out.println(mossa);
-		//  }
-		 }
+		ScacchieraBit scacchiera = new ScacchieraBit();
+		scacchiera.stampaScacchiera();
+		scacchiera.generaMosse(0, 3);
+		// ArrayList<Mossa> m = stato.getMoves();
+		// System.out.println(m.size());
+		// for (Mossa mossa : m) {
+		// System.out.println(mossa);
+		// }
+	}
 }
