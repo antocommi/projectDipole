@@ -29,26 +29,26 @@ public class ByteMap {
 		return x * 8 + y;
 	}
 
-	public String getValue(int index) {
-		// index \in [0, 8* bitMap.len ]
-		int i = index % 8, j = index / 8, n;
-		n = bitMap[j];
-		return Integer.toBinaryString( 
-				(n & (mask << (7-i) * 4)) >> (7-i)*4
-						);
+	public int getValue(int index) {
+		int i = index % 8;
+		int j = index / 8;
+		int n = bitMap[j];
+		return (n & (mask << (7-i) * 4)) >>> (7-i)*4;
 	}
 
-//	public int getNumeroPedine(int i, int j) {
-//		return getValue(i*8+j);
-//	}
+	public int getNumeroPedine(int i, int j) {
+		return getValue(i*8+j);
+	}
 	
 	public void printValues() {
 		for(int i=0;i<8;i++) {
 			for(int j=0;j<8;j++) {
-				System.out.print(" "+this.getValue(i+j));
+				System.out.print(" "+getValue((i*8)+j));
 			}
 			System.out.println("");
 		}
+		
+		System.out.println("_________________--");
 		
 		for(int k=0;k<8;k++) {
 			System.out.println(Integer.toBinaryString(bitMap[k]));
@@ -57,7 +57,7 @@ public class ByteMap {
 	
 	public static void main(String[] args) {
 		ByteMap bm = new ByteMap(8);
-		bm.setValue(13, 0);
+		bm.setValue(2, 16);
 		bm.printValues();
 //		System.out.println(bm.getValue(2));
 	}

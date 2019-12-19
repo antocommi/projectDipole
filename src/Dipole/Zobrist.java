@@ -7,8 +7,6 @@ public class Zobrist {
 	private static final long[] zobrist;
 	// hash to be used to compare two board states
 	private long zhash;
-	private final int BLACK = 1;
-	private final int WHITE = 0;
 
 	static {
 		Random random = new Random();
@@ -19,7 +17,7 @@ public class Zobrist {
 	}
 
 	public Zobrist() {
-		zhash = 0;
+		this.zhash = 0;
 	}
 
 	public Zobrist(long zhash) {
@@ -27,7 +25,12 @@ public class Zobrist {
 	}
 
 	public void toggleStone(int x, int y) {
-		zhash ^= zobrist[ScacchieraBit.scacchiera.getIndex(x, y)];
+		zhash ^= zobrist[x * 8 + y]; // prima: ScacchieraBit.scacchiera.getIndex(x,y)
+
+	}
+
+	public long[] getZobrist() {
+		return zobrist;
 	}
 
 	@Override
@@ -47,7 +50,7 @@ public class Zobrist {
 
 	public static void main(String[] args) {
 		Zobrist z = new Zobrist();
-		for (int i = 0; i < z.zobrist.length; i++) {
+		for (int i = 0; i < z.getZobrist().length; i++) {
 			System.out.println(zobrist[i]);
 		}
 	}
