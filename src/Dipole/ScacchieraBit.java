@@ -20,8 +20,8 @@ public class ScacchieraBit {
 	private byte[] listaPedineNere; 				// 
 	private int[] MAX_SPOSTAMENTO; 					// Per ogni direzione -> max_spost in quella direzione
 	private ArrayList<Mossa> moves;					// lista delle mosse generate
-	private HashMap<String, Integer> riga;			// 
-
+	private HashMap<String, Integer> riga;			//
+	
 	public static final int SIZE = 8;
 
 	private static final int DIMENSION = 4;
@@ -107,18 +107,32 @@ public class ScacchieraBit {
 		res[1] = Integer.parseInt(posizione.substring(1)) - 1;
 		return res;
 	}
-
+//
+//	private ByteMap scacchiera;						// 
+//	private boolean turnoGiocatore;					// 
+//	private int scacchieraBianchi, scacchieraNeri;	// 
+//	private int[] numeroStackGiocatore;				// 
+//	private byte[] listaPedineBianche;				// 
+//	private byte[] listaPedineNere; 				// 
+//	private int[] MAX_SPOSTAMENTO; 					// Per ogni direzione -> max_spost in quella direzione
+//	private ArrayList<Mossa> moves;					// lista delle mosse generate
+//	private HashMap<String, Integer> riga;			//
+	
 	public void posizionaPedine(int i, int j, int qty, int color) {
 		int a = i;
 		int b = j / 2;
 		int indiceVettore = i*4+j/2;
+		int indiceVettoreEsteso = i*8+j;
 		if (color == 0) {
 			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);
-			scacchiera.setValue(qty, i * 8 + j);
+			scacchiera.setValue(qty, indiceVettoreEsteso);
+			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		} else {
 			scacchieraNeri = modifyBit(1, indiceVettore, scacchieraNeri);
-			scacchiera.setValue(qty, i * 8 + j);
+			scacchiera.setValue(qty, indiceVettoreEsteso);
+			listaPedineNere[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		}
+		numeroStackGiocatore[color]++;
 	}
 
 	public int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
