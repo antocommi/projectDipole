@@ -15,7 +15,7 @@ public class ScacchieraBit {
 	private ByteMap scacchiera;						// 
 	private boolean turnoGiocatore;					// 
 	private int scacchieraBianchi, scacchieraNeri;	// 
-	private int[] numeroStackGiocatore;				// 
+	private int[] numeroStackGiocatore;				//  
 	private byte[] listaPedineBianche;				// 
 	private byte[] listaPedineNere; 				// 
 	private int[] MAX_SPOSTAMENTO; 					// Per ogni direzione -> max_spost in quella direzione
@@ -66,6 +66,7 @@ public class ScacchieraBit {
 		moves = new ArrayList<>();
 		listaPedineBianche = new byte[12];
 		listaPedineNere = new byte[12];
+		numeroStackGiocatore = new int [2];
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
@@ -123,16 +124,16 @@ public class ScacchieraBit {
 		int b = j / 2;
 		int indiceVettore = i*4+j/2;
 		int indiceVettoreEsteso = i*8+j;
-		if (color == 0) {
+		if (color == PEDINA_BIANCA) {
 			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);
 			scacchiera.setValue(qty, indiceVettoreEsteso);
-			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
+//			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		} else {
 			scacchieraNeri = modifyBit(1, indiceVettore, scacchieraNeri);
 			scacchiera.setValue(qty, indiceVettoreEsteso);
-			listaPedineNere[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
+//			listaPedineNere[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		}
-		numeroStackGiocatore[color]++;
+//		numeroStackGiocatore[color]++;
 	}
 
 	public int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
@@ -271,16 +272,16 @@ public class ScacchieraBit {
 
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int j : MAX_SPOSTAMENTO) {
-			System.out.print(j + " ");
+//			System.out.print(j + " ");
 		}
-		System.out.println(" ");
+//		System.out.println(" ");
 		for (int dir = 0; dir < 8; dir++) {
-			System.out.println(dir);
+//			System.out.println(dir);
 			pos = x * 8 + y;
 			i = 0;
 			curr_pos = pos;
 			while (i++ < MAX_SPOSTAMENTO[dir] & curr_pos > 0 & curr_pos < 64) {
-				System.out.println("\t" + i);
+//				System.out.println("\t" + i);
 				curr_pos += DIRECTIONS[dir];
 				moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir));
 			}
