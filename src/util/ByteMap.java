@@ -10,9 +10,9 @@ public class ByteMap {
 	public ByteMap(int capacity) {
 		bitMap = new int[capacity];
 	}
-
+	
 	public void setValue(int value, int index) {
-//		index è un valore compreso tra 0 e capacity*8
+//		index ï¿½ un valore compreso tra 0 e capacity*8
 		int k, l;
 		k = index % 8;
 		l = index / 8;

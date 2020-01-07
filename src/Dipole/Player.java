@@ -18,14 +18,8 @@ public class Player {
 		for (Mossa mossa : m) {
 			System.out.println(mossa);
 		}
-		
 	}
-	
-	public void putTTElement() {
-		
-	}
-	
-	
+
 	public static void main(String[] args) {
 		Player p = new Player();
 		System.out.println("done!");

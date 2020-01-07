@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Player",
+            "request": "launch",
+            "mainClass": "Dipole.Player",
+            "projectName": "progDipole"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Scacchiera",
             "request": "launch",
             "mainClass": "progDipole.Scacchiera",
