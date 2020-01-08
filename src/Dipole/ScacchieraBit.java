@@ -73,8 +73,11 @@ public class ScacchieraBit {
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
-		int mask = 1 << posizione;
-		return (numero & ~mask) | ((valBinario << posizione) & mask);
+		int mask = 1 << 32-posizione;
+		System.out.format("parametri metodi: %d %d %d \n",numero, posizione, valBinario);
+		System.out.println("maschera: " + valBinario);
+		System.out.println("val ritornato: " + ((valBinario & ~mask) | ((numero << 32-posizione) & mask)) );
+		return (valBinario & ~mask) | ((numero << 32-posizione) & mask);
 	}
 
 	public void addOnBoard(int i, int j, int color, int qty) {
@@ -128,11 +131,24 @@ public class ScacchieraBit {
 		int indiceVettore = i * 4 + j / 2;
 		int indiceVettoreEsteso = i * 8 + j;
 		if (color == PEDINA_BIANCA) {
-			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);
+			System.out.println("pedina bianca depositata: ");
+			System.out.println(Integer.toBinaryString(scacchieraBianchi));
+			
+			scacchieraBianchi = modifyBit(1, 0, scacchieraBianchi);
+			
+			System.out.println("pedina bianca depositata dopo: ");
+			System.out.println(Integer.toBinaryString(scacchieraBianchi));
+			System.out.println("fine pedina bianca\n");
+			
 			scacchiera.setValue(qty, indiceVettoreEsteso);
 //			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		} else {
+			System.out.println("\t else: ");
+			System.out.println("\t "+Integer.toBinaryString(scacchieraNeri));
 			scacchieraNeri = modifyBit(1, indiceVettore, scacchieraNeri);
+			System.out.println("\t else: ");
+			System.out.println("\t "+Integer.toBinaryString(scacchieraNeri));
+			System.out.println("\t else dopo \n");
 			scacchiera.setValue(qty, indiceVettoreEsteso);
 //			listaPedineNere[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		}
@@ -224,14 +240,14 @@ public class ScacchieraBit {
 		return false;
 	}
 
-	private int cercaPedina(byte posizione, int colorePedina) {
-		byte[] v = colorePedina == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
-		for (int i = 0; i < numeroStackGiocatore[colorePedina]; i++) {
-			if (v[i] == posizione)
-				return posizione;
-		}
-		return -1;
-	}
+//	private int cercaPedina(byte posizione, int colorePedina) {
+//		byte[] v = colorePedina == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
+//		for (int i = 0; i < numeroStackGiocatore[colorePedina]; i++) {
+//			if (v[i] == posizione)
+//				return posizione;
+//		}
+//		return -1;
+//	}
 
 	private int calcolaCelleFuori(int a, int b, int x, int y) {
 		int dir = calcolaDirezione(a, b, x, y);
@@ -338,7 +354,7 @@ public class ScacchieraBit {
 		int pos = x * 4 + y;
 		int mask = 1;
 		// System.out.println("\n Pedine nella posizione "+x+","+y+": "+scacchiera.getValue(pos)+"\n");
-		if (scacchiera.getValue(pos) == 0)
+		if (scacchiera.getValue(x*8+y) == 0)
 			return -1;
 		int bianco = (scacchieraBianchi & (mask << 16 - pos) >>> 16 - pos);
 //		int nero = (scacchieraNeri & (mask << 16 - pos) >>> 16 - pos);
@@ -371,6 +387,9 @@ public class ScacchieraBit {
 	 */
 	public void stampaScacchiera() {
 		System.out.println();
+//		private int scacchieraBianchi, scacchieraNeri; //
+		System.out.println("bit bianchi: "+scacchieraBianchi);
+		System.out.println("bit neri: "+scacchieraNeri);
 		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
 		int r, c;
@@ -402,7 +421,9 @@ public class ScacchieraBit {
 			System.out.print(" - ");
 		System.out.println(" - ");
 		System.out.print("0,3" + "numero" + scacchiera.getNumeroPedine(0, 3) + " colore" + getColorePedina(0, 3));
+		System.out.println("");
 		System.out.print("7,4" + "numero" + scacchiera.getNumeroPedine(7, 4) + " colore" + getColorePedina(7, 4));
+		System.out.println("");
 	}
 
 	public static void main(String[] args) {
