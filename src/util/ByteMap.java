@@ -41,14 +41,15 @@ public class ByteMap {
 	}
 	
 	public void printValues() {
-		for(int i=0;i<8;i++) {
-			for(int j=0;j<8;j++) {
-				System.out.print(" "+getValue((i*8)+j));
+		int i,j;
+		for(i=0;i<8;i++) {
+			for(j=0;j<8;j++) {
+				System.out.print(" "+getValue( i*8+j ) );
 			}
 			System.out.println("");
 		}
 		
-		System.out.println("_________________--");
+		System.out.println("_________________");
 		
 		for(int k=0;k<8;k++) {
 			System.out.println(Integer.toBinaryString(bitMap[k]));

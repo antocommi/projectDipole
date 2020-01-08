@@ -24,8 +24,8 @@ public class ScacchieraBit {
 
 	public static final int SIZE = 8;
 
-	private final int[] posInteresantiBianchi = {0,5,2};
-	private final int[] posInteresantiNero = {3,1,4};
+	private final int[] posInteresantiBianchi = { 0, 5, 2 };
+	private final int[] posInteresantiNero = { 3, 1, 4 };
 
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
@@ -282,12 +282,14 @@ public class ScacchieraBit {
 				moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir));
 			}
 		}
-//		generaMosseFuori(x, y);
+		generaMosseFuori(x, y);
 	}
 
 	public void generaMosseFuori(int x, int y) {
 		int numeroCelleSpostamento = 0;
 		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
+
+		System.out.println("minimo" + v[0] + " " + v[1]);
 		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * DIRECTIONS[v[0]];
 		while (numeroCelleSpostamento++ < 12) {
 			curr_pos += DIRECTIONS[v[0]];
@@ -296,24 +298,28 @@ public class ScacchieraBit {
 	}
 
 	public int[] getMinimo(int[] v, int x, int y) {
-		int min = 10,i;
+		int min = 10, i;
 		int[] ret = new int[2];
 		int c = getColorePedina(x, y);
-		if(c==PEDINA_BIANCA) {
-			for(i=0;i<posInteresantiBianchi.length;i++) {
+		System.out.println(c);
+		if (c == PEDINA_BIANCA) {
+			for (i = 0; i < posInteresantiBianchi.length; i++) {
 				if (v[posInteresantiBianchi[i]] < min) {
-					ret[0] = i;
-					ret[1] = v[i];
+					ret[0] = posInteresantiBianchi[i]; // direzione
+					ret[1] = v[posInteresantiBianchi[i]]; // elemento
+					min = v[posInteresantiBianchi[i]];
 				}
 			}
-		}else {
-			for(i=0;i<posInteresantiNero.length;i++) {
+		} else {
+			for (i = 0; i < posInteresantiNero.length; i++) {
 				if (v[posInteresantiNero[i]] < min) {
 					ret[0] = i;
 					ret[1] = v[i];
+					min = v[i];
 				}
 			}
 		}
+
 		return ret;
 	}
 
@@ -331,11 +337,12 @@ public class ScacchieraBit {
 	public int getColorePedina(int x, int y) {
 		int pos = x * 4 + y;
 		int mask = 1;
+		// System.out.println("\n Pedine nella posizione "+x+","+y+": "+scacchiera.getValue(pos)+"\n");
 		if (scacchiera.getValue(pos) == 0)
 			return -1;
 		int bianco = (scacchieraBianchi & (mask << 16 - pos) >>> 16 - pos);
 //		int nero = (scacchieraNeri & (mask << 16 - pos) >>> 16 - pos);
-		return bianco == 1 ? PEDINA_BIANCA : PEDINA_NERA;
+		return bianco == 0 ? PEDINA_BIANCA : PEDINA_NERA;
 	}
 
 	public int[] calcolaIndiciEstesi(int x, int y) {
@@ -367,29 +374,35 @@ public class ScacchieraBit {
 		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
 		int r, c;
+		scacchiera.printValues();
 		for (r = 0; r < SIZE; r++) {
 			for (c = 0; c < SIZE; c++)
 				System.out.print(" - ");
 			System.out.println("-");
 			for (c = 0; c < SIZE; c++) {
-				if (scacchiera.getNumeroPedine(r, c) == 0)
+				if (scacchiera.getNumeroPedine(r, c) == 0) {
 					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0)) {
 						System.out.print(" N ");
 					} else {
 						System.out.print(" B ");
 					}
-				if (scacchiera.getNumeroPedine(r, c) > 0) {
-					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0))
-						System.out.print(scacchiera.getNumeroPedine(r, c) + "B ");
-					else
-						System.out.print(scacchiera.getNumeroPedine(r, c) + "N ");
 				}
+				if (scacchiera.getNumeroPedine(r, c) > 0) {
+					if (getColorePedina(r, c) == PEDINA_NERA) {
+						System.out.print(scacchiera.getNumeroPedine(r, c) + "N");
+					} else if (getColorePedina(r, c) == PEDINA_BIANCA) {
+						System.out.print(scacchiera.getNumeroPedine(r, c) + "B");
+					}
+				}
+
 			}
 			System.out.println("");
 		}
 		for (c = 0; c < SIZE; c++)
 			System.out.print(" - ");
 		System.out.println(" - ");
+		System.out.print("0,3" + "numero" + scacchiera.getNumeroPedine(0, 3) + " colore" + getColorePedina(0, 3));
+		System.out.print("7,4" + "numero" + scacchiera.getNumeroPedine(7, 4) + " colore" + getColorePedina(7, 4));
 	}
 
 	public static void main(String[] args) {
