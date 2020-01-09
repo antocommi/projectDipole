@@ -73,8 +73,8 @@ public class ScacchieraBit {
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
-		int mask = 1 << (31-posizione);
-		return (valBinario & ~mask) | ((numero << (31-posizione)) & mask);
+		int mask = 1 << (31 - posizione);
+		return (valBinario & ~mask) | ((numero << (31 - posizione)) & mask);
 	}
 
 //	public void addOnBoard(int i, int j, int color, int qty) {
@@ -128,7 +128,7 @@ public class ScacchieraBit {
 		int indiceVettore = i * 4 + j / 2;
 		int indiceVettoreEsteso = i * 8 + j;
 		if (color == PEDINA_BIANCA) {
-			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);	
+			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);
 			scacchiera.setValue(qty, indiceVettoreEsteso);
 //			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		} else {
@@ -278,8 +278,12 @@ public class ScacchieraBit {
 			curr_pos = pos;
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
-				System.out.println("dir: " + dir);
-				moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir));
+				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
+				if (checkMosse(mossa,x,y)) {
+					System.out.println("dir: " + dir);
+					moves.add(mossa);
+				}
+
 			}
 		}
 		generaMosseFuori(x, y);
@@ -295,6 +299,21 @@ public class ScacchieraBit {
 			curr_pos += DIRECTIONS[v[0]];
 			moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, v[0]));
 		}
+	}
+
+	public boolean checkMosse(Mossa m,int x, int y) {
+		//BASE
+		int c = getColorePedina(x, y);
+		if(c==PEDINA_BIANCA){
+			
+		}
+		else if(c==PEDINA_NERA) {}
+		//MERGE
+		//CAPTURE
+		
+		// TODO 
+		// P.s. Vengono valutate solo le mosse valide interne alla scacchiera.
+
 	}
 
 	public int[] getMinimo(int[] v, int x, int y) {
@@ -335,14 +354,16 @@ public class ScacchieraBit {
 	}
 
 	public int getColorePedina(int x, int y) {
-		int pos = x * 4 + y/2;
+		int pos = x * 4 + y / 2;
 		int mask = 1;
-		// System.out.println("\n Pedine nella posizione "+x+","+y+": "+scacchiera.getValue(pos)+"\n");
-		if (scacchiera.getValue(x*8+y) == 0)
+		// System.out.println("\n Pedine nella posizione "+x+","+y+":
+		// "+scacchiera.getValue(pos)+"\n");
+		if (scacchiera.getValue(x * 8 + y) == 0)
 			return -1;
 		int eBianco = ((scacchieraBianchi & (mask << (31 - pos))) >>> (31 - pos));
-		int eNero =((scacchieraNeri & (mask << (31 - pos))) >>> (31 - pos));
-		if(eBianco==1) return PEDINA_BIANCA;
+		int eNero = ((scacchieraNeri & (mask << (31 - pos))) >>> (31 - pos));
+		if (eBianco == 1)
+			return PEDINA_BIANCA;
 		return eNero == 1 ? PEDINA_NERA : 0;
 	}
 
@@ -373,8 +394,8 @@ public class ScacchieraBit {
 	public void stampaScacchiera() {
 		System.out.println();
 //		private int scacchieraBianchi, scacchieraNeri; //
-		System.out.println("bit bianchi: "+scacchieraBianchi);
-		System.out.println("bit neri: "+scacchieraNeri);
+		System.out.println("bit bianchi: " + scacchieraBianchi);
+		System.out.println("bit neri: " + scacchieraNeri);
 		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
 		int r, c;
