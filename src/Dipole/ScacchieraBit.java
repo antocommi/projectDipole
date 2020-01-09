@@ -24,8 +24,8 @@ public class ScacchieraBit {
 
 	public static final int SIZE = 8;
 
-	private final int[] posInteresantiBianchi = { 0, 5, 2 };
-	private final int[] posInteresantiNero = { 3, 1, 4 };
+	private final int[] posInteressantiBianchi = { 0, 5, 2 };
+	private final int[] posInteressantiNero = { 3, 1, 4 };
 
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
@@ -300,20 +300,46 @@ public class ScacchieraBit {
 			moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, v[0]));
 		}
 	}
-
-	public boolean checkMosse(Mossa m,int x, int y) {
-		//BASE
+	
+	public boolean checkMosseInAvanti(Mossa m,int x, int y)
+	{
+		//Valido sia per BASE che MERGE ossia solo mosse in avanti
 		int c = getColorePedina(x, y);
 		if(c==PEDINA_BIANCA){
-			
+			for (int i = 0; i < posInteressantiBianchi.length; i++) {
+				if (posInteressantiBianchi[i] != m.getDirection())
+				return false;
+				}
 		}
-		else if(c==PEDINA_NERA) {}
+		else if(c==PEDINA_NERA) {
+			for (int i = 0; i < posInteressantiNero.length; i++) {
+				if (posInteressantiNero[i] != m.getDirection())
+				return false;
+				}
+		}
+		return true;
+	}
+	
+	public boolean checkMosse(Mossa m,int x, int y) {
+		int c = getColorePedina(x, y);
+		//BASE
+		//se nella cella di arrivo ci sono già pedine
+		if(checkMosseInAvanti(m,x,y) && scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0)
+			return false;
 		//MERGE
+		//se nella cella di arrivo non ci sono già pedine o ci sono pedine nere
+		if(checkMosseInAvanti(m,x,y) && c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
+			return false;
+		else if(checkMosseInAvanti(m,x,y) && c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  )
+			return false;
 		//CAPTURE
-		
+		if(c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  )
+			return false;
+		else if(c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
+			return false;
 		// TODO 
 		// P.s. Vengono valutate solo le mosse valide interne alla scacchiera.
-
+		return true;
 	}
 
 	public int[] getMinimo(int[] v, int x, int y) {
@@ -322,19 +348,19 @@ public class ScacchieraBit {
 		int c = getColorePedina(x, y);
 		System.out.println(c);
 		if (c == PEDINA_BIANCA) {
-			for (i = 0; i < posInteresantiBianchi.length; i++) {
-				if (v[posInteresantiBianchi[i]] < min) {
-					ret[0] = posInteresantiBianchi[i]; // direzione
-					ret[1] = v[posInteresantiBianchi[i]]; // elemento
-					min = v[posInteresantiBianchi[i]];
+			for (i = 0; i < posInteressantiBianchi.length; i++) {
+				if (v[posInteressantiBianchi[i]] < min) {
+					ret[0] = posInteressantiBianchi[i]; // direzione
+					ret[1] = v[posInteressantiBianchi[i]]; // elemento
+					min = v[posInteressantiBianchi[i]];
 				}
 			}
 		} else {
-			for (i = 0; i < posInteresantiNero.length; i++) {
-				if (v[posInteresantiNero[i]] < min) {
-					ret[0] = posInteresantiNero[i];
-					ret[1] = v[posInteresantiNero[i]];
-					min = v[posInteresantiNero[i]];
+			for (i = 0; i < posInteressantiNero.length; i++) {
+				if (v[posInteressantiNero[i]] < min) {
+					ret[0] = posInteressantiNero[i];
+					ret[1] = v[posInteressantiNero[i]];
+					min = v[posInteressantiNero[i]];
 				}
 			}
 		}
