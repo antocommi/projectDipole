@@ -73,21 +73,18 @@ public class ScacchieraBit {
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
-		int mask = 1 << 32-posizione;
-		System.out.format("parametri metodi: %d %d %d \n",numero, posizione, valBinario);
-		System.out.println("maschera: " + valBinario);
-		System.out.println("val ritornato: " + ((valBinario & ~mask) | ((numero << 32-posizione) & mask)) );
-		return (valBinario & ~mask) | ((numero << 32-posizione) & mask);
+		int mask = 1 << (31-posizione);
+		return (valBinario & ~mask) | ((numero << (31-posizione)) & mask);
 	}
 
-	public void addOnBoard(int i, int j, int color, int qty) {
-		int positionOnBoard = i * 4 + (j / 2);
-		if (color == PEDINA_BIANCA) {
-			scacchieraBianchi = modifyBit(1, positionOnBoard, scacchieraBianchi);
-		} else if (color == PEDINA_NERA) {
-			scacchieraNeri = modifyBit(1, positionOnBoard, scacchieraNeri);
-		}
-	}
+//	public void addOnBoard(int i, int j, int color, int qty) {
+//		int positionOnBoard = i * 4 + (j / 2);
+//		if (color == PEDINA_BIANCA) {
+//			scacchieraBianchi = modifyBit(1, positionOnBoard, scacchieraBianchi);
+//		} else if (color == PEDINA_NERA) {
+//			scacchieraNeri = modifyBit(1, positionOnBoard, scacchieraNeri);
+//		}
+//	}
 
 	public ByteMap getScacchiera() {
 		return scacchiera;
@@ -131,24 +128,11 @@ public class ScacchieraBit {
 		int indiceVettore = i * 4 + j / 2;
 		int indiceVettoreEsteso = i * 8 + j;
 		if (color == PEDINA_BIANCA) {
-			System.out.println("pedina bianca depositata: ");
-			System.out.println(Integer.toBinaryString(scacchieraBianchi));
-			
-			scacchieraBianchi = modifyBit(1, 0, scacchieraBianchi);
-			
-			System.out.println("pedina bianca depositata dopo: ");
-			System.out.println(Integer.toBinaryString(scacchieraBianchi));
-			System.out.println("fine pedina bianca\n");
-			
+			scacchieraBianchi = modifyBit(1, indiceVettore, scacchieraBianchi);	
 			scacchiera.setValue(qty, indiceVettoreEsteso);
 //			listaPedineBianche[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		} else {
-			System.out.println("\t else: ");
-			System.out.println("\t "+Integer.toBinaryString(scacchieraNeri));
 			scacchieraNeri = modifyBit(1, indiceVettore, scacchieraNeri);
-			System.out.println("\t else: ");
-			System.out.println("\t "+Integer.toBinaryString(scacchieraNeri));
-			System.out.println("\t else dopo \n");
 			scacchiera.setValue(qty, indiceVettoreEsteso);
 //			listaPedineNere[numeroStackGiocatore[color]] = (new Integer(indiceVettoreEsteso)).byteValue();
 		}
@@ -351,14 +335,15 @@ public class ScacchieraBit {
 	}
 
 	public int getColorePedina(int x, int y) {
-		int pos = x * 4 + y;
+		int pos = x * 4 + y/2;
 		int mask = 1;
 		// System.out.println("\n Pedine nella posizione "+x+","+y+": "+scacchiera.getValue(pos)+"\n");
 		if (scacchiera.getValue(x*8+y) == 0)
 			return -1;
-		int bianco = (scacchieraBianchi & (mask << 16 - pos) >>> 16 - pos);
-//		int nero = (scacchieraNeri & (mask << 16 - pos) >>> 16 - pos);
-		return bianco == 0 ? PEDINA_BIANCA : PEDINA_NERA;
+		int eBianco = ((scacchieraBianchi & (mask << (31 - pos))) >>> (31 - pos));
+		int eNero =((scacchieraNeri & (mask << (31 - pos))) >>> (31 - pos));
+		if(eBianco==1) return PEDINA_BIANCA;
+		return eNero == 1 ? PEDINA_NERA : 0;
 	}
 
 	public int[] calcolaIndiciEstesi(int x, int y) {
