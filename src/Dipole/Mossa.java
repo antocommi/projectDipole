@@ -8,8 +8,6 @@ public class Mossa {
 	private int jEnd;
 	private int direction;
 
-	
-
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		this.iStart = iStart;
 		this.jStart = jStart;
