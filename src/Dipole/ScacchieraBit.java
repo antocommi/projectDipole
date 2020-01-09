@@ -315,27 +315,34 @@ public class ScacchieraBit {
 	
 	public boolean checkMosse(Mossa m,int x, int y) {
 		int c = getColorePedina(x, y);
+		
 		//BASE
 		//se nella cella di arrivo ci sono già pedine
-		if(!checkMosseInAvanti(m,x,y) || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0) {
+		if(!checkMosseInAvanti(m,x,y))
 			return false;
-		}
-		//MERGE
-		//se nella cella di arrivo non ci sono già pedine o ci sono pedine nere
-		if(!checkMosseInAvanti(m,x,y) || c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  ) {
-			System.out.println("stampa2");
-			return false;
-		}
-		
-//		else if(!checkMosseInAvanti(m,x,y) && c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  ) {
+			//|| scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0) {
+//			return false;
+//		}
+//		//MERGE
+//		//se nella cella di arrivo non ci sono già pedine o ci sono pedine nere
+//		if(!checkMosseInAvanti(m,x,y) || (c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_NERA ) ) {
+//			System.out.println("stampa2");
+//			return false;
+//		}
+//		
+//		else if(!checkMosseInAvanti(m,x,y) && (c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_BIANCA ) ) {
 //			System.out.println("stampa3");
 //			return false;
 //		}
 			
 		//CAPTURE
-		if(c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  )
+		if(scacchiera.getNumeroPedine(x,y) < scacchiera.getNumeroPedine(m.getiEnd(),m.getjEnd()))
 			return false;
-//		else if(c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
+				
+//		if(c==PEDINA_BIANCA && (getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_BIANCA || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) ==0 ))
+//			return false;
+		
+//		else if(c==PEDINA_NERA && (getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_NERA || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) ==0 ))
 //			return false;
 		// TODO 
 		// P.s. Vengono valutate solo le mosse valide interne alla scacchiera.
