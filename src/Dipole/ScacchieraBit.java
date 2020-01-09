@@ -313,9 +313,9 @@ public class ScacchieraBit {
 		} else {
 			for (i = 0; i < posInteresantiNero.length; i++) {
 				if (v[posInteresantiNero[i]] < min) {
-					ret[0] = i;
-					ret[1] = v[i];
-					min = v[i];
+					ret[0] = posInteresantiNero[i];
+					ret[1] = v[posInteresantiNero[i]];
+					min = v[posInteresantiNero[i]];
 				}
 			}
 		}
