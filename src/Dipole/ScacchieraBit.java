@@ -286,7 +286,7 @@ public class ScacchieraBit {
 
 			}
 		}
-		generaMosseFuori(x, y);
+		//generaMosseFuori(x, y);
 	}
 
 	public void generaMosseFuori(int x, int y) {
@@ -305,18 +305,11 @@ public class ScacchieraBit {
 	{
 		//Valido sia per BASE che MERGE ossia solo mosse in avanti
 		int c = getColorePedina(x, y);
-		if(c==PEDINA_BIANCA){
-			for (int i = 0; i < posInteressantiBianchi.length; i++) {
-				if (posInteressantiBianchi[i] != m.getDirection())
+		if(c==PEDINA_BIANCA && m.getDirection()!= 0 && m.getDirection()!= 5 && m.getDirection()!= 2)
 				return false;
-				}
-		}
-		else if(c==PEDINA_NERA) {
-			for (int i = 0; i < posInteressantiNero.length; i++) {
-				if (posInteressantiNero[i] != m.getDirection())
+				
+		else if(c==PEDINA_NERA && m.getDirection()!= 3 && m.getDirection()!= 1 && m.getDirection()!= 4)
 				return false;
-				}
-		}
 		return true;
 	}
 	
@@ -324,19 +317,26 @@ public class ScacchieraBit {
 		int c = getColorePedina(x, y);
 		//BASE
 		//se nella cella di arrivo ci sono già pedine
-		if(checkMosseInAvanti(m,x,y) && scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0)
+		if(!checkMosseInAvanti(m,x,y) || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0) {
 			return false;
+		}
 		//MERGE
 		//se nella cella di arrivo non ci sono già pedine o ci sono pedine nere
-		if(checkMosseInAvanti(m,x,y) && c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
+		if(!checkMosseInAvanti(m,x,y) || c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  ) {
+			System.out.println("stampa2");
 			return false;
-		else if(checkMosseInAvanti(m,x,y) && c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  )
-			return false;
+		}
+		
+//		else if(!checkMosseInAvanti(m,x,y) && c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  ) {
+//			System.out.println("stampa3");
+//			return false;
+//		}
+			
 		//CAPTURE
 		if(c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_NERA  )
 			return false;
-		else if(c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
-			return false;
+//		else if(c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) != PEDINA_BIANCA  )
+//			return false;
 		// TODO 
 		// P.s. Vengono valutate solo le mosse valide interne alla scacchiera.
 		return true;
