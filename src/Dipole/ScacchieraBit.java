@@ -242,12 +242,12 @@ public class ScacchieraBit {
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
 		int x = m.getiStart();
 		int y = m.getjStart();
-		int a = m.getiEnd();
-		int b = m.getjEnd();
+		int xF = m.getiEnd();
+		int yF = m.getjEnd();
 		int oldPositionOnBoard = m.getiStart() * 8 + m.getjStart();
 		int newPositionOnBoard = m.getiEnd() * 8 + m.getjEnd();
 		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-			int pedineDaEliminare = calcolaCelleFuori(x, y, a, b);
+			int pedineDaEliminare = calcolaCelleFuori(x, y, xF, yF);
 			if (numeroStackGiocatore[PEDINA_BIANCA] < 12) {
 				listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
 				// scacchiera.getValue(scacchiera.getIndex());
@@ -279,14 +279,14 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
-				if (checkMosse(mossa,x,y)) {
+				if (checkMosse(mossa)) {
 					System.out.println("dir: " + dir);
 					moves.add(mossa);
 				}
 
 			}
 		}
-		//generaMosseFuori(x, y);
+		// generaMosseFuori(x, y);
 	}
 
 	public void generaMosseFuori(int x, int y) {
@@ -300,51 +300,43 @@ public class ScacchieraBit {
 			moves.add(new Mossa(x, y, curr_pos / 8, curr_pos % 8, v[0]));
 		}
 	}
-	
-	public boolean checkMosseInAvanti(Mossa m,int x, int y)
-	{
-		//Valido sia per BASE che MERGE ossia solo mosse in avanti
+
+	public boolean checkMosseInAvanti(Mossa m, int x, int y) {
+		// Valido sia per BASE che MERGE ossia solo mosse in avanti
 		int c = getColorePedina(x, y);
-		if(c==PEDINA_BIANCA && m.getDirection()!= 0 && m.getDirection()!= 5 && m.getDirection()!= 2)
-				return false;
-				
-		else if(c==PEDINA_NERA && m.getDirection()!= 3 && m.getDirection()!= 1 && m.getDirection()!= 4)
-				return false;
+		if (c == PEDINA_BIANCA && m.getDirection() != 0 && m.getDirection() != 5 && m.getDirection() != 2)
+			return false;
+
+		else if (c == PEDINA_NERA && m.getDirection() != 3 && m.getDirection() != 1 && m.getDirection() != 4)
+			return false;
 		return true;
 	}
-	
-	public boolean checkMosse(Mossa m,int x, int y) {
+
+	public boolean checkMosse(Mossa m) {
+		int x = m.getiStart();
+		int y = m.getjStart();
+		int xF = m.getiEnd();
+		int yF = m.getjEnd();
 		int c = getColorePedina(x, y);
+		int spostamento = calcolaSpostamento(x, y, xF, yF);
 		
-		//BASE
-		//se nella cella di arrivo ci sono già pedine
-		if(!checkMosseInAvanti(m,x,y))
-			return false;
-			//|| scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) !=0) {
-//			return false;
-//		}
-//		//MERGE
-//		//se nella cella di arrivo non ci sono già pedine o ci sono pedine nere
-//		if(!checkMosseInAvanti(m,x,y) || (c==PEDINA_BIANCA && getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_NERA ) ) {
-//			System.out.println("stampa2");
-//			return false;
-//		}
-//		
-//		else if(!checkMosseInAvanti(m,x,y) && (c==PEDINA_NERA && getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_BIANCA ) ) {
-//			System.out.println("stampa3");
-//			return false;
-//		}
-			
-		//CAPTURE
-		if(scacchiera.getNumeroPedine(x,y) < scacchiera.getNumeroPedine(m.getiEnd(),m.getjEnd()))
-			return false;
-				
-//		if(c==PEDINA_BIANCA && (getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_BIANCA || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) ==0 ))
-//			return false;
+		//TODO: controllo mosse fuori
 		
-//		else if(c==PEDINA_NERA && (getColorePedina(m.getiEnd(),m.getjEnd()) == PEDINA_NERA || scacchiera.getValue(m.getiEnd() * 8 + m.getjEnd()) ==0 ))
-//			return false;
-		// TODO 
+		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
+		if(scacchiera.getNumeroPedine(x, y)<spostamento)
+			return false;
+		
+		// mossa indietro e uguale a 0 ==> non può mangiare
+		if (!checkMosseInAvanti(m, x, y) && ((scacchiera.getValue(xF * 8 + yF) == 0)
+				|| (getColorePedina(xF, yF) == c)))
+			return false;
+
+		// CAPTURE
+		if (scacchiera.getNumeroPedine(x, y) < scacchiera.getNumeroPedine(xF, yF))
+			return false;
+		
+		
+		
 		// P.s. Vengono valutate solo le mosse valide interne alla scacchiera.
 		return true;
 	}

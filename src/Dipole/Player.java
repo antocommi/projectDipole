@@ -1,28 +1,43 @@
 package Dipole;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Player {
 	
-	private ScacchieraBit stato;
+	private ScacchieraBit scacchiera;
+	private int PROFONDITA=3;
+	private TTElement[] transpositionTable;
+	private boolean giocatoreWhite = true;
 	
-	private HashMap<TTElement, TTElement> traspositionTable = new HashMap<>();
+	private int size = (int)Math.pow(2, 22);
+	public Player(ScacchieraBit scacchiera) {
+		this.scacchiera = scacchiera;
+		this.transpositionTable = new TTElement[size];
+	}
 	
-	public Player() {
-		super();
-		stato = new ScacchieraBit();
-		stato.generaMosse(0, 3);
-		ArrayList<Mossa> m = stato.getMoves();
-		System.out.println(m.size());
+	public void saveState() {
+		scacchiera.generaMosse(0, 3);
+		stampaMosse(scacchiera.getMoves());
+	}
+	
+	public void stampaMosse(ArrayList<Mossa> m) {
+		System.out.println("Numero mosse disponibili: "+m.size());
+		System.out.println("_________________");
+		System.out.println(" ");
 		for (Mossa mossa : m) {
 			System.out.println(mossa);
 		}
 	}
 
 	public static void main(String[] args) {
-		Player p = new Player();
-		System.out.println("done!");
+		ScacchieraBit s = new ScacchieraBit();
+		Player p = new Player(s);
+		p.saveState();
 	}
+	
+	public void visita() {
+		
+	}
+	
 	
 }
