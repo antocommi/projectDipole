@@ -1,7 +1,14 @@
 package Dipole;
 
-public class Mossa {
+import java.io.Serializable;
 
+public class Mossa implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int iStart;
 	private int jStart;
 	private int iEnd;
