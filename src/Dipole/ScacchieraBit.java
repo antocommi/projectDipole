@@ -72,7 +72,7 @@ public class ScacchieraBit {
 		listaPedineNere = new byte[12];
 		numeroStackGiocatore = new int[2];
 	}
-	
+
 	public ScacchieraBit(ScacchieraBit s) {
 		this.listaPedineBianche = s.listaPedineBianche;
 		this.listaPedineNere = s.listaPedineNere;
@@ -264,7 +264,7 @@ public class ScacchieraBit {
 		int nPedineOld = scacchiera.getValue(oldPositionOnBoard);
 		int nPedineNew;
 		int spostamento;
-		System.out.format("mossa ricevuta in muovi, mossa: %s \n",m.toString());
+		System.out.format("mossa ricevuta in muovi, mossa: %s \n", m.toString());
 		if (checkPosOut(xF, yF)) {
 
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
@@ -286,8 +286,7 @@ public class ScacchieraBit {
 				}
 
 			}
-		}
-		else {
+		} else {
 			// Cella di destinazione all'interno della scacchiera
 			nPedineNew = scacchiera.getValue(newPositionOnBoard);
 			spostamento = calcolaSpostamento(x, y, xF, yF);
@@ -343,7 +342,7 @@ public class ScacchieraBit {
 								break;
 							}
 						} else {
-							
+
 							if (listaPedineNere[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineNere[k - 1] = listaPedineNere[k];
@@ -363,15 +362,14 @@ public class ScacchieraBit {
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 				scacchiera.setValue(nPedineNew + spostamento, newPositionOnBoard);
 			} else if (c != cF) { // CAPTURE
-				//se le sposta tutte
+				// se le sposta tutte
 				if (spostamento == nPedineOld) {
 					for (int l = 0; l < 12; l++) {
 						if (c == PEDINA_BIANCA) {
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								listaPedineBianche[l] = (byte) newPositionOnBoard;
 								break;
-							}
-							else if (listaPedineNere[l] == newPositionOnBoard) {
+							} else if (listaPedineNere[l] == newPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineNere[k - 1] = listaPedineNere[k];
 								}
@@ -380,13 +378,11 @@ public class ScacchieraBit {
 							if (listaPedineNere[l] == oldPositionOnBoard) {
 								listaPedineNere[l] = (byte) newPositionOnBoard;
 								break;
-							}
-							else if (listaPedineBianche[l] == oldPositionOnBoard) {
+							} else if (listaPedineBianche[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
 								}
 
-								
 							}
 						}
 					}
@@ -400,7 +396,7 @@ public class ScacchieraBit {
 						scacchieraBianchi = modifyBit(0, xF * 4 + yF, scacchieraBianchi);
 						scacchieraNeri = modifyBit(1, xF * 4 + yF, scacchieraNeri);
 					}
-				}else {// se non le sposta tutte
+				} else {// se non le sposta tutte
 					for (int l = 0; l < 12; l++) {
 						if (c == PEDINA_BIANCA) {
 							if (listaPedineNere[l] == newPositionOnBoard) {
@@ -410,9 +406,8 @@ public class ScacchieraBit {
 							}
 							listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
 
-							
 						} else {
-							
+
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
@@ -427,14 +422,12 @@ public class ScacchieraBit {
 						scacchieraNeri = modifyBit(0, xF * 4 + yF, scacchieraNeri);
 						scacchieraBianchi = modifyBit(1, xF * 4 + yF, scacchieraBianchi);
 					} else {
-						
+
 						scacchieraBianchi = modifyBit(0, xF * 4 + yF, scacchieraBianchi);
 						scacchieraNeri = modifyBit(1, xF * 4 + yF, scacchieraNeri);
 					}
-					
-					
+
 				}
-				 
 
 			}
 
@@ -443,10 +436,6 @@ public class ScacchieraBit {
 		}
 
 	}
-
-	
-
-	
 
 	public void generaMosse(int x, int y) {
 		int pos, curr_pos, numeroCelleSpostamento = 0;
@@ -521,9 +510,11 @@ public class ScacchieraBit {
 	public boolean checkMosseInAvanti(Mossa m, int x, int y) {
 		// Valido sia per BASE che MERGE ossia solo mosse in avanti
 		int c = getColorePedina(x, y);
-		if (c == PEDINA_BIANCA && !(m.getDirection() != NORTH || m.getDirection() != NORTHEAST || m.getDirection() != NORTHWEST))
+		if (c == PEDINA_BIANCA
+				&& !(m.getDirection() != NORTH || m.getDirection() != NORTHEAST || m.getDirection() != NORTHWEST))
 			return false;
-		else if (c == PEDINA_NERA && !(m.getDirection() != SOUTH || m.getDirection() != SOUTHEAST || m.getDirection() != SOUTHWEST))
+		else if (c == PEDINA_NERA
+				&& !(m.getDirection() != SOUTH || m.getDirection() != SOUTHEAST || m.getDirection() != SOUTHWEST))
 			return false;
 		return true;
 	}
@@ -681,7 +672,7 @@ public class ScacchieraBit {
 		scacchiera.stampaScacchiera();
 		scacchiera.generaMosse(0, 3);
 		ArrayList<Mossa> m = scacchiera.getMoves();
-		
+
 //		System.out.println("___________________");
 //		System.out.println("");
 //		System.out.println("Mosse disponibili: " + m.size());
@@ -691,9 +682,9 @@ public class ScacchieraBit {
 //		for (Mossa mossa : m) {
 //			System.out.println(mossa);
 //		}
-		
+
 		Mossa mossa = m.get(0);
-		scacchiera.muovi(mossa); //dopo muovi potrebbe pulire moves
+		scacchiera.muovi(mossa); // dopo muovi potrebbe pulire moves
 		scacchiera.getMoves().clear();
 		scacchiera.generaMosse(2, 3);
 
@@ -702,7 +693,7 @@ public class ScacchieraBit {
 		System.out.println("Mosse disponibili: " + m.size());
 		System.out.println("___________________");
 		System.out.println("");
-		
+
 		for (Mossa mossa2 : m) {
 			System.out.println(mossa2);
 		}
