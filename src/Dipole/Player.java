@@ -1,13 +1,6 @@
 package Dipole;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import util.ByteMap;
 
@@ -19,7 +12,11 @@ public class Player {
 	private int PLAYER;
 	private ScacchieraBit scacchiera;
 	private int PROFONDITA = 4;
+	private long start = 0;
+	private final static int FINE_GIOCO = 100000;
+	
 	private TTElement[] transpositionTable;
+	private long hashCode;
 
 	private int size = (int) Math.pow(2, 22);
 
@@ -27,6 +24,7 @@ public class Player {
 		this.PLAYER = player;
 		this.scacchiera = scacchiera;
 		this.transpositionTable = new TTElement[size];
+		Zobrist z = new Zobrist();
 	}
 
 	public void saveState() {
@@ -41,6 +39,12 @@ public class Player {
 		for (Mossa mossa : m) {
 			System.out.println(mossa);
 		}
+	}
+
+	private void caricaStatoCorrente(long hashCode, int value, int depth, Mossa[] mosse, int indexBest) {
+		TTElement state = new TTElement(hashCode, depth, value, mosse, indexBest);
+		int pos = (int) (hashCode % size);
+		transpositionTable[pos] = state;
 	}
 
 	/**
@@ -78,6 +82,53 @@ public class Player {
 		for (c = 0; c < 8; c++)
 			System.out.print(" - ");
 		System.out.println(" - ");
+	}
+	
+//	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) 
+	
+//	private TTElement negamax(ScacchieraBit board, int depht, double alfa, double beta, int player) {
+//		long controlloTempo = System.currentTimeMillis() - start;
+//        if (controlloTempo >= 2750) 
+//          return null;
+//		if(board.vittoria(-player))   	
+//	    	return new TTElement(board, -FINE_GIOCO);                    
+//		if(depht == 0 )
+//			return new TTElement(board, board.valutaConfigurazione()*player);
+//		double v = -Integer.MAX_VALUE;
+//		TTElement nodoPadre = new TTElement(board, alfa);
+//		for(Mossa x : board.configurazioniPossibili(player)) {
+//	        ScacchieraBit newBoard = new ScacchieraBit(scacchiera);
+//	        newBoard.applicaMossa(x.getRiga(), x.getColonna(), player);
+//	        TTElement nodoFiglio = negamax(newBoard, depht-1, -beta, -alfa, -player);
+//	        if(nodoFiglio == null)
+//	        	return null;
+//	        v = Math.max(v,-nodoFiglio.getValue());
+//	        if(v > alfa) { 
+//	        	alfa = v; 
+//	        	nodoPadre.setValue(alfa);  
+//	        	nodoPadre.setMossa(x.getRiga(), x.getColonna(), x.getGiocatore()); 
+//	        }
+//	        if(alfa >= beta)
+//	        	break;
+//		}
+//		return nodoPadre;
+//	}
+	
+	public Mossa negamaxIterativeDeepening() {  
+        start = System.currentTimeMillis();
+		TTElement bestConfig = null;
+		Mossa bestMove = null;
+        for(int i=1; i<=PROFONDITA;i++) {  	
+//        	bestConfig = negamax(scacchiera, i, -Integer.MAX_VALUE, Integer.MAX_VALUE, 1);
+        	if (bestConfig != null) {
+        		bestMove = bestConfig.getBestMove(bestConfig.getM());
+        		if(bestConfig.getValue() == FINE_GIOCO) 
+           			return bestMove;
+        	}
+            else
+                break;
+        }			
+        return bestMove;
 	}
 
 	public static void main(String[] args) {

@@ -24,8 +24,8 @@ public class ScacchieraBit {
 
 	public static final int SIZE = 8;
 
-	private final int[] posInteressantiBianchi = { 0, 5, 2 };
-	private final int[] posInteressantiNero = { 3, 1, 4 };
+	private static final int[] posInteressantiBianchi = { 0, 5, 2 };
+	private static final int[] posInteressantiNero = { 3, 1, 4 };
 
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
@@ -71,6 +71,18 @@ public class ScacchieraBit {
 		listaPedineBianche = new byte[12];
 		listaPedineNere = new byte[12];
 		numeroStackGiocatore = new int[2];
+	}
+	
+	public ScacchieraBit(ScacchieraBit s) {
+		this.listaPedineBianche = s.listaPedineBianche;
+		this.listaPedineNere = s.listaPedineNere;
+		this.MAX_SPOSTAMENTO = s.MAX_SPOSTAMENTO;
+		this.moves = s.moves;
+		this.numeroStackGiocatore = s.numeroStackGiocatore;
+		this.riga = s.riga;
+		this.scacchiera = s.scacchiera;
+		this.scacchieraBianchi = s.scacchieraBianchi;
+		this.turnoGiocatore = s.turnoGiocatore;
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {

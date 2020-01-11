@@ -56,5 +56,9 @@ public class TTElement {
 	public void setM(Mossa[] m) {
 		this.m = m;
 	}
+	
+	public Mossa getBestMove(Mossa [] mosse) {
+		return mosse[0];
+	}
 
 }
