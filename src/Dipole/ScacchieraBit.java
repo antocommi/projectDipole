@@ -327,6 +327,7 @@ public class ScacchieraBit {
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
+									numeroStackGiocatore[PEDINA_BIANCA]--;
 								}
 								break;
 							}
@@ -335,6 +336,7 @@ public class ScacchieraBit {
 							if (listaPedineNere[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineNere[k - 1] = listaPedineNere[k];
+									numeroStackGiocatore[PEDINA_NERA]--;
 								}
 								break;
 							}
@@ -362,6 +364,7 @@ public class ScacchieraBit {
 							else if (listaPedineNere[l] == newPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineNere[k - 1] = listaPedineNere[k];
+									numeroStackGiocatore[PEDINA_NERA]--;
 								}
 							}
 						} else {
@@ -372,6 +375,7 @@ public class ScacchieraBit {
 							else if (listaPedineBianche[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
+									numeroStackGiocatore[PEDINA_BIANCA]--;
 								}
 
 								
