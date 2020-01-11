@@ -18,6 +18,7 @@ public class PreLoad {
 	private int SIZE = 8;
 
 	public PreLoad(String path, ScacchieraBit s) {
+//		Togliere il commento per generare il file delle combinazioni!
 //		generaListaMossa(s, path);
 		listaMosse = carica(path);
 	}

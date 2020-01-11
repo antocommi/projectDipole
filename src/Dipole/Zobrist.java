@@ -24,13 +24,17 @@ public class Zobrist {
 		this.zhash = zhash;
 	}
 
-	public void toggleStone(int x, int y) {
+	public void selezionaCella(int x, int y) {
 		zhash ^= zobrist[x * 8 + y]; // prima: ScacchieraBit.scacchiera.getIndex(x,y)
-
 	}
 
 	public long[] getZobrist() {
 		return zobrist;
+	}
+
+	public long getHashCodeCella(int i, int j) {
+		selezionaCella(i,j);
+		return zhash;
 	}
 
 	@Override
