@@ -20,7 +20,8 @@ public class ScacchieraBit {
 	private byte[] listaPedineNere; //
 	private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
 	private ArrayList<Mossa> moves; // lista delle mosse generate
-	
+	private int mosseMaxBianco;
+	private int mosseMaxNero;
 
 	public static final int SIZE = 8;
 
@@ -28,6 +29,7 @@ public class ScacchieraBit {
 	private static final int[] posInteressantiNero = { 3, 1, 4 };
 
 	private static HashMap<String, Integer> riga; //
+	
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
 	private static final int PEDINA_BIANCA = 0;
@@ -55,6 +57,8 @@ public class ScacchieraBit {
 		turnoGiocatore = true;
 		scacchieraBianchi = 0;
 		scacchieraNeri = 0;
+		mosseMaxBianco=60;
+		mosseMaxNero=60;
 		MAX_SPOSTAMENTO = new int[8];
 		scacchiera = new ByteMap(8 * 4);
 		posizionaPedine(0, 3, 12, PEDINA_NERA);
@@ -85,6 +89,8 @@ public class ScacchieraBit {
 		this.scacchieraBianchi = oldBoard.scacchieraBianchi;
 		this.scacchieraNeri= oldBoard.scacchieraNeri;
 		this.turnoGiocatore = oldBoard.turnoGiocatore;
+		this.mosseMaxBianco=oldBoard.mosseMaxBianco;
+		this.mosseMaxNero=oldBoard.mosseMaxNero;
 	}
 	
 
@@ -257,7 +263,11 @@ public class ScacchieraBit {
 	
 	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI){
 		ScacchieraBit confF= new ScacchieraBit(confI);
+	
+		if(confF.turnoGiocatore) confF.mosseMaxBianco--;
+		else confF.mosseMaxNero--;
 		confF.muovi(m);
+		
 		return confF;
 	}
 	
@@ -446,10 +456,23 @@ public class ScacchieraBit {
 
 			scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 			scacchiera.setValue(spostamento, newPositionOnBoard);
+			
 		}
 
 	}
-
+	
+	public boolean zeroPedineDaEliminare(){
+		
+	}
+	public boolean checkWin (){
+		//TODO caso in cui non può più cacciare fuori ma ha ancora pedine
+		if(mosseMaxBianco==0 || mosseMaxNero==0)
+			return true;
+		if(numeroStackGiocatore[0]==0 || numeroStackGiocatore[1]==0 || zeroPedineDaEliminare()) {
+			return true;
+		}
+		return false;
+	}
 	public void generaMosse(int x, int y) {
 		int pos, curr_pos, numeroCelleSpostamento = 0;
 //		System.out.println("x: " + x + " y: " + y);
@@ -457,8 +480,7 @@ public class ScacchieraBit {
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0)
 			throw new RuntimeException("Nessuna pedina disponibile");
-		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y); // Funziona Bene ma vengono salvate anche le mosse di capture
-															// anche se non esistono!
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y); 
 		for (int dir = 0; dir < 8; dir++) {
 			pos = x * 8 + y;
 			numeroCelleSpostamento = 0;
