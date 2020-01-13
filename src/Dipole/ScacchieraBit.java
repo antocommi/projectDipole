@@ -252,9 +252,7 @@ public class ScacchieraBit {
 	}
 
 	public void muovi(Mossa m) {
-
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
-
 		int x = m.getiStart();
 		int y = m.getjStart(), c = getColorePedina(x, y);
 		int xF = m.getiEnd();
@@ -266,25 +264,17 @@ public class ScacchieraBit {
 		int spostamento;
 		System.out.format("mossa ricevuta in muovi, mossa: %s \n", m.toString());
 		if (checkPosOut(xF, yF)) {
-
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
-
 			int pedineDaEliminare = calcolaCelleFuori(x, y, xF, yF);
-
 			if (numeroStackGiocatore[PEDINA_BIANCA] < 12) {
-
 				listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
 				// scacchiera.getValue(scacchiera.getIndex());
-
 			} else {
-
 				for (int l = 0; l < 12; l++) {
 					if (listaPedineBianche[l] == oldPositionOnBoard) {
 
 					}
-					// TODO
 				}
-
 			}
 		} else {
 			// Cella di destinazione all'interno della scacchiera
@@ -313,7 +303,6 @@ public class ScacchieraBit {
 						scacchieraNeri = modifyBit(0, x * 4 + y, scacchieraNeri);
 						scacchieraNeri = modifyBit(1, xF * 4 + yF, scacchieraNeri);
 					}
-
 				} else {
 					// se ne sposta una parte
 					if (c == PEDINA_BIANCA)
@@ -328,7 +317,6 @@ public class ScacchieraBit {
 					}
 				}
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
-
 				scacchiera.setValue(spostamento, newPositionOnBoard);
 			} else if (c == cF) {// MERGE
 				// se le sposta tutte
@@ -353,14 +341,11 @@ public class ScacchieraBit {
 							}
 						}
 					}
-
 					if (c == PEDINA_BIANCA)
 						scacchieraBianchi = modifyBit(0, x * 4 + y, scacchieraBianchi);
 					else
 						scacchieraNeri = modifyBit(0, x * 4 + y, scacchieraNeri);
-
 				}
-
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 				scacchiera.setValue(nPedineNew + spostamento, newPositionOnBoard);
 			} else if (c != cF) { // CAPTURE
@@ -386,11 +371,9 @@ public class ScacchieraBit {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
 									numeroStackGiocatore[PEDINA_BIANCA]--;
 								}
-
 							}
 						}
 					}
-
 					if (c == PEDINA_BIANCA) {
 						scacchieraNeri = modifyBit(0, xF * 4 + yF, scacchieraNeri);
 						scacchieraBianchi = modifyBit(0, x * 4 + y, scacchieraBianchi);
@@ -409,36 +392,36 @@ public class ScacchieraBit {
 								}
 							}
 							listaPedineBianche[numeroStackGiocatore[PEDINA_BIANCA]++] = (byte) newPositionOnBoard;
-
 						} else {
-
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
 								}
 							}
 							listaPedineNere[numeroStackGiocatore[PEDINA_NERA]++] = (byte) newPositionOnBoard;
-
 						}
 					}
-
 					if (c == PEDINA_BIANCA) {
 						scacchieraNeri = modifyBit(0, xF * 4 + yF, scacchieraNeri);
 						scacchieraBianchi = modifyBit(1, xF * 4 + yF, scacchieraBianchi);
 					} else {
-
 						scacchieraBianchi = modifyBit(0, xF * 4 + yF, scacchieraBianchi);
 						scacchieraNeri = modifyBit(1, xF * 4 + yF, scacchieraNeri);
 					}
-
 				}
-
 			}
-
 			scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 			scacchiera.setValue(spostamento, newPositionOnBoard);
 		}
+		turnoGiocatore = !turnoGiocatore;
+	}
 
+	public byte[] getListaPosizioni(int colore) {
+		if (colore == PEDINA_BIANCA) {
+			return listaPedineBianche;
+		} else {
+			return listaPedineNere;
+		}
 	}
 
 	public void generaMosse(int x, int y) {
@@ -465,6 +448,18 @@ public class ScacchieraBit {
 			}
 		}
 		generaMosseFuori(x, y);
+	}
+
+	public void addAllMoves(ArrayList<Mossa> mosse) {
+		moves.addAll(mosse);
+	}
+
+	public void addMove(Mossa m) {
+		moves.add(m);
+	}
+
+	public void cleanMoves() {
+		moves.clear();
 	}
 
 	public ArrayList<Mossa> generaListaMosse(int x, int y) {
@@ -533,11 +528,11 @@ public class ScacchieraBit {
 
 		// TODO: controllo mosse fuori
 
-//		if (turnoGiocatore && c == PEDINA_NERA)
-//			return false;
-//
-//		if (!turnoGiocatore && c == PEDINA_BIANCA)
-//			return false;
+		if (turnoGiocatore && c == PEDINA_NERA)
+			return false;
+
+		if (!turnoGiocatore && c == PEDINA_BIANCA)
+			return false;
 
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento)

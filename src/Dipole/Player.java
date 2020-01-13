@@ -1,6 +1,7 @@
 package Dipole;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import util.ByteMap;
 
@@ -129,6 +130,10 @@ public class Player {
                 break;
         }			
         return bestMove;
+	}
+	
+	public int valutaConfigurazioneRandom(ScacchieraBit s) {
+		return new Random().nextInt(1000);
 	}
 
 	public static void main(String[] args) {
