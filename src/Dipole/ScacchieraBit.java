@@ -21,7 +21,7 @@ public class ScacchieraBit {
 	private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
 	private ArrayList<Mossa> moves; // lista delle mosse generate
 	private HashMap<String, Integer> riga; //
-
+	
 	public static final int SIZE = 8;
 
 	private static final int[] posInteressantiBianchi = { 0, 5, 2 };
@@ -232,11 +232,6 @@ public class ScacchieraBit {
 		return k >= m ? k : m;
 	}
 
-	public boolean verifacaMossaAmmissibile(Mossa m) {
-		// TODO
-		return false;
-	}
-
 //	private int cercaPedina(byte posizione, int colorePedina) {
 //		byte[] v = colorePedina == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
 //		for (int i = 0; i < numeroStackGiocatore[colorePedina]; i++) {
@@ -251,6 +246,17 @@ public class ScacchieraBit {
 		return -1;
 	}
 
+	public void annullaMossa(Mossa m) {
+//		TODO
+	}
+	
+	
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI){
+		ScacchieraBit confF= new ScacchieraBit(confI);
+		confF.muovi(m);
+		return confF;
+	}
+	
 	public void muovi(Mossa m) {
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
 		int x = m.getiStart();
