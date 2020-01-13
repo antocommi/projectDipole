@@ -10,7 +10,7 @@ public class Player {
 	private static final int PEDINA_NERA = 1;
 
 	private int PLAYER;
-	private ScacchieraBit scacchiera;
+	private ScacchieraBit root;
 	private int PROFONDITA = 4;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
@@ -18,18 +18,23 @@ public class Player {
 	private TTElement[] transpositionTable;
 	private long hashCode;
 
-	private int size = (int) Math.pow(2, 22);
+//	private int size = (int) Math.pow(2, 22); forse troppo grande - da verificare
+	private int size = (int) Math.pow(2, 19);
 
+	
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
-		this.scacchiera = scacchiera;
-		this.transpositionTable = new TTElement[size];
+		this.root = scacchiera;
+//		this.transpositionTable = new TTElement[size]; TODO
 		Zobrist z = new Zobrist();
 	}
 
+	public void play() {
+	}
+	
 	public void saveState() {
-		scacchiera.generaMosse(0, 3);
-		stampaMosse(scacchiera.getMoves());
+		root.generaMosse(0, 3);
+		stampaMosse(root.getMoves());
 	}
 
 	public void stampaMosse(ArrayList<Mossa> m) {
@@ -47,42 +52,7 @@ public class Player {
 		transpositionTable[pos] = state;
 	}
 
-	/**
-	 * Funzione utile per debug, stampa la scacchiera. Oss. Sia le pedine bianche
-	 * che le nere si trovano su caselle di colore nero.
-	 */
-	public void stampaScacchiera(ByteMap scacchiera, ScacchieraBit s) {
-		System.out.println();
-		System.out.println("CONFIGURAZINE SCACCHIERA:");
-		System.out.println();
-		int r, c;
-		for (r = 0; r < 8; r++) {
-			for (c = 0; c < 8; c++)
-				System.out.print(" - ");
-			System.out.println("-");
-			for (c = 0; c < 8; c++) {
-				if (scacchiera.getNumeroPedine(r, c) == 0) {
-					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0)) {
-						System.out.print(" N ");
-					} else {
-						System.out.print(" B ");
-					}
-				}
-				if (scacchiera.getNumeroPedine(r, c) > 0) {
-					if (s.getColorePedina(r, c) == PEDINA_NERA) {
-						System.out.print(scacchiera.getNumeroPedine(r, c) + "N");
-					} else if (s.getColorePedina(r, c) == PEDINA_BIANCA) {
-						System.out.print(scacchiera.getNumeroPedine(r, c) + "B");
-					}
-				}
-
-			}
-			System.out.println("");
-		}
-		for (c = 0; c < 8; c++)
-			System.out.print(" - ");
-		System.out.println(" - ");
-	}
+	
 	
 //	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) 
 	
@@ -134,7 +104,8 @@ public class Player {
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
 		Player p = new Player(s, 0);
-		p.stampaScacchiera(s.getScacchiera(), s);
+		s.stampaScacchiera();
+//		p.stampaScacchiera(s.getScacchiera(), s);
 		p.saveState();
 	}
 
