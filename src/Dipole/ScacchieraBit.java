@@ -250,6 +250,13 @@ public class ScacchieraBit {
 //		TODO
 	}
 	
+	
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI){
+		ScacchieraBit confF= new ScacchieraBit(confI);
+		confF.muovi(m);
+		return confF;
+	}
+	
 	public void muovi(Mossa m) {
 
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
