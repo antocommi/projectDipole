@@ -20,13 +20,14 @@ public class ScacchieraBit {
 	private byte[] listaPedineNere; //
 	private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
 	private ArrayList<Mossa> moves; // lista delle mosse generate
-	private HashMap<String, Integer> riga; //
+	
 
 	public static final int SIZE = 8;
 
 	private static final int[] posInteressantiBianchi = { 0, 5, 2 };
 	private static final int[] posInteressantiNero = { 3, 1, 4 };
 
+	private static HashMap<String, Integer> riga; //
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
 	private static final int PEDINA_BIANCA = 0;
@@ -72,18 +73,20 @@ public class ScacchieraBit {
 		listaPedineNere = new byte[12];
 		numeroStackGiocatore = new int[2];
 	}
+	
 
-	public ScacchieraBit(ScacchieraBit s) {
-		this.listaPedineBianche = s.listaPedineBianche;
-		this.listaPedineNere = s.listaPedineNere;
-		this.MAX_SPOSTAMENTO = s.MAX_SPOSTAMENTO;
-		this.moves = s.moves;
-		this.numeroStackGiocatore = s.numeroStackGiocatore;
-		this.riga = s.riga;
-		this.scacchiera = s.scacchiera;
-		this.scacchieraBianchi = s.scacchieraBianchi;
-		this.turnoGiocatore = s.turnoGiocatore;
+	public ScacchieraBit(ScacchieraBit oldBoard) {
+		this();
+		
+		java.lang.System.arraycopy(oldBoard.listaPedineBianche, 0, this.listaPedineBianche, 0, oldBoard.listaPedineBianche.length);
+		java.lang.System.arraycopy(oldBoard.listaPedineNere, 0, this.listaPedineNere, 0, oldBoard.listaPedineNere.length);
+		java.lang.System.arraycopy(oldBoard.numeroStackGiocatore, 0, this.numeroStackGiocatore, 0, oldBoard.numeroStackGiocatore.length);
+		this.scacchiera = new ByteMap(oldBoard.scacchiera);
+		this.scacchieraBianchi = oldBoard.scacchieraBianchi;
+		this.scacchieraNeri= oldBoard.scacchieraNeri;
+		this.turnoGiocatore = oldBoard.turnoGiocatore;
 	}
+	
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
 		int mask = 1 << (31 - posizione);
@@ -251,10 +254,16 @@ public class ScacchieraBit {
 		return -1;
 	}
 
+	
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI){
+		ScacchieraBit confF= new ScacchieraBit(confI);
+		confF.muovi(m);
+		return confF;
+	}
+	
 	public void muovi(Mossa m) {
-
+		
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
-
 		int x = m.getiStart();
 		int y = m.getjStart(), c = getColorePedina(x, y);
 		int xF = m.getiEnd();

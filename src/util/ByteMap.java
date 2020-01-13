@@ -10,6 +10,9 @@ public class ByteMap {
 	public ByteMap(int capacity) {
 		bitMap = new int[capacity];
 	}
+	public ByteMap(ByteMap b) {
+		this.bitMap= new int [b.bitMap.length];
+	}
 	
 	public void setValue(int value, int index) {
 //		index � un valore compreso tra 0 e capacity*8
