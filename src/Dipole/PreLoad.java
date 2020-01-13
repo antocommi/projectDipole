@@ -109,8 +109,8 @@ public class PreLoad {
 		ScacchieraBit s = new ScacchieraBit();
 		PreLoad p = new PreLoad("tmp.txt", s);
 //		p.toStringCombinazioni();
-		int i = 2;
-		int j = 5;
+		int i = 0;
+		int j = 3;
 		ArrayList<Mossa> l = p.getMosseDisponibili(i, j);
 		System.out.println("Combinazioni per "+i+","+j);
 		p.toStringCombinazioni(l);
