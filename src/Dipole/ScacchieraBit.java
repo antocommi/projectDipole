@@ -704,6 +704,25 @@ public class ScacchieraBit {
 
 		}
 	}
+	public ArrayList<Mossa>[] getAllMoves(){
+
+		if(turnoGiocatore){
+			ArrayList [] listaMosse = new ArrayList[numeroStackGiocatore[0]];
+			for(int i=0;i<listaPedineBianche.length;i++){
+				int c=0;
+				listaMosse[c++]=generaListaMosse(listaPedineBianche[i]/8, listaPedineBianche[i]%8);
+			}
+			return listaMosse;
+		}
+		else {
+			ArrayList [] listaMosse = new ArrayList[numeroStackGiocatore[1]];
+			for(int i=0;i<listaPedineNere.length;i++){
+				int c=0;
+				listaMosse[c++]=generaListaMosse(listaPedineNere[i]/8, listaPedineNere[i]%8);
+			}
+			return listaMosse;
+		}
+	}
 
 	public boolean checkMosseInAvanti(Mossa m, int x, int y) {
 		// Valido sia per BASE che MERGE ossia solo mosse in avanti
