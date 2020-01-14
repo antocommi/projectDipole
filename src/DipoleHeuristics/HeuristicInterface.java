@@ -14,5 +14,5 @@ public interface HeuristicInterface {
 	
 	public int valuta(ScacchieraBit stato);
 	
-	public int valuta(ScacchieraBit stato, ArrayList<Mossa> mosse);
+	public int valuta(ScacchieraBit stato, ArrayList<Mossa> mosse, int giocatore);
 }
