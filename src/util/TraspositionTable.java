@@ -17,7 +17,7 @@ public class TraspositionTable {
 
 	// TODO: Sistemare il metodo equals di TTElement altrimenti NON FUNZIONA
 	public boolean contains(TTElement e) {
-		return table[(int) (e.getKey() % size)].equals(e);
+		return table[(int) (e.getKey() % size)].getKey()==e.getKey();
 	}
 
 	private TTElement replace(TTElement oldValue, TTElement newValue) {
