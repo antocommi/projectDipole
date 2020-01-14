@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import DipoleHeuristics.HeuristicInterface;
-import util.ByteMap;
+import DipoleHeuristics.RandHeuristic;
 
 public class Player {
 
@@ -30,6 +30,7 @@ public class Player {
 		this.root = scacchiera;
 //		this.transpositionTable = new TTElement[size]; TODO
 		zobrist = new Zobrist();
+		euristica = new RandHeuristic();
 	}
 
 	public void play() {
@@ -56,6 +57,36 @@ public class Player {
 		transpositionTable[pos] = state;
 	}
 
+	
+	public int abNegamax(ScacchieraBit board, byte depth, byte currDepth, int alfa, int beta) {
+		ScacchieraBit newBoard; 
+		int res, bestScore = Integer.MIN_VALUE, currScore;
+		Mossa m, bestMove;
+		ArrayList<Mossa> mosse = new ArrayList<>();
+		//TODO: aggiunta controllo tempo
+		
+		
+		// Se è un nodo terminale, valuta il nodo. 
+		if(board.checkWin() || currDepth == depth) 
+			return euristica.valuta(board);
+		
+		// altrimenti, valuta il nodo in modo ricorsivo.
+		
+		for(Mossa mossa: mosse) {
+			newBoard = ScacchieraBit.muovi(mossa, board);
+			score, currMove = abNegamax(newBoard, depth, (byte) currDepth+1, -beta, -Math.max(bestScore, alfa));
+			currScore = -score;
+			if(currScore>bestScore) {
+				bestScore = currScore;
+				bestMove = currMove;
+			}
+			
+			if(bestScore >= beta)
+				return bestScore,bestMove
+						
+		}
+		return bestScore,bestMove;
+	}
 	
 	
 //	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) 
