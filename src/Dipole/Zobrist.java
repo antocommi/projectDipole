@@ -4,58 +4,34 @@ import java.util.Random;
 
 public class Zobrist {
 
-	private static final long[] zobrist;
-	// hash to be used to compare two board states
-	private long zhash;
-
-	static {
-		Random random = new Random();
-		zobrist = new long[8 * 8];
-		for (int i = 0; i < zobrist.length; i++) {
-			zobrist[i] = random.nextLong();
-		}
-	}
+	private final long[][][] zobrist;
 
 	public Zobrist() {
-		this.zhash = 0;
-	}
-
-	public Zobrist(long zhash) {
-		this.zhash = zhash;
-	}
-
-	public void selezionaCella(int x, int y) {
-		zhash ^= zobrist[x * 8 + y]; // prima: ScacchieraBit.scacchiera.getIndex(x,y)
-	}
-
-	public long[] getZobrist() {
-		return zobrist;
-	}
-
-	public long getHashCodeCella(int i, int j) {
-		selezionaCella(i,j);
-		return zhash;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o instanceof Zobrist && (((Zobrist) o).zhash == zhash);
-	}
-
-	@Override
-	public int hashCode() {
-		return (int) zhash;
-	}
-
-	@Override
-	public String toString() {
-		return "" + zhash;
-	}
-
-	public static void main(String[] args) {
-		Zobrist z = new Zobrist();
-		for (int i = 0; i < z.getZobrist().length; i++) {
-			System.out.println(zobrist[i]);
+		Random random = new Random();
+		zobrist = new long[64][2][12];
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 2; j++) {
+				for (int k = 0; k < 12; k++) {
+					zobrist[i][j][k] = random.nextLong();
+				}
+			}
 		}
 	}
+
+	public long getHashcode(ScacchieraBit scacchiera, int colore) {
+		
+		byte[] listaPosizioni = scacchiera.getListaPosizioni(colore);
+		int numeroStackGiocatore = scacchiera.getNumeroStackGiocatore(colore);
+		long zhash = 0;
+		int i, j;
+
+		for (i = 0; i < numeroStackGiocatore; i++) {
+			j = listaPosizioni[i];
+			zhash ^= zobrist[j][colore][scacchiera.getNumeroPedine(j / 8, j % 8)]; // TODO: Da ricontrollare
+		}
+
+		return zhash;
+	}
+	
+	
 }

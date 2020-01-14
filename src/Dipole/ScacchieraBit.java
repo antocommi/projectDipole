@@ -20,24 +20,15 @@ public class ScacchieraBit {
 	private byte[] listaPedineNere; //
 	private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
 	private ArrayList<Mossa> moves; // lista delle mosse generate
-<<<<<<< HEAD
 	private int mosseMaxBianco;
 	private int mosseMaxNero;
 
-=======
-	private HashMap<String, Integer> riga; //
-	
->>>>>>> branch 'master' of https://github.com/antocommi/progDipole.git
 	public static final int SIZE = 8;
 
 	private static final int[] posInteressantiBianchi = { 0, 5, 2 };
 	private static final int[] posInteressantiNero = { 3, 1, 4 };
 
-<<<<<<< HEAD
 	private static HashMap<String, Integer> riga; //
-	
-=======
->>>>>>> branch 'master' of https://github.com/antocommi/progDipole.git
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
 	private static final int PEDINA_BIANCA = 0;
@@ -65,8 +56,8 @@ public class ScacchieraBit {
 		turnoGiocatore = true;
 		scacchieraBianchi = 0;
 		scacchieraNeri = 0;
-		mosseMaxBianco=60;
-		mosseMaxNero=60;
+		mosseMaxBianco = 60;
+		mosseMaxNero = 60;
 		MAX_SPOSTAMENTO = new int[8];
 		scacchiera = new ByteMap(8 * 4);
 		posizionaPedine(0, 3, 12, PEDINA_NERA);
@@ -86,31 +77,20 @@ public class ScacchieraBit {
 		numeroStackGiocatore = new int[2];
 	}
 
-<<<<<<< HEAD
 	public ScacchieraBit(ScacchieraBit oldBoard) {
 		this();
-		
-		java.lang.System.arraycopy(oldBoard.listaPedineBianche, 0, this.listaPedineBianche, 0, oldBoard.listaPedineBianche.length);
-		java.lang.System.arraycopy(oldBoard.listaPedineNere, 0, this.listaPedineNere, 0, oldBoard.listaPedineNere.length);
-		java.lang.System.arraycopy(oldBoard.numeroStackGiocatore, 0, this.numeroStackGiocatore, 0, oldBoard.numeroStackGiocatore.length);
+		java.lang.System.arraycopy(oldBoard.listaPedineBianche, 0, this.listaPedineBianche, 0,
+				oldBoard.listaPedineBianche.length);
+		java.lang.System.arraycopy(oldBoard.listaPedineNere, 0, this.listaPedineNere, 0,
+				oldBoard.listaPedineNere.length);
+		java.lang.System.arraycopy(oldBoard.numeroStackGiocatore, 0, this.numeroStackGiocatore, 0,
+				oldBoard.numeroStackGiocatore.length);
 		this.scacchiera = new ByteMap(oldBoard.scacchiera);
 		this.scacchieraBianchi = oldBoard.scacchieraBianchi;
-		this.scacchieraNeri= oldBoard.scacchieraNeri;
+		this.scacchieraNeri = oldBoard.scacchieraNeri;
 		this.turnoGiocatore = oldBoard.turnoGiocatore;
-		this.mosseMaxBianco=oldBoard.mosseMaxBianco;
-		this.mosseMaxNero=oldBoard.mosseMaxNero;
-=======
-	public ScacchieraBit(ScacchieraBit s) {
-		this.listaPedineBianche = s.listaPedineBianche;
-		this.listaPedineNere = s.listaPedineNere;
-		this.MAX_SPOSTAMENTO = s.MAX_SPOSTAMENTO;
-		this.moves = s.moves;
-		this.numeroStackGiocatore = s.numeroStackGiocatore;
-		this.riga = s.riga;
-		this.scacchiera = s.scacchiera;
-		this.scacchieraBianchi = s.scacchieraBianchi;
-		this.turnoGiocatore = s.turnoGiocatore;
->>>>>>> branch 'master' of https://github.com/antocommi/progDipole.git
+		this.mosseMaxBianco = oldBoard.mosseMaxBianco;
+		this.mosseMaxNero = oldBoard.mosseMaxNero;
 	}
 
 	private int modifyBit(int numero, int posizione, int valBinario) {
@@ -145,23 +125,16 @@ public class ScacchieraBit {
 		return false;
 	}
 
-	// converte stringa ("A4") in pos indici
+	public int getNumeroStackGiocatore(int colore) {
+		return numeroStackGiocatore[colore];
+	}
+
 	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
 		res[0] = riga.get(posizione.charAt(0) + "");// get da il valore della chiave che in questo caso è la lettera
 		res[1] = Integer.parseInt(posizione.substring(1)) - 1;
 		return res;
 	}
-//
-//	private ByteMap scacchiera;						// 
-//	private boolean turnoGiocatore;					// 
-//	private int scacchieraBianchi, scacchieraNeri;	// 
-//	private int[] numeroStackGiocatore;				// 
-//	private byte[] listaPedineBianche;				// 
-//	private byte[] listaPedineNere; 				// 
-//	private int[] MAX_SPOSTAMENTO; 					// Per ogni direzione -> max_spost in quella direzione
-//	private ArrayList<Mossa> moves;					// lista delle mosse generate
-//	private HashMap<String, Integer> riga;			//
 
 	public void posizionaPedine(int i, int j, int qty, int color) {
 		int a = i;
@@ -277,18 +250,19 @@ public class ScacchieraBit {
 	public void annullaMossa(Mossa m) {
 //		TODO
 	}
-	
-	
-	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI){
-		ScacchieraBit confF= new ScacchieraBit(confI);
-	
-		if(confF.turnoGiocatore) confF.mosseMaxBianco--;
-		else confF.mosseMaxNero--;
+
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI) {
+		ScacchieraBit confF = new ScacchieraBit(confI);
+
+		if (confF.turnoGiocatore)
+			confF.mosseMaxBianco--;
+		else
+			confF.mosseMaxNero--;
 		confF.muovi(m);
-		
+
 		return confF;
 	}
-	
+
 	public void muovi(Mossa m) {
 		// PRE-CONDIZIONE: m � una mossa ammissibile.
 		int x = m.getiStart();
@@ -450,7 +424,7 @@ public class ScacchieraBit {
 			}
 			scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 			scacchiera.setValue(spostamento, newPositionOnBoard);
-			
+
 		}
 		turnoGiocatore = !turnoGiocatore;
 	}
@@ -462,19 +436,21 @@ public class ScacchieraBit {
 			return listaPedineNere;
 		}
 	}
-	
-	public boolean zeroPedineDaEliminare(){
-		
+
+	public boolean zeroPedineDaEliminare() {
+		return false;
 	}
-	public boolean checkWin (){
-		//TODO caso in cui non può più cacciare fuori ma ha ancora pedine
-		if(mosseMaxBianco==0 || mosseMaxNero==0)
+
+	public boolean checkWin() {
+		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
+		if (mosseMaxBianco == 0 || mosseMaxNero == 0)
 			return true;
-		if(numeroStackGiocatore[0]==0 || numeroStackGiocatore[1]==0 || zeroPedineDaEliminare()) {
+		if (numeroStackGiocatore[0] == 0 || numeroStackGiocatore[1] == 0 || zeroPedineDaEliminare()) {
 			return true;
 		}
 		return false;
 	}
+
 	public void generaMosse(int x, int y) {
 		int pos, curr_pos, numeroCelleSpostamento = 0;
 //		System.out.println("x: " + x + " y: " + y);
@@ -482,7 +458,7 @@ public class ScacchieraBit {
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0)
 			throw new RuntimeException("Nessuna pedina disponibile");
-		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y); 
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int dir = 0; dir < 8; dir++) {
 			pos = x * 8 + y;
 			numeroCelleSpostamento = 0;
@@ -568,6 +544,10 @@ public class ScacchieraBit {
 		return true;
 	}
 
+	public int getNumeroPedine(int x, int y) {
+		return scacchiera.getValue(x*8+y);
+	}
+	
 	public boolean checkMosse(Mossa m) {
 		int x = m.getiStart();
 		int y = m.getjStart();
