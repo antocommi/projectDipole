@@ -2,19 +2,19 @@ package Dipole;
 
 import java.io.Serializable;
 
-public class Mossa implements Serializable{
+public class Mossa implements MossaI, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private int iStart;
 	private int jStart;
 	private int iEnd;
 	private int jEnd;
 	private int direction;
-
+	
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		this.iStart = iStart;
 		this.jStart = jStart;
@@ -99,8 +99,7 @@ public class Mossa implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Mossa [("+iStart+", "+jStart+") -> ("+iEnd+", "+jEnd+"); direction="
-				+ direction + "]";
+		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + direction + "]";
 	}
 
 }

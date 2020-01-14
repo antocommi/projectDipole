@@ -1,8 +1,9 @@
 package Dipole;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class MossaFuori {
+public class MossaFuori implements MossaI, Serializable {
 
 	private int iStart;
 	private int jStart;
