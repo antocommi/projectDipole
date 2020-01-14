@@ -20,12 +20,23 @@ public class TraspositionTable {
 		return table[(int) (e.getKey() % size)].equals(e);
 	}
 
+	private TTElement replace(TTElement oldValue, TTElement newValue) {
+		if (oldValue == null)
+			return newValue;
+		if (oldValue.getM().length >= newValue.getM().length)
+			return oldValue;
+		return newValue;
+	}
+
 	public void put(long key, TTElement value) {
 		// TODO: Replacement scheme - Ora politica LIFO
-		table[(int) (key % size)] = value;
+		TTElement old = table[(int) (key % size)];
+		table[(int) (key % size)] = replace(old, value);
 	}
 
 	public TTElement get(long key) {
-		return table[(int) (key % size)];
+		TTElement e = table[(int) (key % size)];
+		return e.getKey() == key ? e : null;
 	}
+
 }

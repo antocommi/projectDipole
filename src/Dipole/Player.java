@@ -3,6 +3,7 @@ package Dipole;
 import java.util.ArrayList;
 import java.util.Random;
 
+import DipoleHeuristics.HeuristicInterface;
 import util.ByteMap;
 
 public class Player {
@@ -16,21 +17,23 @@ public class Player {
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	
-	private TTElement[] transpositionTable;
 	private long hashCode;
 
-//	private int size = (int) Math.pow(2, 22); forse troppo grande - da verificare
-	private int size = (int) Math.pow(2, 19);
+	private int size = (int) Math.pow(2, 22); // TODO: forse troppo grande - da verificare
 
+	private HeuristicInterface euristica;
+	private Zobrist zobrist;
+	private TTElement[] transpositionTable;
 	
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
 		this.root = scacchiera;
 //		this.transpositionTable = new TTElement[size]; TODO
-		Zobrist z = new Zobrist();
+		zobrist = new Zobrist();
 	}
 
 	public void play() {
+		
 	}
 	
 	public void saveState() {
