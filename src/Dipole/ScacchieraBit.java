@@ -646,7 +646,7 @@ public class ScacchieraBit {
 
 			}
 		}
-		generaMosseFuori(x, y);
+		//generaMosseFuori(x, y);
 	}
 
 	public void addAllMoves(ArrayList<Mossa> mosse) {
@@ -677,10 +677,10 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
-//				if (checkMosse(mossa)) {
-//					System.out.println("dir: " + dir);
+				if (checkMosse(mossa)) {
+					//System.out.println("dir: " + dir);
 				listaMosse.add(mossa);
-//				}
+				}
 			}
 		}
 		return listaMosse;
@@ -727,7 +727,7 @@ public class ScacchieraBit {
 	public boolean checkMosseInAvanti(Mossa m, int x, int y) {
 		// Valido sia per BASE che MERGE ossia solo mosse in avanti
 		int c = getColorePedina(x, y);
-		if (c == PEDINA_BIANCA
+		if (c == PEDINA_BIANCA 
 				&& !(m.getDirection() != NORTH || m.getDirection() != NORTHEAST || m.getDirection() != NORTHWEST))
 			return false;
 		else if (c == PEDINA_NERA
@@ -763,6 +763,7 @@ public class ScacchieraBit {
 		// mossa indietro e uguale a 0 ==> non può mangiare
 		if (!checkMosseInAvanti(m, x, y) && ((scacchiera.getValue(xF * 8 + yF) == 0) || (getColorePedina(xF, yF) == c)))
 			return false;
+		
 
 		// CAPTURE
 		if (scacchiera.getNumeroPedine(x, y) < scacchiera.getNumeroPedine(xF, yF))
@@ -911,34 +912,19 @@ public class ScacchieraBit {
 	public static void main(String[] args) {
 		ScacchieraBit scacchiera = new ScacchieraBit();
 		scacchiera.stampaScacchiera();
-		scacchiera.generaMosse(0, 3);
+		scacchiera.generaMosse(7, 4);
 		ArrayList<Mossa> m = scacchiera.getMoves();
-
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		
-//		for (Mossa mossa : m) {
-//			System.out.println(mossa);
-//		}
-
-		Mossa mossa = m.get(0);
-		scacchiera.muovi(mossa); // dopo muovi potrebbe pulire moves
-		scacchiera.getMoves().clear();
-		scacchiera.generaMosse(2, 3);
 
 		System.out.println("___________________");
 		System.out.println("");
 		System.out.println("Mosse disponibili: " + m.size());
 		System.out.println("___________________");
 		System.out.println("");
-
-		for (Mossa mossa2 : m) {
-			System.out.println(mossa2);
+		System.out.println();
+		for (Mossa mossa : m) {
+			System.out.println(mossa);
 		}
-		scacchiera.muovi(m.get(0));
-		scacchiera.stampaScacchiera();
+
+		
 	}
 }
