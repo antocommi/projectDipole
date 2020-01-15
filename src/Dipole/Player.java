@@ -73,13 +73,15 @@ public class Player {
 		// altrimenti, valuta il nodo in modo ricorsivo.
 		for (int i = 0; i < mosse.length; i++) {
 			for (Mossa mossa : mosse[i]) {
-
+				
 				newBoard = ScacchieraBit.muovi(mossa, board);
-
+				
 				res = abNegamax(newBoard, depth, (byte) (currDepth + 1), -beta, -Math.max(bestScore, alfa));
-
+				
 				score = ((Integer) res[0]).intValue();
+				
 				currMove = (Mossa) res[1];
+				
 				currScore = -score;
 
 				if (currScore > bestScore) {
@@ -92,8 +94,8 @@ public class Player {
 				}
 			}
 		}
+		
 		return new Object[] { new Integer(bestScore), bestMove };
-	
 	}
 
 //	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) 
