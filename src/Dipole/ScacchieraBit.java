@@ -262,6 +262,7 @@ public class ScacchieraBit {
 
 		return confF;
 	}
+
 	public void annullaMossa(Mossa m, int tipo) {
 		int x = m.getiStart();
 		int y = m.getjStart(), c = getColorePedina(x, y);
@@ -601,7 +602,6 @@ public class ScacchieraBit {
 		return tipo;
 	}
 
-
 	public byte[] getListaPosizioni(int colore) {
 		if (colore == PEDINA_BIANCA) {
 			return listaPedineBianche;
@@ -704,21 +704,21 @@ public class ScacchieraBit {
 
 		}
 	}
-	public ArrayList<Mossa>[] getAllMoves(){
 
-		if(turnoGiocatore){
-			ArrayList [] listaMosse = new ArrayList[numeroStackGiocatore[0]];
-			for(int i=0;i<listaPedineBianche.length;i++){
-				int c=0;
-				listaMosse[c++]=generaListaMosse(listaPedineBianche[i]/8, listaPedineBianche[i]%8);
+	public ArrayList<Mossa>[] getAllMoves() {
+
+		if (turnoGiocatore) {
+			ArrayList[] listaMosse = new ArrayList[numeroStackGiocatore[0]];
+			for (int i = 0; i < listaPedineBianche.length; i++) {
+				int c = 0;
+				listaMosse[c++] = generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8);
 			}
 			return listaMosse;
-		}
-		else {
-			ArrayList [] listaMosse = new ArrayList[numeroStackGiocatore[1]];
-			for(int i=0;i<listaPedineNere.length;i++){
-				int c=0;
-				listaMosse[c++]=generaListaMosse(listaPedineNere[i]/8, listaPedineNere[i]%8);
+		} else {
+			ArrayList[] listaMosse = new ArrayList[numeroStackGiocatore[1]];
+			for (int i = 0; i < listaPedineNere.length; i++) {
+				int c = 0;
+				listaMosse[c++] = generaListaMosse(listaPedineNere[i] / 8, listaPedineNere[i] % 8);
 			}
 			return listaMosse;
 		}
@@ -737,9 +737,9 @@ public class ScacchieraBit {
 	}
 
 	public int getNumeroPedine(int x, int y) {
-		return scacchiera.getValue(x*8+y);
+		return scacchiera.getValue(x * 8 + y);
 	}
-	
+
 	public boolean checkMosse(Mossa m) {
 		int x = m.getiStart();
 		int y = m.getjStart();
@@ -842,6 +842,26 @@ public class ScacchieraBit {
 
 	public void setMoves(ArrayList<Mossa> moves) {
 		this.moves = moves;
+	}
+
+	public int getNumberPedinaMetaScacchiera(int giocatore) {
+		int nPedineMetaCampoB = 0;
+		int nPedineMetaCampoN = 0;
+		for (int i = 0; i < numeroStackGiocatore[giocatore]; i++) {
+			if (giocatore == 0) {
+				if (listaPedineBianche[i] < 8 * 4) {
+					nPedineMetaCampoB++;
+				}
+			} else {
+				if (listaPedineNere[i] > 8 * 4) {
+					nPedineMetaCampoN++;
+				}
+			}
+		}
+		if (giocatore == 0)
+			return nPedineMetaCampoB;
+		else
+			return nPedineMetaCampoN;
 	}
 
 	/**
