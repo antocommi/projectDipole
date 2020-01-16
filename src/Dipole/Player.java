@@ -80,11 +80,11 @@ public class Player {
 		} else {
 			mosse = board.getAllMoves();
 		}
-		System.out.println("--------negamax-------");
-		for (Mossa m : mosse) {
-			System.out.println(m);
-		}
-		System.out.println("--------negamax-------");
+//		System.out.println("--------negamax-------");
+//		for (Mossa m : mosse) {
+//			System.out.println(m);
+//		}
+//		System.out.println("--------negamax-------");
 		for (Mossa mossa : mosse) {
 			newBoard = ScacchieraBit.muovi(mossa, board);
 			res = abNegamax(newBoard, depth, ++currDepth, -beta, -Math.max(bestScore, alfa));
