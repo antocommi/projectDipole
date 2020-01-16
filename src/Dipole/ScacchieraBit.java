@@ -50,7 +50,7 @@ public class ScacchieraBit {
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
 	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
 
-	public void debugStatus() {
+	public void debugStatus(boolean stampaMosse) {
 //		private ByteMap scacchiera; //
 //		private boolean turnoGiocatore; //
 //		private int scacchieraBianchi, scacchieraNeri; //
@@ -65,11 +65,13 @@ public class ScacchieraBit {
 		System.out.println("TurnoGiocatore: " + turnoGiocatore);
 		System.out.println("ScacchieraBianchi: " + (Integer.toBinaryString(scacchieraBianchi)));
 		System.out.println("ScacchieraNeri: " + (Integer.toBinaryString(scacchieraNeri)));
-		System.out.format("n� stack bianco: %d \nn� stack nero: %d \n ", numeroStackGiocatore[PEDINA_BIANCA],
+		System.out.format("n� stack bianco: %d \nn� stack nero: %d \n", numeroStackGiocatore[PEDINA_BIANCA],
 				numeroStackGiocatore[PEDINA_NERA]);
-		System.out.println("Mosse disponibili");
-		for (Mossa m : moves) {
-			System.out.println("\t" + m);
+		if (stampaMosse) {
+			System.out.println("Mosse disponibili");
+			for (Mossa m : moves) {
+				System.out.println("\t" + m);
+			}
 		}
 		System.out.println("MosseMaxBianco: " + mosseMaxBianco);
 		System.out.println("MosseMaxNero: " + mosseMaxNero);
@@ -525,7 +527,7 @@ public class ScacchieraBit {
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 				System.out.println(getColorePedina(newPositionOnBoard / 8, newPositionOnBoard % 8));
 				System.out.println("pdpdpdpdp");
-				debugStatus();
+				debugStatus(false);
 				System.out.println("popopopopo");
 				scacchiera.setValue(spostamento, newPositionOnBoard);
 
@@ -557,11 +559,11 @@ public class ScacchieraBit {
 						}
 					}
 				}
-				
+
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
-				
+
 				scacchiera.setValue(nPedineNew + spostamento, newPositionOnBoard);
-				
+
 			} else if (c != cF) { // CAPTURE
 				tipo = 2;
 				// se le sposta tutte
@@ -618,10 +620,10 @@ public class ScacchieraBit {
 						}
 					}
 				}
-				
+
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
 				scacchiera.setValue(spostamento, newPositionOnBoard);
-				
+
 			}
 
 		}
@@ -698,7 +700,7 @@ public class ScacchieraBit {
 		if (scacchiera.getIndex(x, y) == 0) {
 			System.out.format("(%d,%d)", x, y);
 			scacchiera.printValues();
-			this.debugStatus();
+			this.debugStatus(false);
 			System.out.println("getIndex");
 			throw new RuntimeException("Nessuna pedina disponibile");
 		}
@@ -1043,7 +1045,6 @@ public class ScacchieraBit {
 		System.out.println();
 		scacchiera.muovi(m.get(44));
 		scacchiera.stampaScacchiera();
-
 
 		scacchiera.generaMosse(2, 3);
 		m = scacchiera.getMoves();
