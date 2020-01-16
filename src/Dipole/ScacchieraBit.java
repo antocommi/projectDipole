@@ -472,6 +472,7 @@ public class ScacchieraBit {
 					for (int l = 0; l < 12; l++) {
 						if (c == PEDINA_BIANCA) {
 							scacchieraBianchi = modifyBit(0, x * 4 + y, scacchieraBianchi);
+							System.out.println("qui");
 							scacchieraBianchi = modifyBit(1, xF * 4 + yF, scacchieraBianchi);
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								listaPedineBianche[l] = (byte) newPositionOnBoard;
@@ -493,12 +494,16 @@ public class ScacchieraBit {
 						scacchieraBianchi = modifyBit(1, xF * 4 + yF, scacchieraBianchi);
 					}
 					else {
+						System.out.println("qui");
 						listaPedineNere[numeroStackGiocatore[PEDINA_NERA]++] = (byte) newPositionOnBoard;
 						scacchieraNeri = modifyBit(1, xF * 4 + yF, scacchieraNeri);
 					}
 				}
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
+				System.out.println(getColorePedina(newPositionOnBoard/8, newPositionOnBoard%8));
 				scacchiera.setValue(spostamento, newPositionOnBoard);
+				
+				System.out.println(getColorePedina(newPositionOnBoard/8, newPositionOnBoard%8));
 			} else if (c == cF) {
 				System.out.println("merge");
 				tipo = 1;// MERGE
@@ -612,8 +617,8 @@ public class ScacchieraBit {
 
 	public boolean checkWin() {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
-//		if (mosseMaxBianco == 0 || mosseMaxNero == 0)
-//			return true;
+		if (mosseMaxBianco == 0 || mosseMaxNero == 0)
+			return true;
 		if (numeroStackGiocatore[0] == 0 || numeroStackGiocatore[1] == 0 ) {//|| zeroPedineDaEliminare()) {
 			return true;
 		}
