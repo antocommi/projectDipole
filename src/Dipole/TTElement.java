@@ -1,28 +1,32 @@
 package Dipole;
 
+import java.util.ArrayList;
+
 public class TTElement {
 
 	private long key;
 	private int depth;
 	private int value;
-	private Mossa[] m;
-	
-	public TTElement(long key, int depth, int value, Mossa[] mosse, int indexBest) {
+	private ArrayList<Mossa> m;
+
+	public TTElement(long key, int depth, int value, ArrayList<Mossa> mosse, int indexBest) {
 		this.key = key;
 		this.depth = depth;
 		this.value = value;
-		if (mosse != null) {
-			this.m = new Mossa[mosse.length];
-			for (int i = 1; i <= indexBest; i++) {
-				this.m[i] = mosse[i - 1];
-			}
-			for (int i = indexBest + 1; i < mosse.length; i++) {
-				if (mosse[i] == null)
-					break;
-				this.m[i] = mosse[i];
-			}
-			this.m[0] = mosse[indexBest];
-		}
+		this.m = mosse;
+//		TODO: DA SISTEMARE CON ARRAYLIST
+//		if (mosse != null) {
+//			this.m = new Mossa[mosse.length];
+//			for (int i = 1; i <= indexBest; i++) {
+//				this.m[i] = mosse[i - 1];
+//			}
+//			for (int i = indexBest + 1; i < mosse.length; i++) {
+//				if (mosse[i] == null)
+//					break;
+//				this.m[i] = mosse[i];
+//			}
+//			this.m[0] = mosse[indexBest];
+//		}
 	}
 
 	public long getKey() {
@@ -49,15 +53,15 @@ public class TTElement {
 		this.value = value;
 	}
 
-	public Mossa[] getM() {
+	public ArrayList<Mossa> getM() {
 		return m;
 	}
 
-	public void setM(Mossa[] m) {
+	public void setM(ArrayList<Mossa> m) {
 		this.m = m;
 	}
-	
-	public Mossa getBestMove(Mossa [] mosse) {
+
+	public Mossa getBestMove(Mossa[] mosse) {
 		return mosse[0];
 	}
 

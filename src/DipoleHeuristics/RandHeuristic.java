@@ -20,9 +20,12 @@ public class RandHeuristic implements HeuristicInterface{
 		return res;
 	}
 
+	
+
 	@Override
-	public int valuta(ScacchieraBit stato, ArrayList<Mossa> mosse) {
-		return valuta(stato);
+	public int valuta(ScacchieraBit stato, ArrayList<Mossa> mosse, int giocatore) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
