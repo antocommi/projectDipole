@@ -80,11 +80,11 @@ public class Player {
 		} else {
 			mosse = board.getAllMoves();
 		}
-		System.out.println("---------------");
+		System.out.println("--------negamax-------");
 		for (Mossa m : mosse) {
 			System.out.println(m);
 		}
-		System.out.println("---------------");
+		System.out.println("--------negamax-------");
 		for (Mossa mossa : mosse) {
 			newBoard = ScacchieraBit.muovi(mossa, board);
 			res = abNegamax(newBoard, depth, ++currDepth, -beta, -Math.max(bestScore, alfa));
@@ -115,13 +115,13 @@ public class Player {
 		Object[] bestConfig = null;
 		Mossa bestMove = null;
 		int bestScore = 0;
-		System.out.println("1");
+		System.out.println("nid 1");
 		for (int i = 1; i <= PROFONDITA; i++) {
 			bestConfig = abNegamax(root, i, 0, -Integer.MAX_VALUE, Integer.MAX_VALUE);
-			System.out.println("2");
+			System.out.println("nid 2");
 			if (bestConfig[1] != null) {
 
-				System.out.println("22");
+				System.out.println("nid 22");
 				bestMove = (Mossa) bestConfig[1];
 				if (((Integer) bestConfig[0]) == FINE_GIOCO)
 					return bestMove;
@@ -131,10 +131,6 @@ public class Player {
 
 		System.out.println("3");
 		return bestMove;
-	}
-
-	public int valutaConfigurazioneRandom(ScacchieraBit s) {
-		return new Random().nextInt(1000);
 	}
 
 	public static void main(String[] args) {

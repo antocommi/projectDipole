@@ -23,11 +23,12 @@ public class Zobrist {
 		byte[] listaPosizioni = scacchiera.getListaPosizioni(colore);
 		int numeroStackGiocatore = scacchiera.getNumeroStackGiocatore(colore);
 		long zhash = 0;
-		int i, j;
-
+		int i, j, k;
+		
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
-			zhash ^= zobrist[j][colore][scacchiera.getNumeroPedine(j / 8, j % 8)]; // TODO: Da ricontrollare
+			k = scacchiera.getNumeroPedine(j / 8, j % 8);
+			zhash ^= zobrist[j][colore][k-1]; // TODO: Da ricontrollare
 		}
 
 		return zhash;

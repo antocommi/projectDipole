@@ -24,10 +24,8 @@ public class ScacchieraBit {
 	private int mosseMaxNero;
 
 	public static final int SIZE = 8;
-
 	private static final int[] posInteressantiBianchi = { 0, 5, 2 };
 	private static final int[] posInteressantiNero = { 3, 1, 4 };
-
 	private static HashMap<String, Integer> riga; //
 	private static final int DIMENSION = 4;
 	private static final int VUOTA = -1;
@@ -52,6 +50,31 @@ public class ScacchieraBit {
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
 	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
 
+	public void debugStatus() {
+//		private ByteMap scacchiera; //
+//		private boolean turnoGiocatore; //
+//		private int scacchieraBianchi, scacchieraNeri; //
+//		private int[] numeroStackGiocatore; //
+//		private byte[] listaPedineBianche; //
+//		private byte[] listaPedineNere; //
+//		private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
+//		private ArrayList<Mossa> moves; // lista delle mosse generate
+//		private int mosseMaxBianco;
+//		private int mosseMaxNero;
+		System.out.println("======================DEBUG INFO=========================");
+		System.out.println("TurnoGiocatore: "+ turnoGiocatore);
+		System.out.println("ScacchieraBianchi: " + (Integer.toBinaryString(scacchieraBianchi)));
+		System.out.println("ScacchieraNeri: " + (Integer.toBinaryString(scacchieraNeri)));
+		System.out.format("n° stack bianco: %d \nn° stack nero: %d \n ",numeroStackGiocatore[PEDINA_BIANCA],numeroStackGiocatore[PEDINA_NERA]);
+		System.out.println("Mosse disponibili");
+		for(Mossa m: moves) {
+			System.out.println("\t"+m);
+		}
+		System.out.println("MosseMaxBianco: " + mosseMaxBianco);
+		System.out.println("MosseMaxNero: " + mosseMaxNero);
+		System.out.println("======================DEBUG INFO=========================");
+	}
+	
 	public ScacchieraBit() {
 		turnoGiocatore = true;
 		scacchieraBianchi = 0;
@@ -669,8 +692,13 @@ public class ScacchieraBit {
 //		System.out.println("x: " + x + " y: " + y);
 		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
-		if (scacchiera.getIndex(x, y) == 0)
+		if (scacchiera.getIndex(x, y) == 0) {
+			System.out.format("(%d,%d)",x,y);
+			scacchiera.printValues();
+			this.debugStatus();
+			System.out.println("getIndex");
 			throw new RuntimeException("Nessuna pedina disponibile");
+		}
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int dir = 0; dir < 8; dir++) {
 			pos = x * 8 + y;
@@ -710,12 +738,12 @@ public class ScacchieraBit {
 	public ArrayList<Mossa> getAllMoves() {
 		ArrayList<Mossa> listaMosse = new ArrayList<>();
 		if (turnoGiocatore) {
-			for (int i = 0; i < listaPedineBianche.length; i++) {
+			for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 				listaMosse.addAll(generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8));
 			}
 			return listaMosse;
 		} else {
-			for (int i = 0; i < listaPedineNere.length; i++) {
+			for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
 				listaMosse.addAll(generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8));
 			}
 			return listaMosse;
