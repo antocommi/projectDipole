@@ -141,7 +141,7 @@ public class Player {
 		Random r = new Random(18432);
 		ArrayList<Mossa> moves;
 		int scelta;
-		for (int i = 0; i < 120; i++) {
+		for (int i = 0; i < 5; i++) {
 			System.out.println("XXX - " + i);
 			moves = s.getAllMoves();
 //			System.out.println("size: " + moves.size());
@@ -151,7 +151,8 @@ public class Player {
 				
 				try{
 					s = ScacchieraBit.muovi(moves.get(scelta), s);
-//					s.debugStatus(false, moves.get(scelta).toString());
+					if(s.checkWin()) break;
+					s.debugStatus(false, moves.get(scelta).toString());
 				}catch(Exception e) {
 					e.printStackTrace();
 					s.debugStatus(false, "errore");
@@ -160,6 +161,7 @@ public class Player {
 //				System.out.println("\n\n\n");
 			}
 		}
+		s.debugStatus(true, "fine");
 //		Player p = new Player(s, 0);
 //		Object[] res = p.negamaxIterativeDeepening();
 //		Mossa m = (Mossa) res[1];
