@@ -14,7 +14,7 @@ public class Mossa implements MossaI, Serializable {
 	private int iEnd;
 	private int jEnd;
 	private int direction;
-	
+	private static String[] DIR= {"NORTH","SOUTH","NORTHEAST","SOUTHWEST","SOUTHEAST","NORTHWEST","EAST","WEST"};
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		this.iStart = iStart;
 		this.jStart = jStart;
@@ -99,7 +99,7 @@ public class Mossa implements MossaI, Serializable {
 
 	@Override
 	public String toString() {
-		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + direction + "]";
+		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction] + "]";
 	}
 
 }

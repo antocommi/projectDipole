@@ -12,7 +12,9 @@ public interface HeuristicInterface {
 	 * si deve basare sulle mosse generate.
 	 */
 	
-	public int valuta(ScacchieraBit stato);
+//	public int valuta(ScacchieraBit stato);
+	
+	public int valuta(ScacchieraBit stato, int giocatore);
 	
 	public int valuta(ScacchieraBit stato, ArrayList<Mossa> mosse, int giocatore);
 }
