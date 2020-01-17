@@ -37,10 +37,6 @@ public class Player {
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
 
-	public void play() {
-
-	}
-
 	public void saveState() {
 		root.generaMosse(0, 3);
 		stampaMosse(root.getMoves());
@@ -56,20 +52,26 @@ public class Player {
 	}
 
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta) {
+		System.out.print("|");
+		for(int i=0;i<currDepth;i++) {
+			System.out.format("-");
+		}
+		System.out.format("depth: %d currDepth: %d alfa: %d beta: %d\n", depth, currDepth, alfa, beta);
 		long controlloTempo = System.currentTimeMillis() - start;
 		if (controlloTempo >= 800)
 			return null;
-
 		ScacchieraBit newBoard;
 		int bestScore = Integer.MIN_VALUE, currScore, score;
 		Mossa bestMove = null, currMove = null;
 		Object[] res;
-		System.out.println("checkwin: " + board.checkWin());
-		if (board.checkWin() || currDepth == depth) {
+//		System.out.println("checkwin: " + board.checkWin());
+		System.out.println("popo1");
+		if (board.checkWin() || currDepth >= depth) {
 //		if(currDepth == depth) {
-			board.stampaScacchiera();
+//			board.stampaScacchiera();
 			return new Object[] { euristica.valuta(board), null };
 		}
+		System.out.println("popo2");
 		TTElement trasposition;
 		long ttKey = zobrist.getHashcode(board, board.getTurnoGiocatore() ? 0 : 1);
 		ArrayList<Mossa> mosse;
@@ -80,11 +82,6 @@ public class Player {
 		} else {
 			mosse = board.getAllMoves();
 		}
-//		System.out.println("--------negamax-------");
-//		for (Mossa m : mosse) {
-//			System.out.println(m);
-//		}
-//		System.out.println("--------negamax-------");
 		for (Mossa mossa : mosse) {
 			newBoard = ScacchieraBit.muovi(mossa, board);
 			res = abNegamax(newBoard, depth, ++currDepth, -beta, -Math.max(bestScore, alfa));
@@ -103,9 +100,7 @@ public class Player {
 			if (bestScore >= beta) {
 				return new Object[] { new Integer(bestScore), bestMove };
 			}
-
 		}
-
 		return new Object[] { new Integer(bestScore), bestMove };
 	}
 
@@ -115,21 +110,19 @@ public class Player {
 		Object[] bestConfig = null;
 		Mossa bestMove = null;
 		int bestScore = 0;
-		System.out.println("nid 1");
+		System.out.println("1");
 		for (int i = 1; i <= PROFONDITA; i++) {
 			bestConfig = abNegamax(root, i, 0, -Integer.MAX_VALUE, Integer.MAX_VALUE);
-			System.out.println("nid 2");
 			if (bestConfig[1] != null) {
-
-				System.out.println("nid 22");
 				bestMove = (Mossa) bestConfig[1];
 				if (((Integer) bestConfig[0]) == FINE_GIOCO)
 					return bestMove;
-			} // else
-				// break;
+			} 
+			else {
+				break;
+			}
 		}
-
-		System.out.println("3");
+		System.out.println("2");
 		return bestMove;
 	}
 
@@ -139,5 +132,4 @@ public class Player {
 		Mossa m = p.negamaxIterativeDeepening();
 		System.out.println(m);
 	}
-
 }

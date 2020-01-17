@@ -50,7 +50,7 @@ public class ScacchieraBit {
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
 	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
 
-	public void debugStatus(boolean stampaMosse) {
+	public void debugStatus(boolean stampaMosse, String nome) {
 //		private ByteMap scacchiera; //
 //		private boolean turnoGiocatore; //
 //		private int scacchieraBianchi, scacchieraNeri; //
@@ -61,7 +61,8 @@ public class ScacchieraBit {
 //		private ArrayList<Mossa> moves; // lista delle mosse generate
 //		private int mosseMaxBianco;
 //		private int mosseMaxNero;
-		System.out.println("======================DEBUG INFO=========================");
+		System.out.println("======================DEBUG INFO: "+ nome+"=========================");
+		scacchiera.printValues();
 		System.out.println("TurnoGiocatore: " + turnoGiocatore);
 		System.out.println("ScacchieraBianchi: " + (Integer.toBinaryString(scacchieraBianchi)));
 		System.out.println("ScacchieraNeri: " + (Integer.toBinaryString(scacchieraNeri)));
@@ -280,8 +281,9 @@ public class ScacchieraBit {
 	}
 
 	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI) {
+//		confI.debugStatus(false,"xx");
 		ScacchieraBit confF = new ScacchieraBit(confI);
-
+//		confF.debugStatus(false,"xy");
 		if (confF.turnoGiocatore)
 			confF.mosseMaxBianco--;
 		else
@@ -472,7 +474,7 @@ public class ScacchieraBit {
 		int nPedineOld = scacchiera.getValue(oldPositionOnBoard);
 		int nPedineNew;
 		int spostamento;
-		System.out.format("mossa ricevuta in muovi, mossa: %s \n", m.toString());
+//		System.out.format("mossa ricevuta in muovi, mossa: %s \n", m.toString());
 		if (checkPosOut(xF, yF)) {
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
 			int pedineDaEliminare = calcolaCelleFuori(x, y, xF, yF);
@@ -489,7 +491,6 @@ public class ScacchieraBit {
 		} else {
 			// Cella di destinazione all'interno della scacchiera
 			nPedineNew = scacchiera.getValue(newPositionOnBoard);
-			System.out.println("numero pedine  " + nPedineNew);
 			spostamento = calcolaSpostamento(x, y, xF, yF);
 			if (nPedineNew == 0) { // BASE
 				tipo = 0;
@@ -525,13 +526,7 @@ public class ScacchieraBit {
 					}
 				}
 				scacchiera.setValue(nPedineOld - spostamento, oldPositionOnBoard);
-				System.out.println(getColorePedina(newPositionOnBoard / 8, newPositionOnBoard % 8));
-				System.out.println("pdpdpdpdp");
-				debugStatus(false);
-				System.out.println("popopopopo");
 				scacchiera.setValue(spostamento, newPositionOnBoard);
-
-				System.out.println(getColorePedina(newPositionOnBoard / 8, newPositionOnBoard % 8));
 			} else if (c == cF) {
 				System.out.println("merge");
 				tipo = 1;// MERGE
@@ -698,10 +693,6 @@ public class ScacchieraBit {
 		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0) {
-			System.out.format("(%d,%d)", x, y);
-			scacchiera.printValues();
-			this.debugStatus(false);
-			System.out.println("getIndex");
 			throw new RuntimeException("Nessuna pedina disponibile");
 		}
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);

@@ -13,6 +13,7 @@ public class ByteMap {
 
 	public ByteMap(ByteMap b) {
 		this.bitMap = new int[b.bitMap.length];
+		java.lang.System.arraycopy(b.bitMap,0,this.bitMap,0,b.bitMap.length);
 	}
 
 	public void setValue(int value, int index) {
@@ -46,24 +47,24 @@ public class ByteMap {
 
 	public void printValues() {
 		int i, j;
+		System.out.println("Situazione scacchiera");
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
 				System.out.print(" " + getValue(i * 8 + j));
 			}
 			System.out.println("");
 		}
-
-		for (int l = 0; l < 8 * 8; l++) {
-			System.out.print(getValue(l)+" ");
-			if(l%8 ==0) System.out.println("");
-		}
-		System.out.println(" ");
-
-		System.out.println("_________________");
-
-		for (int k = 0; k < 8; k++) {
-			System.out.println(Integer.toBinaryString(bitMap[k]));
-		}
+//		for (int l = 0; l < 8 * 8; l++) {
+//			System.out.print(getValue(l)+" ");
+//			if(l%8 ==0) System.out.println("");
+//		}
+//		System.out.println(" ");
+//
+//		System.out.println("_________________");
+//
+//		for (int k = 0; k < 8; k++) {
+//			System.out.println(Integer.toBinaryString(bitMap[k]));
+//		}
 	}
 
 }
