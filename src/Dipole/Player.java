@@ -54,7 +54,7 @@ public class Player {
 		Mossa bestMove = null, currMove = null;
 		Object[] res;
 //		System.out.println("checkwin: " + board.checkWin());
-		if (board.checkWin() || currDepth >= depth) {
+		if (board.checkFin() || currDepth >= depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 			int e = euristica.valuta(board, giocatore);
 //			board.debugStatus(false, "negamax");
@@ -138,7 +138,7 @@ public class Player {
 
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
-		Random r = new Random(18432);
+		Random r = new Random();
 		ArrayList<Mossa> moves;
 		int scelta;
 		for (int i = 0; i < 5; i++) {
@@ -151,7 +151,7 @@ public class Player {
 				
 				try{
 					s = ScacchieraBit.muovi(moves.get(scelta), s);
-					if(s.checkWin()) break;
+					if(s.checkFin()) break;
 					s.debugStatus(false, moves.get(scelta).toString());
 				}catch(Exception e) {
 					e.printStackTrace();
