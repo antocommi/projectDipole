@@ -89,7 +89,7 @@ public class Player {
 			}
 //			newBoard.debugStatus(false, "newBoard "+depth+" "+currDepth);
 			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -Math.max(bestScore, alfa));
-			score = ((Integer) res[0]).intValue();
+			score = ((int) res[0]);
 			currMove = (Mossa) res[1];
 			currScore = -score;
 
@@ -138,7 +138,13 @@ public class Player {
 
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
+<<<<<<< HEAD
 		Random r = new Random(27);
+=======
+		long seed = System.currentTimeMillis();
+		Random r = new Random(seed);
+		System.out.println("SEED utilizzato: " + seed);
+>>>>>>> branch 'master' of https://github.com/antocommi/progDipole.git
 		ArrayList<Mossa> moves;
 		int scelta;
 		for (int i = 0; i < 60; i++) {
