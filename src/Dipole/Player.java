@@ -143,7 +143,7 @@ public class Player {
 		System.out.println("SEED utilizzato: " + seed);
 		ArrayList<Mossa> moves;
 		int scelta;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 60; i++) {
 			System.out.println("XXX - " + i);
 			moves = s.getAllMoves();
 //			System.out.println("size: " + moves.size());
@@ -164,7 +164,9 @@ public class Player {
 			}
 		}
 		s.debugStatus(true, "fine");
-//		Player p = new Player(s, 0);
+		ArrayList<Mossa> mosseFinali = s.generaListaMosse(7, 2);
+		System.out.println("Numero di mosse disponibili: "+mosseFinali.size());
+		//		Player p = new Player(s, 0);
 //		Object[] res = p.negamaxIterativeDeepening();
 //		Mossa m = (Mossa) res[1];
 //		int a = (int) res[0];
