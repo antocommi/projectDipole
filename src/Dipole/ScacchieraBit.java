@@ -1,5 +1,6 @@
 package Dipole;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ import cestinoDipole.Cella;
 import util.ByteMap;;
 
 public class ScacchieraBit {
-	// Implementazione della scacchiera tramite bitboard.
+	// Implementazione della scacchiera tramite bitboard. 
 	// La scacchiera � 8x8 => 64 celle
 	// Due bitboard da 64 bit una per i neri e l'altra per i bianchi
 	// private int scacchiere;
@@ -92,7 +93,7 @@ public class ScacchieraBit {
 		System.out.println("MosseMaxNero: " + mosseMaxNero);
 		System.out.println("======================DEBUG INFO=========================");
 	}
-
+	
 	public ScacchieraBit() {
 		turnoGiocatore = true;
 		scacchieraBianchi = 0;
@@ -157,11 +158,11 @@ public class ScacchieraBit {
 	public void setScacchiera(ByteMap scacchiera) {
 		this.scacchiera = scacchiera;
 	}
-
+	
 	private String calcolaLettera(int nLettera) {
-		return "ABCDEFGH".substring(nLettera, nLettera + 1);
+		return "ABCDEFGH".substring(nLettera,nLettera+1);
 	}
-
+	
 	public boolean checkPosOut(int i, int j) {
 		if (i > 7 || j > 7 || i < 0 || j < 0)
 			return true;
@@ -174,11 +175,11 @@ public class ScacchieraBit {
 
 	private int[] calcola_indici(String posizione) {
 		int[] res = new int[2];
-		res[0] = riga.get(posizione.charAt(0) + "");// get da il valore della chiave che in questo caso è la lettera
-		res[1] = Integer.parseInt(posizione.substring(1)) - 1;
+		res[0] = riga.get(posizione.charAt(0)+"");// get da il valore della chiave che in questo caso è la lettera
+		res[1] = Integer.parseInt(posizione.substring(1))-1;
 		return res;
 	}
-
+	
 	public void posizionaPedine(int i, int j, int qty, int color) {
 		int a = i;
 		int b = j / 2;
@@ -195,42 +196,42 @@ public class ScacchieraBit {
 		}
 		numeroStackGiocatore[color]++;
 	}
-
+	
 	public int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
-		int[] ris = new int[2];
-		switch (dir) {
-		case NORTH:
-			ris[0] = i - nCelleMove;
-			ris[1] = j;
-			break;
-		case NORTHEAST:
-			ris[1] = j + nCelleMove;
-			ris[0] = i - nCelleMove;
-			break;
-		case EAST:
-			ris[1] = j + nCelleMove;
-			ris[0] = i;
-			break;
-		case SOUTHEAST:
-			ris[1] = j + nCelleMove;
-			ris[0] = i + nCelleMove;
-			break;
-		case SOUTH:
-			ris[0] = i + nCelleMove;
-			ris[1] = j;
-			break;
-		case SOUTHWEST:
-			ris[1] = j - nCelleMove;
-			ris[0] = i + nCelleMove;
-			break;
-		case WEST:
-			ris[1] = j - nCelleMove;
-			ris[0] = i;
-			break;
-		case NORTHWEST:
-			ris[1] = j - nCelleMove;
-			ris[0] = i - nCelleMove;
-			break;
+		int [] ris = new int[2];
+		switch(dir){
+			case NORTH: 
+				ris[0]=i - nCelleMove; 
+				ris[1]= j;
+				break;
+			case NORTHEAST: 
+				ris[1]=j + nCelleMove;
+				ris[0]=i - nCelleMove;	
+				break;
+			case EAST: 
+				ris[1]=j + nCelleMove;
+				ris[0]= i;
+				break;
+			case SOUTHEAST: 
+				ris[1]=j + nCelleMove;
+				ris[0]=i + nCelleMove;	
+				break;
+			case SOUTH:  
+				ris[0]=i + nCelleMove;	
+				ris[1]= j;
+				break;
+			case SOUTHWEST:  
+				ris[1]=j - nCelleMove;
+				ris[0]=i + nCelleMove;	
+				break;
+			case WEST:  
+				ris[1]=j - nCelleMove;
+				ris[0]= i;
+				break;
+			case NORTHWEST: 
+				ris[1]=j - nCelleMove;
+				ris[0]=i - nCelleMove;	
+				break;
 		}
 		return ris;
 	}
@@ -257,23 +258,22 @@ public class ScacchieraBit {
 			return NORTHWEST;
 		return -1;
 	}
-
-	public boolean verDiagonale(int i, int j, int x, int y) {
-		int offsetA, offsetB;
-		offsetA = Math.abs(i - x);
-		offsetB = Math.abs(j - y);
-		if (offsetA == offsetB)
-			return true;
-		if ((offsetA % 2 == 0 && offsetB == 0) || (offsetA == 0 && offsetB % 2 == 0))
-			return true;
+	
+	public boolean verDiagonale(int i,int j,int x,int y)
+	{
+		int offsetA,offsetB;
+		offsetA = Math.abs(i-x);
+		offsetB = Math.abs(j-y);
+		if(offsetA==offsetB) return true;
+		if((offsetA%2==0 && offsetB==0) || (offsetA==0 && offsetB%2==0)) return true;
 		return false;
 	}
-
+	
 	public int calcolaSpostamento(int a, int b, int x, int y) {
-		int k, m;
-		k = Math.abs(a - x);
-		m = Math.abs(b - y);
-		return k >= m ? k : m;
+		int k,m;
+		k = Math.abs(a-x);
+		m = Math.abs(b-y);
+		return k >= m ? k : m;	
 	}
 
 //	private int cercaPedina(byte posizione, int colorePedina) {
@@ -799,16 +799,16 @@ public class ScacchieraBit {
 
 		return ret;
 	}
-
+	
 	private void calcolaMassimoSpostamento(int[] v, int x, int y) {
-		v[NORTH] = x / 2;
-		v[SOUTH] = (7 - x) / 2;
-		v[EAST] = (7 - y) / 2;
-		v[WEST] = y / 2;
+		v[NORTH]= x/2;
+		v[SOUTH]= (7-x)/2;
+		v[EAST]	= (7-y)/2;
+		v[WEST] = y/2;
 		v[NORTHWEST] = Math.min(x, y);
-		v[NORTHEAST] = Math.min(x, 7 - y);
-		v[SOUTHEAST] = Math.min(7 - x, 7 - y);
-		v[SOUTHWEST] = Math.min(7 - x, y);
+		v[NORTHEAST] = Math.min(x, 7-y);
+		v[SOUTHEAST] = Math.min(7-x, 7-y);
+		v[SOUTHWEST] = Math.min(7-x,y);
 	}
 
 	public int getColorePedina(int x, int y) {
@@ -824,19 +824,18 @@ public class ScacchieraBit {
 			return PEDINA_BIANCA;
 		return eNero == 1 ? PEDINA_NERA : 0;
 	}
-
+	
 	public int[] calcolaIndiciEstesi(int x, int y) {
-		int[] res = { x, y * 2 };
-		if (x % 2 == 0)
-			res[1]++;
+		int[] res = {x, y*2};
+		if(x%2==0) res[1]++;
 		return res;
 	}
-
+	
 	public int[] calcolaIndiciRidotti(int x, int y) {
-		int[] res = { x, y / 2 };
+		int[] res = {x, y/2};
 		return res;
 	}
-
+	
 	public ArrayList<Mossa> getMoves() {
 		return moves;
 	}
