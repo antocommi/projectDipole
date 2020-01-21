@@ -88,6 +88,9 @@ public class Player {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board);
+				System.out.println("scacchiera");
+				newBoard.stampaScacchiera();
+				
 			}catch (Exception e) {
 				e.printStackTrace();
 				System.out.println(mossa);
