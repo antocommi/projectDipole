@@ -138,39 +138,47 @@ public class Player {
 
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
-		long seed = System.currentTimeMillis();
-		Random r = new Random(seed);
-		System.out.println("SEED utilizzato: " + seed);
-		ArrayList<Mossa> moves;
-		int scelta;
-		for (int i = 0; i < 60; i++) {
-			System.out.println("XXX - " + i);
-			moves = s.getAllMoves();
-//			System.out.println("size: " + moves.size());
-			if (moves.size() > 0) {
-				scelta = r.nextInt(moves.size());
-//				System.out.println(moves.get(scelta));
-				
-				try{
-					s = ScacchieraBit.muovi(moves.get(scelta), s);
-					if(s.checkFin()) break;
-					s.debugStatus(false, moves.get(scelta).toString());
-				}catch(Exception e) {
-					e.printStackTrace();
-					s.debugStatus(false, "errore");
-					break;
-				}
-//				System.out.println("\n\n\n");
-			}
-		}
-		s.debugStatus(true, "fine");
-		ArrayList<Mossa> mosseFinali = s.generaListaMosse(7, 2);
-		System.out.println("Numero di mosse disponibili: "+mosseFinali.size());
-		//		Player p = new Player(s, 0);
-//		Object[] res = p.negamaxIterativeDeepening();
-//		Mossa m = (Mossa) res[1];
-//		int a = (int) res[0];
-//		System.out.println("Valori ritornati da negamax " + a + " " + m);
+//		//long seed = System.currentTimeMillis();
+//		Random r = new Random(27);
+//		//System.out.println("SEED utilizzato: " + seed);
+//		ArrayList<Mossa> moves;
+//		int scelta;
+//		for (int i = 0; i < 60; i++) {
+//			System.out.println("XXX - " + i);
+//			moves = s.getAllMoves();
+////			System.out.println("size: " + moves.size());
+//			if (moves.size() > 0) {
+//				scelta = r.nextInt(moves.size());
+//				System.out.println("we"+moves.get(scelta));
+//				
+//				try{
+//				
+//					s = ScacchieraBit.muovi(moves.get(scelta), s);
+//						
+//					s.debugStatus(false, moves.get(scelta).toString());
+//				if(s.checkFin())  {
+//					
+//					break;
+//				}
+//				}catch(Exception e) {
+//					e.printStackTrace();
+//					s.debugStatus(false, "errore");
+//					break;
+//				}
+////				System.out.println("\n\n\n");
+//			}
+//		}
+//		s.debugStatus(true, "fine");
+//		
+//		ArrayList<Mossa> mosseFinali = s.generaListaMosse(7, 2);
+//		System.out.println("Numero di mosse disponibili: "+mosseFinali.size());
+//		moves = s.getAllMoves();
+//		System.out.println("Numero di mosse disponibili: "+moves.size());
+		Player p = new Player(s, 0);
+		Object[] res = p.negamaxIterativeDeepening();
+		Mossa m = (Mossa) res[1];
+		int a = (int) res[0];
+		System.out.println("Valori ritornati da negamax " + a + " " + m);
 	}
 
 	public void saveState() {
