@@ -325,11 +325,6 @@ public class ScacchieraBit {
 		int nPedineNew;
 		int spostamento;
 		byte[] listaPedine = c == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
-		System.out.println("\n");
-		System.out.println(m);
-		System.out.format("colore:%d, Numero stack giocatore bianco: %d\n", c, numeroStackGiocatore[PEDINA_BIANCA]);
-		System.out.format("colore:%d, Numero stack giocatore bianco: %d\n", c, numeroStackGiocatore[PEDINA_NERA]);
-//		System.out.format("mossa ricevuta in muovi, mossa: %s \n", m.toString());
 		if (checkPosOut(xF, yF)) {
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
 
@@ -494,15 +489,8 @@ public class ScacchieraBit {
 			}
 
 		}
-		System.out.println("<----dopo--->");
 		
-		for(int i=0; i<numeroStackGiocatore[c];i++)
-		{
-			System.out.println(listaPedine[i]/8 +" "+ listaPedine[i]%8);
-		}
-		System.out.println("");
-		System.out.format("Numero stack giocatore bianco: %d\n", numeroStackGiocatore[PEDINA_BIANCA]);
-		System.out.format("Numero stack giocatore nero: %d\n", numeroStackGiocatore[PEDINA_NERA]);
+		
 		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 	}
@@ -519,11 +507,9 @@ public class ScacchieraBit {
 		byte[] listaPedine = c == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
 		for (int i = 0; i < numeroStackGiocatore[c]; i++) {
 			if (esisteMossaFuori(listaPedine[i] / 8, listaPedine[i] % 8)) {
-				System.out.println("mah");
 				return false;
 			}
 			if(generaMosse(listaPedine[i] / 8, listaPedine[i] % 8)) {
-				System.out.println("boh");
 				return false;
 			}
 				
@@ -536,11 +522,11 @@ public class ScacchieraBit {
 	public boolean checkFin() {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
 		if (mosseMaxBianco == 0 || mosseMaxNero == 0) {
-			 System.out.println("1");return true;
+			return true;
 		}
 		if ((numeroStackGiocatore[PEDINA_BIANCA] == 0 || numeroStackGiocatore[PEDINA_NERA] == 0) || 
 				(zeroMosse(PEDINA_BIANCA) && zeroMosse(PEDINA_NERA))) {
-			System.out.println("2"); return true;
+			return true;
 		}
 		
 		return false;
@@ -585,7 +571,6 @@ public class ScacchieraBit {
 	public ArrayList<Mossa> generaListaMosse(int x, int y) {
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		int pos, curr_pos, numeroCelleSpostamento = 0;
-//		System.out.println("x: " + x + " y: " + y);
 		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0) {
@@ -600,7 +585,6 @@ public class ScacchieraBit {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
 				if (checkMosse(mossa)) {
-					// System.out.println("dir: " + dir);
 					listaMosse.add(mossa);
 				}
 			}
@@ -649,8 +633,6 @@ public class ScacchieraBit {
 		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
 		
 	
-		//System.out.println("dir" +v[0]+" "+ v[1]);
-//		System.out.println("minimo" + v[0] + " " + v[1]);
 //		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0]];
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
 		int curr_y = y + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2 + 1];
@@ -674,9 +656,6 @@ public class ScacchieraBit {
 
 		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
 		
-		System.out.println(" ");
-		System.out.println("dir" +v[0]+" "+ v[1]);
-//		System.out.println("minimo" + v[0] + " " + v[1]);
 //		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0]];
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
 		int curr_y = y + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2 + 1];
@@ -690,7 +669,6 @@ public class ScacchieraBit {
 			}
 
 		}
-		System.out.format("Fine generazione per %d %d\n",x,y);
 		return false;
 
 	}
@@ -894,8 +872,6 @@ public class ScacchieraBit {
 	 */
 	public void stampaScacchiera() {
 		scacchiera.printValues();
-
-		System.out.println();
 //		private int scacchieraBianchi, scacchieraNeri; //
 //		System.out.println("bit bianchi: " + scacchieraBianchi);
 //		System.out.println("bit neri: " + scacchieraNeri);

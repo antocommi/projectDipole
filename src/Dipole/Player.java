@@ -49,7 +49,7 @@ public class Player {
 		System.out.format("currDepth: %d depth: %d alfa: %d beta: %d tempo: %d\n", currDepth, depth, alfa, beta,
 				controlloTempo);
 		if (controlloTempo >= 800)
-			return null;
+			return new Object[] { new Integer(-1), null};
 		ScacchieraBit newBoard = null;
 		int bestScore = Integer.MIN_VALUE, currScore, score;
 		Mossa bestMove = null, currMove = null;
@@ -78,11 +78,11 @@ public class Player {
 		}
 
 		if (mosse.size() == 0) {
-//			System.out.println("Nessuna mossa disponibile!!!");
-//			board.debugStatus(true, "Nessuna mossa disponibile");
+			System.out.println("Nessuna mossa disponibile!!!");
+			board.debugStatus(true, "Nessuna mossa disponibile");
 		}
 
-		for (Mossa mossa : mosse) {
+		for(Mossa mossa : mosse) {
 //			System.out.println(mossa);
 //			board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
 			path[currDepth] = mossa;
@@ -108,7 +108,7 @@ public class Player {
 				currMove = (Mossa) res[1];
 			}catch(NullPointerException e) {
 				e.printStackTrace();
-				System.out.println("----------------Errore null pointer ------------------");
+				System.out.println("----------------Errore null pointer ------------------" + res[0] + res[1]);
 				System.out.println(res);
 				board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
 				System.out.println(mossa);
@@ -131,10 +131,11 @@ public class Player {
 			traspositionTable.put(ttKey, trasposition);
 
 			if (bestScore >= beta) {
-				System.out.println("esco da questo!!");
+				System.out.println("esco da bestScore>=beta!!");
 				return new Object[] { new Integer(bestScore), bestMove };
 			}
 		}
+		System.out.println("esco dall'ultimo return " + bestScore + " bestMove:" + bestMove);
 		return new Object[] { new Integer(bestScore), bestMove };
 	}
 
@@ -157,9 +158,9 @@ public class Player {
 				if (((Integer) bestConfig[0]) == FINE_GIOCO)
 					return new Object[] { bestScore, bestMove };
 			}
-			// else {
-			// break;
-			// }
+			 else {
+				 break;
+			}
 		}
 //		System.out.println("XXX -- esco da qui");
 		return new Object[] { bestScore, bestMove };

@@ -36,7 +36,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 		for (int i = 0; i < nStack; i++) {
 			k += stato.getScacchiera().getValue((int) listaPedine[i]);
 		}
-		return k+perturbazioneRandom();
+		return k;
 	}
 
 }
