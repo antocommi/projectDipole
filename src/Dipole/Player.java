@@ -8,6 +8,7 @@ import DipoleHeuristics.NaiveHeuristic;
 import DipoleHeuristics.RandHeuristic;
 import util.TraspositionTable;
 
+
 public class Player {
 
 	private static final int PEDINA_BIANCA = 0;
@@ -29,12 +30,8 @@ public class Player {
 	private TraspositionTable traspositionTable;
 //	private TTElement[] transpositionTable;
 	private boolean turnoGiocatore;
-	private LinkedList<Mossa> currPath;
-	private LinkedList<LinkedList<Mossa>> path;
 	
 	public Player(ScacchieraBit scacchiera, int player) {
-		currPath = new LinkedList<>();
-		path = new LinkedList<>();
 		this.PLAYER = player;
 		this.root = scacchiera;
 //		this.transpositionTable = new TTElement[size]; TODO

@@ -294,7 +294,7 @@ public class ScacchieraBit {
 			return (y - b);
 		if (dir == SOUTHWEST) 
 			
-			return (b - Math.abs(y) );
+			return (x- a) ;
 		return -1;
 	}
 
