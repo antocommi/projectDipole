@@ -292,7 +292,8 @@ public class ScacchieraBit {
 			return x - a;
 		if (dir == SOUTHEAST)
 			return (y - b);
-		if (dir == SOUTHWEST)
+		if (dir == SOUTHWEST) 
+			
 			return (b - Math.abs(y) );
 		return -1;
 	}
@@ -537,7 +538,8 @@ public class ScacchieraBit {
 		if (mosseMaxBianco == 0 || mosseMaxNero == 0) {
 			 System.out.println("1");return true;
 		}
-		if ((numeroStackGiocatore[PEDINA_BIANCA] == 0 || numeroStackGiocatore[PEDINA_NERA] == 0) || (zeroMosse(PEDINA_BIANCA) && zeroMosse(PEDINA_NERA))) {
+		if ((numeroStackGiocatore[PEDINA_BIANCA] == 0 || numeroStackGiocatore[PEDINA_NERA] == 0) || 
+				(zeroMosse(PEDINA_BIANCA) && zeroMosse(PEDINA_NERA))) {
 			System.out.println("2"); return true;
 		}
 		
@@ -558,6 +560,7 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
+				
 				if (checkMosse(mossa)) {
 					return true;
 				}
@@ -641,8 +644,12 @@ public class ScacchieraBit {
 	public ArrayList<Mossa> generaMosseFuori(int x, int y) {
 		int numeroCelleSpostamento = 0;
 		ArrayList<Mossa> listaMosse = new ArrayList<>();
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
+
 		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
-		System.out.println("dir" +v[0]+" "+ v[1]);
+		
+	
+		//System.out.println("dir" +v[0]+" "+ v[1]);
 //		System.out.println("minimo" + v[0] + " " + v[1]);
 //		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0]];
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
@@ -651,8 +658,8 @@ public class ScacchieraBit {
 			curr_x += OUT_DIRECTIONS[v[0] * 2];
 			curr_y += OUT_DIRECTIONS[v[0] * 2 + 1];
 			Mossa m = new Mossa(x, y, curr_x, curr_y, v[0]);
-		
 			if (checkMosse(m)) {
+				
 				listaMosse.add(m);
 			}
 
@@ -663,8 +670,12 @@ public class ScacchieraBit {
 
 	public boolean esisteMossaFuori(int x, int y) {
 		int numeroCelleSpostamento = 0;
-		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 
+		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
+		
+		System.out.println(" ");
+		System.out.println("dir" +v[0]+" "+ v[1]);
 //		System.out.println("minimo" + v[0] + " " + v[1]);
 //		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0]];
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
@@ -673,12 +684,13 @@ public class ScacchieraBit {
 			curr_x += OUT_DIRECTIONS[v[0] * 2];
 			curr_y += OUT_DIRECTIONS[v[0] * 2 + 1];
 			Mossa m = new Mossa(x, y, curr_x, curr_y, v[0]);
+			
 			if (checkMosse(m)) {
-				System.out.println("vaffanculo");
 				return true;
 			}
 
 		}
+		System.out.format("Fine generazione per %d %d\n",x,y);
 		return false;
 
 	}
@@ -763,7 +775,6 @@ public class ScacchieraBit {
 		// TODO: controllo mosse fuori
 		
 		if(checkPosOut(xF, yF) & scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
-			
 			
 			return false;
 		}

@@ -1,10 +1,11 @@
 package Dipole;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Random;
 
 import DipoleHeuristics.HeuristicInterface;
 import DipoleHeuristics.NaiveHeuristic;
+import DipoleHeuristics.RandHeuristic;
 import util.TraspositionTable;
 
 public class Player {
