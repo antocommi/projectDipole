@@ -57,7 +57,18 @@ public class Player {
 //		System.out.println("checkwin: " + board.checkWin());
 		if (board.checkFin() || currDepth >= depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
-			int e = euristica.valuta(board, giocatore);
+			int e;
+			if(path[path.length-1]==null) {
+				System.out.println("___________errore__________"); 
+				
+				e = euristica.valuta(board, giocatore, path[path.length-1]);
+			}
+				
+			//TODO;
+			e = euristica.valuta(board, giocatore, path[path.length-1]);
+			
+			System.out.println("valore euristica : " +e);
+			
 //			path[depth] = mossa;
 //			currPath = new LinkedList<>();
 //			lastPath.addAll(currPath);
@@ -79,7 +90,7 @@ public class Player {
 
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");
-			board.debugStatus(true, "Nessuna mossa disponibile");
+//			board.debugStatus(true, "Nessuna mossa disponibile");
 		}
 
 		for(Mossa mossa : mosse) {
@@ -88,10 +99,12 @@ public class Player {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board);
+				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
 				System.out.println("scacchiera");
 				newBoard.stampaScacchiera();
 				
 			}catch (Exception e) {
+				
 				e.printStackTrace();
 				System.out.println(mossa);
 //				board.debugStatus(true, "eccezione lanciata");
@@ -110,16 +123,16 @@ public class Player {
 				score = ((int) res[0]);
 				currMove = (Mossa) res[1];
 			}catch(NullPointerException e) {
-				e.printStackTrace();
-				System.out.println("----------------Errore null pointer ------------------" + res[0] + res[1]);
-				System.out.println(res);
-				board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
-				System.out.println(mossa);
-				newBoard.debugStatus(false, "newBoard "+depth+" "+currDepth);
-				System.out.println("------- Path che ha portato all'errore ------------");
-				for(int l = 0;l<=currDepth;l++) {
-					System.out.println(path[l]);
-				}
+//				e.printStackTrace();
+//				System.out.println("----------------Errore null pointer ------------------" + res[0] + res[1]);
+//				System.out.println(res);
+//				board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
+//				System.out.println(mossa);
+//				newBoard.debugStatus(false, "newBoard "+depth+" "+currDepth);
+//				System.out.println("------- Path che ha portato all'errore ------------");
+//				for(int l = 0;l<=currDepth;l++) {
+//					System.out.println(path[l]);
+//				}
 				throw e;
 			}
 			path[currDepth] = null;

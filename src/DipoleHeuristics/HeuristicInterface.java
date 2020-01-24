@@ -13,6 +13,7 @@ public interface HeuristicInterface {
 	 */
 	
 //	public int valuta(ScacchieraBit stato);
+	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec);
 	
 	public int valuta(ScacchieraBit stato, int giocatore);
 	
