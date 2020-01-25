@@ -14,7 +14,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 1;
+	private int PROFONDITA = 50;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -43,17 +43,22 @@ public class Player {
 
 		// STAMPE INIZIALI
 		long controlloTempo = System.currentTimeMillis() - start;
-		System.out.println("INIZIO");
-		System.out.println("INIZIO");
-		System.out.println("INIZIO");
+//		System.out.println("INIZIO");
+//		System.out.println("INIZIO");
+//		System.out.println("INIZIO");
 
+//		System.out.println("");
+//		System.out.println("_____________________________________________________________________");
+//		System.out.println("");
 		System.out.format("CurrDepth: %d Depth: %d Alfa: %d Beta: %d Tempo: %d \n", currDepth, depth, alfa, beta,
 				controlloTempo);
-
+		System.out.println("");
+//		System.out.println("_____________________________________________________________________");
 		// SE SUPERA IL TEMPO MASSIMO RITORNA UN INTEGER DI ERRORE
-		if (controlloTempo >= 800)
+		if (controlloTempo >= 600000) {
+//			System.out.println("TEMPO SCADUTO");
 			return new Object[] { new Integer(-1), null };
-
+		}
 		ScacchieraBit newBoard = null;
 		int bestScore = Integer.MIN_VALUE;
 		int currScore = 0;
@@ -70,17 +75,17 @@ public class Player {
 			if (path[path.length - 1] != null)
 				e = euristica.valuta(board, giocatore, path[path.length - 1]);
 
-			System.out.println("");
-			System.out.println("______________________________________________");
-			System.out.println("Valore euristica: " + e);
-//			board.stampaScacchiera();
-			System.out.println("______________________________________________");
-			System.out.println("");
+//			System.out.println("");
+//			System.out.println("______________________________________________");
+//			System.out.println("Valore euristica: " + e);
+////			board.stampaScacchiera();
+//			System.out.println("______________________________________________");
+//			System.out.println("");
 
-			System.out.println("VAFFANCULO");
-			if (path[0] != null)
-				System.out.println(path[0]);
-			System.out.println("VAFFANCULO");
+//			System.out.println("VAFFANCULO");
+//			if (path[0] != null)
+//				System.out.println(path[0]);
+//			System.out.println("VAFFANCULO");
 
 			return new Object[] { e, null };
 		}
@@ -94,17 +99,25 @@ public class Player {
 		if (traspositionTable.contains(ttKey)) {
 			trasposition = traspositionTable.get(ttKey);
 			mosse = trasposition.getM();
-			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
-			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
-
-			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
-
-			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
-
-			System.out.format("MOssa CORENTE iS= %d - jS= %d - iF= %d - jF= %d ", mosse.get(0).getiStart(),
-					mosse.get(0).getjStart(), mosse.get(0).getiEnd(), mosse.get(0).getjEnd());
+//			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+//			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+//
+//			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+//
+//			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+			
+//			System.out.println("");
+//			System.out.println("----------------------------------");
+//			System.out.format("MOssa CORENTE iS= %d - jS= %d - iF= %d - jF= %d ", mosse.get(0).getiStart(),	mosse.get(0).getjStart(), mosse.get(0).getiEnd(), mosse.get(0).getjEnd());
+//			System.out.println("----------------------------------");
+//			System.out.println("");
 		} else {
 			mosse = board.getAllMoves();
+//			for (Mossa mossa : mosse) {
+//				System.out.println("------------M OSSE --------------");
+//				System.out.println(mossa);
+//				System.out.println("----------------------------------");
+//			}
 //			System.out.println("CICOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		}
 
@@ -117,9 +130,13 @@ public class Player {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board);
-				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
-				System.out.println("scacchiera");
-				newBoard.stampaScacchiera();
+//				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
+//				System.out.println("scacchiera");
+				
+//				System.out.println("----------------------------------");
+//				newBoard.stampaScacchiera();
+//				System.out.println("----------------------------------");
+				
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -127,15 +144,15 @@ public class Player {
 
 			int max = 0;
 			if (bestScore > alfa) {
-				System.out.println(" ");
-				System.out.println("ALFA: " + alfa + " MINORE DI BETA: " + bestScore);
-				System.out.println(" ");
+//				System.out.println(" ");
+//				System.out.println("ALFA: " + alfa + " MINORE DI BETA: " + bestScore);
+//				System.out.println(" ");
 				max = bestScore;
 			} else {
 				max = alfa;
-				System.out.println(" ");
-				System.out.println("BETA: " + beta + " MAGGIORE DI ALFA: " + alfa);
-				System.out.println(" ");
+//				System.out.println(" ");
+//				System.out.println("BETA: " + beta + " MAGGIORE DI ALFA: " + alfa);
+//				System.out.println(" ");
 			}
 			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path);
 
@@ -148,29 +165,29 @@ public class Player {
 			path[currDepth] = null;
 			currScore = -score;
 
-			System.out.println("      ");
-			System.out.println("CURRENT SCORE: ________ " + currScore);
-			System.out.println("BEST SCORE: _________" + bestScore);
-			System.out.println("BETA: _________" + beta);
-			System.out.println("      ");
-			System.out.println(currMove);
-			System.out.println("   ");
+//			System.out.println("      ");
+//			System.out.println("CURRENT SCORE: ________ " + currScore);
+//			System.out.println("BEST SCORE: _________" + bestScore);
+//			System.out.println("BETA: _________" + beta);
+//			System.out.println("      ");
+//			System.out.println(currMove);
+//			System.out.println("   ");
 
 			if (currScore > bestScore) {
 				bestScore = currScore;
 				bestMove = currMove;
-				System.out.println("CICO");
+//				System.out.println("CICO");
 			}
 
 			trasposition = new TTElement(ttKey, currDepth, currScore, mosse, 0);
 			traspositionTable.put(ttKey, trasposition);
 
 			if (bestScore >= beta) {
-				System.out.println("esco da bestScore>=beta!!" + bestMove);
+//				System.out.println("esco da bestScore>=beta!!" + bestMove);
 				return new Object[] { new Integer(bestScore), bestMove };
 			}
 		}
-		System.out.println("esco dall'ultimo return " + bestScore + " bestMove:" + bestMove);
+//		System.out.println("esco dall'ultimo return " + bestScore + " bestMove:" + bestMove);
 		return new Object[] { new Integer(bestScore), bestMove };
 	}
 
@@ -185,40 +202,40 @@ public class Player {
 		int beta = MAX;
 		int alfaAdversary = -MAX;
 		int betaAdversary = MAX;
-		System.out.println("1");
+//		System.out.println("1");
 		for (int i = 1; i <= PROFONDITA; i++) {
-			System.out.println("IterativeDeepining - Profondita': " + i);
+//			System.out.println("IterativeDeepining - Profondita': " + i);
 			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
 			Mossa m = (Mossa) bestConfig[1];
 			int a = (int) bestConfig[0];
-			System.out.println("Valori ritornati da negamax " + a + " " + m);
+//			System.out.println("Valori ritornati da negamax " + a + " " + m);
 			if (bestConfig[1] != null) {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
-				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
-				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
+//				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
+//				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
 				if (((Integer) bestConfig[0]) == FINE_GIOCO) {
-					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
-					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
+//					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
+//					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
 					return new Object[] { bestScore, bestMove };
 				}
-				root.muovi((Mossa)bestConfig[1]);
-				boolean turno =  (turnoGiocatore== true) ? false : true;
-				root.setTurnoGiocatore(turno);
-				System.out.println("__________________---------------------------------______________________________________");
-				bestConfigAdversary = abNegamax(root, i, 0, alfaAdversary, betaAdversary, new Mossa [i]);
-				root.muovi((Mossa)bestConfigAdversary[1]);
-				System.out.println("-------------------------------     --------------------");
-				System.out.println(""+bestConfigAdversary[1]);
-				System.out.println("--------------------    -------------------------------");
+//				root.muovi((Mossa)bestConfig[1]);
+//				boolean turno =  (turnoGiocatore== true) ? false : true;
+//				root.setTurnoGiocatore(turno);
+//				System.out.println("__________________---------------------------------______________________________________");
+//				bestConfigAdversary = abNegamax(root, i, 0, alfaAdversary, betaAdversary, new Mossa [i]);
+//				root.muovi((Mossa)bestConfigAdversary[1]);
+//				System.out.println("-------------------------------     --------------------");
+//				System.out.println(""+bestConfigAdversary[1]);
+//				System.out.println("--------------------    -------------------------------");
 				
 			}
 
-			System.out.println("RETURN FINALEEEEEE");
-			System.out.println("RETURN FINALEEEEEE");
+//			System.out.println("RETURN FINALEEEEEE");
+//			System.out.println("RETURN FINALEEEEEE");
 		}
 
-		System.out.println("RETURN NEGAMAXITERATIVING ---------------------->");
+//		System.out.println("RETURN NEGAMAXITERATIVING ---------------------->");
 		return new Object[] { bestScore, bestMove };
 	}
 
@@ -241,6 +258,7 @@ public class Player {
 		Object[] res = p.negamaxIterativeDeepening();
 		Mossa m = (Mossa) res[1];
 		int a = (int) res[0];
+		System.out.println("");
 		System.out.println("Valori ritornati da negamax " + a + " " + m);
 	}
 

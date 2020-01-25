@@ -8,10 +8,10 @@ public class Zobrist {
 
 	public Zobrist() {
 		Random random = new Random();
-		zobrist = new long[64][2][12];
+		zobrist = new long[64][2][13];
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 2; j++) {
-				for (int k = 0; k < 12; k++) {
+				for (int k = 0; k < 13; k++) {
 					zobrist[i][j][k] = random.nextLong();
 				}
 			}
@@ -28,7 +28,7 @@ public class Zobrist {
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
 			k = scacchiera.getNumeroPedine(j / 8, j % 8);
-			zhash ^= zobrist[j][colore][k-1]; // TODO: Da ricontrollare
+			zhash ^= zobrist[j][colore][k]; // TODO: Da ricontrollare
 		}
 
 		return zhash;

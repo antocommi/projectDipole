@@ -531,9 +531,9 @@ public class ScacchieraBit {
 
 	public boolean checkFin(ScacchieraBit s) {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
-		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
-			return true;
-		}
+//		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
+//			return true;
+//		}
 		if ((s.numeroStackGiocatore[PEDINA_BIANCA] == 0 || s.numeroStackGiocatore[PEDINA_NERA] == 0)
 				|| (s.zeroMosse(PEDINA_BIANCA) && s.zeroMosse(PEDINA_NERA))) {
 			return true;
@@ -561,7 +561,7 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
-				System.out.println(mossa);
+//				System.out.println(mossa);
 
 				if (calcolaSpostamento(m.getiStart(), m.getjStart(), x, y) >= calcolaSpostamento(x, y, curr_pos / 8,
 						curr_pos % 8) && checkMosseInAvanti(mossa, c))
@@ -623,7 +623,7 @@ public class ScacchieraBit {
 			pos = x * 8 + y;
 			numeroCelleSpostamento = 0;
 			curr_pos = pos;
-			System.out.println("vaff " + MAX_SPOSTAMENTO[SOUTHWEST]);
+//			System.out.println("vaff " + MAX_SPOSTAMENTO[SOUTHWEST]);
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
@@ -691,7 +691,8 @@ public class ScacchieraBit {
 			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
 
 				listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8);
-				for (Mossa mossa : listaMosse) {System.out.println("mosse in cui mi mangia "+mossa);
+				for (Mossa mossa : listaMosse) {
+//					System.out.println("mosse in cui mi mangia "+mossa);
 					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 						

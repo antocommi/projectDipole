@@ -30,7 +30,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
 		
-		System.out.println("giocatore= "+ giocatore);
+//		System.out.println("giocatore= "+ giocatore);
 		
 		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
@@ -38,15 +38,15 @@ public class NaiveHeuristic implements HeuristicInterface {
 		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
 			
 			Mossa adversaryMove = stato.miMangiaGetMossa(prec, giocatore,stato);// mossa che mi mangia
-			System.out.println(adversaryMove);
+//			System.out.println(adversaryMove);
 			int pedinePerse = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(),
 					prec.getjEnd());
-			System.out.println("pedine perse _____"+ pedinePerse);
+//			System.out.println("pedine perse _____"+ pedinePerse);
 			int spost = adversaryMove != null ? stato.calcolaSpostamento(adversaryMove.getiStart(), adversaryMove.getjStart(),
 					adversaryMove.getiEnd(), adversaryMove.getjEnd()):-1;
 			if (adversaryMove != null && stato.checkMosseIndietro(adversaryMove, giocatoreAdversary)) {// avversario mangia e torna indietro
 				e = e - 21;
-				System.out.println("qui  1  ");
+//				System.out.println("qui  1  ");
 			}
 			if (adversaryMove != null && pedinePerse > 2) {
 				e=e-21;
@@ -54,22 +54,22 @@ public class NaiveHeuristic implements HeuristicInterface {
 			}
 				
 			if (adversaryMove != null && spost > 3 && pedinePerse <= 1) {
-				System.out.println("qui  2  ");
+//				System.out.println("qui  2  ");
 				int numMosseMangianti = stato.generaMosseSenzaCheck(adversaryMove,giocatoreAdversary);
-				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
+//				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
 				if (numMosseMangianti <= 14 && numMosseMangianti > 8) {
-					System.out.println("qui  3  ");
+//					System.out.println("qui  3  ");
 					e = e + 35; //secondo me non va bene
 				}
 				if (numMosseMangianti <= 8) {
-					System.out.println("qui  4 ");
+//					System.out.println("qui  4 ");
 					e = e + 21;
 				}
 
 			}
 			if (prec.getTipo() == 1) {
 				e = e + 21;
-				System.out.println("qui  5  ");
+//				System.out.println("qui  5  ");
 			}
 
 			for (int pedina = 0; pedina < stato.getNumeroStackGiocatore(giocatore); pedina++) {
@@ -80,20 +80,20 @@ public class NaiveHeuristic implements HeuristicInterface {
 				if (giocatore == 1) {
 					if (pos < 32) {
 						e += nPedine;
-						System.out.println("qui  6  ");
+//						System.out.println("qui  6  ");
 					}
 					else {
 						e -= nPedine;
-						System.out.println("qui  7  ");
+//						System.out.println("qui  7  ");
 					}
 				} else {
 					if (pos >= 32) {
-						System.out.println("qui  8  ");
+//						System.out.println("qui  8  ");
 						e += nPedine;
 					}
 						
 					else {
-						System.out.println("qui  9  ");
+//						System.out.println("qui  9  ");
 						e -= nPedine;
 					}
 						
@@ -101,18 +101,18 @@ public class NaiveHeuristic implements HeuristicInterface {
 				}
 
 				if (nPedine < 2) {
-					System.out.println("qui  10  ");
+//					System.out.println("qui  10  ");
 					e = e - 1;
 				}
 					
 				else {
-					System.out.println("qui  11 ");
+//					System.out.println("qui  11 ");
 					e = e + 1;
 				}
 					
 
 				if (POSIZIONI_BORDI.containsKey(pos)) {
-					System.out.println("qui  12 ");
+//					System.out.println("qui  12 ");
 					e += 2 + nPedine;
 				}
 			}
