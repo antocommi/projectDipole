@@ -529,13 +529,13 @@ public class ScacchieraBit {
 
 	// TODO checkwin
 
-	public boolean checkFin() {
+	public boolean checkFin(ScacchieraBit s) {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
-		if (mosseMaxBianco == 0 || mosseMaxNero == 0) {
+		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
 			return true;
 		}
-		if ((numeroStackGiocatore[PEDINA_BIANCA] == 0 || numeroStackGiocatore[PEDINA_NERA] == 0)
-				|| (zeroMosse(PEDINA_BIANCA) && zeroMosse(PEDINA_NERA))) {
+		if ((s.numeroStackGiocatore[PEDINA_BIANCA] == 0 || s.numeroStackGiocatore[PEDINA_NERA] == 0)
+				|| (s.zeroMosse(PEDINA_BIANCA) && s.zeroMosse(PEDINA_NERA))) {
 			return true;
 		}
 
