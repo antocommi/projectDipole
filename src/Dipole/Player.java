@@ -1,22 +1,20 @@
 package Dipole;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import DipoleHeuristics.HeuristicInterface;
 import DipoleHeuristics.NaiveHeuristic;
-import DipoleHeuristics.RandHeuristic;
 import util.TraspositionTable;
-
 
 public class Player {
 
 	private static final int PEDINA_BIANCA = 0;
 	private static final int PEDINA_NERA = 1;
+	private static final int MAX = Integer.MAX_VALUE;
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 4;
+	private int PROFONDITA = 1;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -30,7 +28,7 @@ public class Player {
 	private TraspositionTable traspositionTable;
 //	private TTElement[] transpositionTable;
 	private boolean turnoGiocatore;
-	
+
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
 		this.root = scacchiera;
@@ -38,116 +36,137 @@ public class Player {
 		zobrist = new Zobrist();
 		euristica = new NaiveHeuristic();
 		traspositionTable = new TraspositionTable(TT_SIZE);
+		turnoGiocatore = scacchiera.getTurnoGiocatore();
 	}
 
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
+
+		// STAMPE INIZIALI
 		long controlloTempo = System.currentTimeMillis() - start;
-		System.out.print("|");
-		for (int i = 0; i < currDepth; i++) {
-			System.out.format("--");
-		}
-		System.out.format("currDepth: %d depth: %d alfa: %d beta: %d tempo: %d\n", currDepth, depth, alfa, beta,
+		System.out.println("INIZIO");
+		System.out.println("INIZIO");
+		System.out.println("INIZIO");
+
+		System.out.format("CurrDepth: %d Depth: %d Alfa: %d Beta: %d Tempo: %d \n", currDepth, depth, alfa, beta,
 				controlloTempo);
+
+		// SE SUPERA IL TEMPO MASSIMO RITORNA UN INTEGER DI ERRORE
 		if (controlloTempo >= 800)
-			return new Object[] { new Integer(-1), null};
+			return new Object[] { new Integer(-1), null };
+
 		ScacchieraBit newBoard = null;
-		int bestScore = Integer.MIN_VALUE, currScore, score;
-		Mossa bestMove = null, currMove = null;
+		int bestScore = Integer.MIN_VALUE;
+		int currScore = 0;
+		int score = 0;
+		Mossa bestMove = null;
+		Mossa currMove = null;
 		Object[] res;
-//		System.out.println("checkwin: " + board.checkWin());
-		if (board.checkFin() || currDepth >= depth) {
+
+		// SE QUESTA CONFIGURAZUIONE CI PORTA ALLA VITTORIA
+		if (board.checkFin(board) || currDepth == depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
-			int e;
-			if(path[path.length-1]==null) {
-				System.out.println("___________errore__________"); 
-				
-				e = euristica.valuta(board, giocatore, path[path.length-1]);
-			}
-				
-			//TODO;
-			e = euristica.valuta(board, giocatore, path[path.length-1]);
-			
-			System.out.println("valore euristica : " +e);
-			
-//			path[depth] = mossa;
-//			currPath = new LinkedList<>();
-//			lastPath.addAll(currPath);
-//			currPath.clear();
-//			board.debugStatus(false, "negamax");
-//			System.out.println("Valore euristica: " + e);
+			// int e = euristica.valuta(board, giocatore);
+			int e=0;
+			if (path[path.length - 1] != null)
+				e = euristica.valuta(board, giocatore, path[path.length - 1]);
+
+			System.out.println("");
+			System.out.println("______________________________________________");
+			System.out.println("Valore euristica: " + e);
+//			board.stampaScacchiera();
+			System.out.println("______________________________________________");
+			System.out.println("");
+
+			System.out.println("VAFFANCULO");
+			if (path[0] != null)
+				System.out.println(path[0]);
+			System.out.println("VAFFANCULO");
+
 			return new Object[] { e, null };
 		}
+
 		TTElement trasposition;
 		long ttKey = zobrist.getHashcode(board, board.getTurnoGiocatore() ? 0 : 1);
 		ArrayList<Mossa> mosse;
 
+//		System.out.println("***************************************** D*SD**D*D*D*D*D*D*");
+
 		if (traspositionTable.contains(ttKey)) {
 			trasposition = traspositionTable.get(ttKey);
 			mosse = trasposition.getM();
+			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+
+			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+
+			System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO CICOOOOOOOOOOOOO");
+
+			System.out.format("MOssa CORENTE iS= %d - jS= %d - iF= %d - jF= %d ", mosse.get(0).getiStart(),
+					mosse.get(0).getjStart(), mosse.get(0).getiEnd(), mosse.get(0).getjEnd());
 		} else {
 			mosse = board.getAllMoves();
+//			System.out.println("CICOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		}
 
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");
-//			board.debugStatus(true, "Nessuna mossa disponibile");
+			board.debugStatus(true, "Nessuna mossa disponibile");
 		}
 
-		for(Mossa mossa : mosse) {
-//			System.out.println(mossa);
-//			board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
+		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board);
 				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
 				System.out.println("scacchiera");
 				newBoard.stampaScacchiera();
-				
-			}catch (Exception e) {
-				
+
+			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println(mossa);
-//				board.debugStatus(true, "eccezione lanciata");
-				System.out.println("------- FFF ------------ \n Path che ha portato all'errore");
-				for(int l = 0;l<=currDepth;l++) {
-					System.out.println(path[l]);
-				}
-				throw e;
 			}
-			
-//			newBoard.debugStatus(false, "newBoard "+depth+" "+currDepth);
-			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -Math.max(bestScore, alfa), path);
-			
-			
-			try{
+
+			int max = 0;
+			if (bestScore > alfa) {
+				System.out.println(" ");
+				System.out.println("ALFA: " + alfa + " MINORE DI BETA: " + bestScore);
+				System.out.println(" ");
+				max = bestScore;
+			} else {
+				max = alfa;
+				System.out.println(" ");
+				System.out.println("BETA: " + beta + " MAGGIORE DI ALFA: " + alfa);
+				System.out.println(" ");
+			}
+			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path);
+
+			try {
 				score = ((int) res[0]);
-				currMove = (Mossa) res[1];
-			}catch(NullPointerException e) {
-//				e.printStackTrace();
-//				System.out.println("----------------Errore null pointer ------------------" + res[0] + res[1]);
-//				System.out.println(res);
-//				board.debugStatus(false, "oldBoard "+depth+" "+currDepth);
-//				System.out.println(mossa);
-//				newBoard.debugStatus(false, "newBoard "+depth+" "+currDepth);
-//				System.out.println("------- Path che ha portato all'errore ------------");
-//				for(int l = 0;l<=currDepth;l++) {
-//					System.out.println(path[l]);
-//				}
-				throw e;
+				currMove = path[depth - 1];
+			} catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 			path[currDepth] = null;
 			currScore = -score;
 
+			System.out.println("      ");
+			System.out.println("CURRENT SCORE: ________ " + currScore);
+			System.out.println("BEST SCORE: _________" + bestScore);
+			System.out.println("BETA: _________" + beta);
+			System.out.println("      ");
+			System.out.println(currMove);
+			System.out.println("   ");
+
 			if (currScore > bestScore) {
 				bestScore = currScore;
 				bestMove = currMove;
+				System.out.println("CICO");
 			}
 
 			trasposition = new TTElement(ttKey, currDepth, currScore, mosse, 0);
 			traspositionTable.put(ttKey, trasposition);
 
 			if (bestScore >= beta) {
-				System.out.println("esco da bestScore>=beta!!");
+				System.out.println("esco da bestScore>=beta!!" + bestMove);
 				return new Object[] { new Integer(bestScore), bestMove };
 			}
 		}
@@ -155,68 +174,52 @@ public class Player {
 		return new Object[] { new Integer(bestScore), bestMove };
 	}
 
-//	public Object[] abNegamax(ScacchieraBit board, byte depth, byte currDepth, int alfa, int beta) {
 	public Object[] negamaxIterativeDeepening() {
 		start = System.currentTimeMillis();
 		Object[] bestConfig = null;
+		Object[] bestConfigAdversary = null;
+		Mossa bestMoveAdversary = null;
 		Mossa bestMove = null;
 		int bestScore = Integer.MIN_VALUE;
+		int alfa = -MAX;
+		int beta = MAX;
+		int alfaAdversary = -MAX;
+		int betaAdversary = MAX;
 		System.out.println("1");
 		for (int i = 1; i <= PROFONDITA; i++) {
 			System.out.println("IterativeDeepining - Profondita': " + i);
-			bestConfig = abNegamax(root, i, 0, -Integer.MAX_VALUE, Integer.MAX_VALUE, new Mossa[i] );
+			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
 			Mossa m = (Mossa) bestConfig[1];
 			int a = (int) bestConfig[0];
 			System.out.println("Valori ritornati da negamax " + a + " " + m);
 			if (bestConfig[1] != null) {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
-				if (((Integer) bestConfig[0]) == FINE_GIOCO)
+				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
+				System.out.println("CONFIGURAZIONE DIVERSA DA NULL _------------------------------------>");
+				if (((Integer) bestConfig[0]) == FINE_GIOCO) {
+					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
+					System.out.println("RETURN QUANDO FINISCE IL GIOCO");
 					return new Object[] { bestScore, bestMove };
+				}
+				root.muovi((Mossa)bestConfig[1]);
+				boolean turno =  (turnoGiocatore== true) ? false : true;
+				root.setTurnoGiocatore(turno);
+				System.out.println("__________________---------------------------------______________________________________");
+				bestConfigAdversary = abNegamax(root, i, 0, alfaAdversary, betaAdversary, new Mossa [i]);
+				root.muovi((Mossa)bestConfigAdversary[1]);
+				System.out.println("-------------------------------     --------------------");
+				System.out.println(""+bestConfigAdversary[1]);
+				System.out.println("--------------------    -------------------------------");
+				
 			}
-			 else {
-				 break;
-			}
-		}
-//		System.out.println("XXX -- esco da qui");
-		return new Object[] { bestScore, bestMove };
-	}
 
-	public static void main(String[] args) {
-		ScacchieraBit s = new ScacchieraBit();
-//		long seed = System.currentTimeMillis();
-//		Random r = new Random(seed);
-//		System.out.println("SEED utilizzato: " + seed);
-//		ArrayList<Mossa> moves;
-//		int scelta;
-//		for (int i = 0; i < 60; i++) {
-//			System.out.println("XXX - " + i);
-//			moves = s.getAllMoves();
-////			System.out.println("size: " + moves.size());
-//			if (moves.size() > 0) {
-//				scelta = r.nextInt(moves.size());
-////				System.out.println(moves.get(scelta));
-//				
-//				try{
-//					s = ScacchieraBit.muovi(moves.get(scelta), s);
-//					if(s.checkFin()) break;
-//					s.debugStatus(false, moves.get(scelta).toString());
-//				}catch(Exception e) {
-//					e.printStackTrace();
-//					s.debugStatus(false, "errore");
-//					break;
-//				}
-////				System.out.println("\n\n\n");
-//			}
-//		}
-//		s.debugStatus(true, "fine");
-//		ArrayList<Mossa> mosseFinali = s.generaListaMosse(7, 2);
-//		System.out.println("Numero di mosse disponibili: "+mosseFinali.size());
-		Player p = new Player(s, 0);
-		Object[] res = p.negamaxIterativeDeepening();
-		Mossa m = (Mossa) res[1];
-		int a = (int) res[0];
-		System.out.println("Valori ritornati da negamax " + a + " " + m);
+			System.out.println("RETURN FINALEEEEEE");
+			System.out.println("RETURN FINALEEEEEE");
+		}
+
+		System.out.println("RETURN NEGAMAXITERATIVING ---------------------->");
+		return new Object[] { bestScore, bestMove };
 	}
 
 	public void saveState() {
@@ -231,4 +234,14 @@ public class Player {
 			System.out.println(mossa);
 		}
 	}
+
+	public static void main(String[] args) {
+		ScacchieraBit s = new ScacchieraBit();
+		Player p = new Player(s, 0);
+		Object[] res = p.negamaxIterativeDeepening();
+		Mossa m = (Mossa) res[1];
+		int a = (int) res[0];
+		System.out.println("Valori ritornati da negamax " + a + " " + m);
+	}
+
 }
