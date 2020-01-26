@@ -2,6 +2,7 @@ package Dipole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import cestinoDipole.Cella;
 import util.ByteMap;;
@@ -299,7 +300,7 @@ public class ScacchieraBit {
 		return -1;
 	}
 
-	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI,int c) {
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI, int c) {
 //		confI.debugStatus(false,"xx");
 		ScacchieraBit confF = new ScacchieraBit(confI);
 //		confF.debugStatus(false,"xy");
@@ -308,7 +309,7 @@ public class ScacchieraBit {
 		else
 			confF.mosseMaxNero--;
 
-		confF.muovi(m,c);
+		confF.muovi(m, c);
 
 		return confF;
 	}
@@ -317,7 +318,7 @@ public class ScacchieraBit {
 		return pedineI[c];
 	}
 
-	public int muovi(Mossa m,int c) {
+	public int muovi(Mossa m, int c) {
 		int tipo = 0;
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
 		int x = m.getiStart();
@@ -447,7 +448,7 @@ public class ScacchieraBit {
 							if (listaPedineNere[l] == oldPositionOnBoard) {
 								listaPedineNere[l] = (byte) newPositionOnBoard;
 
-							} else if (listaPedineBianche[l] == oldPositionOnBoard) {
+							} else if (listaPedineBianche[l] == newPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
 
@@ -481,11 +482,24 @@ public class ScacchieraBit {
 						scacchieraNeri = modifyBit(1, xF * 4 + yF / 2, scacchieraNeri);
 					}
 
-					for (int l = 0; l < numeroStackGiocatore[c]; l++) {
-						if (listaPedine[l] == newPositionOnBoard) {
-							for (int k = l + 1; k < numeroStackGiocatore[c]; k++) {
-								listaPedine[k - 1] = listaPedine[k];
+					for (int l = 0; l < 12; l++) {
+						if (c == PEDINA_BIANCA) {
+							if (listaPedineNere[l] == newPositionOnBoard) {
+								for (int k = l + 1; k < 12; k++) {
+									listaPedineNere[k - 1] = listaPedineNere[k];
+
+								}
+
 							}
+						} else {
+							if (listaPedineBianche[l] == newPositionOnBoard) {
+								for (int k = l + 1; k < 12; k++) {
+									listaPedineBianche[k - 1] = listaPedineBianche[k];
+
+								}
+
+							}
+
 						}
 					}
 
@@ -503,6 +517,7 @@ public class ScacchieraBit {
 
 		turnoGiocatore = !turnoGiocatore;
 		return tipo;
+
 	}
 
 	public byte[] getListaPosizioni(int colore) {
@@ -1083,126 +1098,56 @@ public class ScacchieraBit {
 //		System.out.println("");
 	}
 
-//	public static void main(String[] args) {
-//		ScacchieraBit scacchiera = new ScacchieraBit();
-//
-//		scacchiera.stampaScacchiera();
-//		//System.out.println(scacchiera.getNumeroPedine(0, 3));
-//		ArrayList<Mossa> m = scacchiera.generaListaMosse(0, 3);
-//		System.out.println(m.size());
-//		for(Mossa mov :m)
-//			System.out.println(mov);
-//		System.out.println();
-//	}
-////		
-//		ArrayList<Mossa> m = scacchiera.getMoves();
-//		int c = 0;
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		for (Mossa mossa : m) {
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		scacchiera.muovi(m.get(0));
-//		scacchiera.stampaScacchiera();
-//
-//		scacchiera.generaMosse(0, 3);
-//		m = scacchiera.getMoves();
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		c = 0;
-//		for (Mossa mossa : m) {
-//
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		scacchiera.muovi(m.get(10));
-//
-//		scacchiera.stampaScacchiera();
-//
-//		scacchiera.generaMosse(7, 4);
-//		m = scacchiera.getMoves();
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		c = 0;
-//		for (Mossa mossa : m) {
-//
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		System.out.println();
-//		scacchiera.muovi(m.get(20));
-//		scacchiera.stampaScacchiera();
-//
-//		scacchiera.generaMosse(0, 3);
-//		m = scacchiera.getMoves();
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		c = 0;
-//		for (Mossa mossa : m) {
-//
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		System.out.println();
-//		scacchiera.muovi(m.get(30));
-//		scacchiera.stampaScacchiera();
-//		scacchiera.generaMosse(5, 4);
-//		m = scacchiera.getMoves();
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		c = 0;
-//		for (Mossa mossa : m) {
-//
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		System.out.println();
-//		scacchiera.muovi(m.get(44));
-//		scacchiera.stampaScacchiera();
-//
-//		scacchiera.generaMosse(2, 3);
-//		m = scacchiera.getMoves();
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println("Mosse disponibili: " + m.size());
-//		System.out.println("___________________");
-//		System.out.println("");
-//		System.out.println();
-//		c = 0;
-//		for (Mossa mossa : m) {
-//
-//			System.out.println("mossa numero " + c + mossa);
-//			c++;
-//		}
-//
-//		System.out.println();
-//		scacchiera.muovi(m.get(58));
-//		scacchiera.stampaScacchiera();
-//	}
+	public static void main(String[] args) {
+		ScacchieraBit scacchiera = new ScacchieraBit();
+
+		scacchiera.stampaScacchiera();
+		// System.out.println(scacchiera.getNumeroPedine(0, 3));
+
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+			ArrayList<Mossa> mosse = scacchiera.getAllMoves();
+			for (Mossa m : mosse)
+				System.out.println(m);
+			System.out.println("");
+			System.out.println("Inserire la mossa del bianco: ");
+			System.out.println("");
+			System.out.print("iStart: \n");
+			int iStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("jStart \n");
+			int jStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("iEnd \n");
+			int iEnd = Integer.parseInt(scanner.nextLine());
+			System.out.println("jEnd \n");
+			int jEnd = Integer.parseInt(scanner.nextLine());
+			Mossa m = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
+			scacchiera.muovi(m, 0);
+			System.out.println("Il Player 0 effettua la mossa " + m);
+			System.out.println("");
+			scacchiera.stampaScacchiera();
+			System.out.println("");
+			ArrayList<Mossa> mosse1 = scacchiera.getAllMoves();
+			for (Mossa m1 : mosse1)
+				System.out.println(m1);
+			System.out.println("");
+			System.out.println("Inserire la mossa del nero: ");
+			System.out.println("");
+			System.out.print("iStart: \n");
+			iStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("jStart \n");
+			jStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("iEnd \n");
+			iEnd = Integer.parseInt(scanner.nextLine());
+			System.out.println("jEnd \n");
+			jEnd = Integer.parseInt(scanner.nextLine());
+			Mossa m1 = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
+			scacchiera.muovi(m1, 1);
+			System.out.println("Il Player 1 effettua la mossa " + m1);
+			System.out.println("");
+			scacchiera.stampaScacchiera();
+			System.out.println("");
+
+		}
+
+	}
 }
