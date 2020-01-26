@@ -299,7 +299,7 @@ public class ScacchieraBit {
 		return -1;
 	}
 
-	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI) {
+	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI,int c) {
 //		confI.debugStatus(false,"xx");
 		ScacchieraBit confF = new ScacchieraBit(confI);
 //		confF.debugStatus(false,"xy");
@@ -308,7 +308,7 @@ public class ScacchieraBit {
 		else
 			confF.mosseMaxNero--;
 
-		confF.muovi(m);
+		confF.muovi(m,c);
 
 		return confF;
 	}
@@ -317,11 +317,11 @@ public class ScacchieraBit {
 		return pedineI[c];
 	}
 
-	public int muovi(Mossa m) {
+	public int muovi(Mossa m,int c) {
 		int tipo = 0;
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
 		int x = m.getiStart();
-		int y = m.getjStart(), c = getColorePedina(x, y);
+		int y = m.getjStart();
 		int xF = m.getiEnd();
 		int yF = m.getjEnd();
 		int oldPositionOnBoard = x * 8 + y;
