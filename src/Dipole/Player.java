@@ -19,6 +19,7 @@ public class Player {
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
+	private int NUMERO_MAX_MOSSE = 60;
 
 	private long hashCode;
 
@@ -241,7 +242,7 @@ public class Player {
 	}
 
 	public void saveState() {
-		stampaMosse(root.generaListaMosse(0, 3));
+		stampaMosse(root.generaListaMosse(0, 3, PLAYER));
 	}
 
 	public void stampaMosse(ArrayList<Mossa> m) {
@@ -257,9 +258,9 @@ public class Player {
 		ScacchieraBit s = new ScacchieraBit();
 		Player p = new Player(s, 0);
 		Player p1 = new Player(s, 1);
-		int cont=0;
+		int mossePartita=0;
 		Scanner scanner = new Scanner(System.in);
-		while(cont < 60) {
+		while(mossePartita < p.NUMERO_MAX_MOSSE) {
 			Object[] res = p.negamaxIterativeDeepening();
 			Mossa m = (Mossa) res[1];
 			s.muovi(m);
@@ -283,7 +284,7 @@ public class Player {
 			s.muovi(m1);
 			System.out.println("Il Player 1 effettua la mossa "+ m1);
 			System.out.println("");
-			cont++;
+			mossePartita++;
 			s.stampaScacchiera();
 			System.out.println("");
 		}

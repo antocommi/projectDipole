@@ -53,6 +53,8 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 			}
 				
+//			FARE SEMPRE UN MERGE VICINO ----> MOLTA IMPORTANZA SE NO SI SPOSTA TROPPO IN AVANTI
+			
 			if (adversaryMove != null && spost > 3 && pedinePerse <= 1) {
 //				System.out.println("qui  2  ");
 				int numMosseMangianti = stato.generaMosseSenzaCheck(adversaryMove,giocatoreAdversary);
