@@ -48,7 +48,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 				e = e - 21;
 //				System.out.println("qui  1  ");
 			}
-			if (adversaryMove != null && pedinePerse > 1) {
+			if (adversaryMove != null) {
 				e=e-41;
 
 			}
@@ -70,7 +70,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 			}
 			if (prec.getTipo() == 1) {
-				e = e + 21;
+				e = e + 111;
 //				System.out.println("qui  5  ");
 			}
 

@@ -17,10 +17,12 @@ public class PreLoad {
 
 	private int SIZE = 8;
 
-	public PreLoad(String path, ScacchieraBit s) {
+	private int color;
+	public PreLoad(String path, ScacchieraBit s, int c) {
 //		Togliere il commento per generare il file delle combinazioni!
 //		generaListaMossa(s, path);
 		listaMosse = carica(path);
+		this.color=c;
 	}
 
 	public void generaListaMossa(ScacchieraBit s, String path) {
@@ -28,7 +30,7 @@ public class PreLoad {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
-					lista.add(s.generaListaMosse(i, j));
+					lista.add(s.generaListaMosse(i, j, color));
 				}
 			}
 		}
@@ -107,7 +109,7 @@ public class PreLoad {
 
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
-		PreLoad p = new PreLoad("tmp.txt", s);
+		PreLoad p = new PreLoad("tmp.txt", s, 0);
 //		p.toStringCombinazioni();
 		int i = 0;
 		int j = 3;

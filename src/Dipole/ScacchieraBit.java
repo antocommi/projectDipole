@@ -1043,7 +1043,7 @@ public class ScacchieraBit {
 	 * che le nere si trovano su caselle di colore nero.
 	 */
 	public void stampaScacchiera() {
-		scacchiera.printValues();
+//		scacchiera.printValues();
 //		private int scacchieraBianchi, scacchieraNeri; //
 //		System.out.println("bit bianchi: " + scacchieraBianchi);
 //		System.out.println("bit neri: " + scacchieraNeri);
