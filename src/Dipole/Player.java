@@ -20,7 +20,6 @@ public class Player {
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
 	private int NUMERO_MAX_MOSSE = 60;
-
 	private long hashCode;
 
 	private int size = (int) Math.pow(2, 22); // TODO: forse troppo grande - da verificare
@@ -242,7 +241,7 @@ public class Player {
 	}
 
 	public void saveState() {
-		stampaMosse(root.generaListaMosse(0, 3, PLAYER));
+		stampaMosse(root.generaListaMosse(0, 3,PLAYER));
 	}
 
 	public void stampaMosse(ArrayList<Mossa> m) {
