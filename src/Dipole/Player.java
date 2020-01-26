@@ -1,6 +1,7 @@
 package Dipole;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import DipoleHeuristics.HeuristicInterface;
 import DipoleHeuristics.NaiveHeuristic;
@@ -14,7 +15,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 50;
+	private int PROFONDITA = 5;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -50,12 +51,12 @@ public class Player {
 //		System.out.println("");
 //		System.out.println("_____________________________________________________________________");
 //		System.out.println("");
-		System.out.format("CurrDepth: %d Depth: %d Alfa: %d Beta: %d Tempo: %d \n", currDepth, depth, alfa, beta,
-				controlloTempo);
-		System.out.println("");
+//		System.out.format("CurrDepth: %d Depth: %d Alfa: %d Beta: %d Tempo: %d \n", currDepth, depth, alfa, beta,
+//				controlloTempo);
+//		System.out.println("");
 //		System.out.println("_____________________________________________________________________");
 		// SE SUPERA IL TEMPO MASSIMO RITORNA UN INTEGER DI ERRORE
-		if (controlloTempo >= 600000) {
+		if (controlloTempo >= 900) {
 //			System.out.println("TEMPO SCADUTO");
 			return new Object[] { new Integer(-1), null };
 		}
@@ -255,11 +256,38 @@ public class Player {
 	public static void main(String[] args) {
 		ScacchieraBit s = new ScacchieraBit();
 		Player p = new Player(s, 0);
-		Object[] res = p.negamaxIterativeDeepening();
-		Mossa m = (Mossa) res[1];
-		int a = (int) res[0];
-		System.out.println("");
-		System.out.println("Valori ritornati da negamax " + a + " " + m);
+		Player p1 = new Player(s, 1);
+		int cont=0;
+		Scanner scanner = new Scanner(System.in);
+		while(cont < 60) {
+			Object[] res = p.negamaxIterativeDeepening();
+			Mossa m = (Mossa) res[1];
+			s.muovi(m);
+			int valoreEuristica = (int) res[0];
+			System.out.println("");
+			System.out.println("Il Player 0 effettua la "+ m);
+			System.out.println("");
+			s.stampaScacchiera();
+			System.out.println("");
+			System.out.println("Inserire la mossa dell'avversario: ");
+			System.out.println("");
+			System.out.print("iStart: \n");
+	        int iStart = Integer.parseInt(scanner. nextLine());
+	        System.out.println("jStart \n");
+	        int jStart = Integer.parseInt(scanner. nextLine());
+	        System.out.println("iEnd \n");
+	        int iEnd = Integer.parseInt(scanner. nextLine());
+	        System.out.println("jEnd \n");
+	        int jEnd = Integer.parseInt(scanner. nextLine());
+			Mossa m1 = new Mossa(iStart, jStart, iEnd, jEnd, s.calcolaDirezione(iStart,jStart,iEnd,jEnd));
+			s.muovi(m1);
+			System.out.println("Il Player 1 effettua la mossa "+ m1);
+			System.out.println("");
+			cont++;
+			s.stampaScacchiera();
+			System.out.println("");
+		}
+		scanner.close();
 	}
 
 }

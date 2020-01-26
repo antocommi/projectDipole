@@ -232,6 +232,29 @@ public class ScacchieraBit {
 		return ris;
 	}
 
+	public int getDirection(String direction) {
+		switch (direction) {
+		case "NORTH":
+			return 0;
+		case "SOUTH":
+			return 1;
+		case "NORTHEAST":
+			return 2;
+		case "SOUTHWEST":
+			return 3;
+		case "SOUTHEAST":
+			return 4;
+		case "NORTHWEST":
+			return 5;
+		case "EAST":
+			return 6;
+		case "WEST":
+			return 7;
+		default:
+			return -1;
+		}
+	}
+//	0,3 - 2,3
 	public int calcolaDirezione(int a, int b, int x, int y) {
 		int offsetA, offsetB;
 		offsetA = a - x;
@@ -545,7 +568,7 @@ public class ScacchieraBit {
 	public int generaMosseSenzaCheck(Mossa m, int c) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
-		
+
 		int cont = 0;
 		int pos, curr_pos, numeroCelleSpostamento = 0;
 		if (checkPosOut(x, y))
@@ -695,7 +718,7 @@ public class ScacchieraBit {
 //					System.out.println("mosse in cui mi mangia "+mossa);
 					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
-						
+
 						listaMosseReturn.add(mossa);
 
 					}
@@ -840,8 +863,8 @@ public class ScacchieraBit {
 		if (c == PEDINA_BIANCA
 				&& (m.getDirection() == NORTH || m.getDirection() == NORTHEAST || m.getDirection() == NORTHWEST))
 			return false;
-		else if (c == PEDINA_NERA && (m.getDirection() == SOUTH || m.getDirection() == SOUTHEAST
-				|| m.getDirection() == SOUTHWEST))
+		else if (c == PEDINA_NERA
+				&& (m.getDirection() == SOUTH || m.getDirection() == SOUTHEAST || m.getDirection() == SOUTHWEST))
 			return false;
 		return true;
 	}
@@ -1014,7 +1037,7 @@ public class ScacchieraBit {
 	 * che le nere si trovano su caselle di colore nero.
 	 */
 	public void stampaScacchiera() {
-		scacchiera.printValues();
+//		scacchiera.printValues();
 //		private int scacchieraBianchi, scacchieraNeri; //
 //		System.out.println("bit bianchi: " + scacchieraBianchi);
 //		System.out.println("bit neri: " + scacchieraNeri);
