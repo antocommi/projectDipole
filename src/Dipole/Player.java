@@ -14,7 +14,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 1;
+	private int PROFONDITA = 5;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -117,7 +117,7 @@ public class Player {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board);
-				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
+				
 				System.out.println("scacchiera");
 				newBoard.stampaScacchiera();
 
@@ -223,7 +223,7 @@ public class Player {
 	}
 
 	public void saveState() {
-		stampaMosse(root.generaListaMosse(0, 3));
+		stampaMosse(root.generaListaMosse(0, 3,PLAYER));
 	}
 
 	public void stampaMosse(ArrayList<Mossa> m) {
