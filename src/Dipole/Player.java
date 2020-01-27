@@ -130,7 +130,7 @@ public class Player {
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
 			try {
-				newBoard = ScacchieraBit.muovi(mossa, board);
+				newBoard = ScacchieraBit.muovi(mossa, board,board.getTurnoGiocatore() ? 0 : 1);
 //				newBoard.setTurnoGiocatore(!newBoard.getTurnoGiocatore());
 //				System.out.println("scacchiera");
 				
@@ -262,7 +262,7 @@ public class Player {
 		while(mossePartita < p.NUMERO_MAX_MOSSE) {
 			Object[] res = p.negamaxIterativeDeepening();
 			Mossa m = (Mossa) res[1];
-			s.muovi(m);
+			s.muovi(m,0);
 			int valoreEuristica = (int) res[0];
 			System.out.println("");
 			System.out.println("Il Player 0 effettua la "+ m);
@@ -280,7 +280,7 @@ public class Player {
 	        System.out.println("yF \n");
 	        int yF = Integer.parseInt(scanner. nextLine());
 			Mossa m1 = new Mossa(x, y, xF, yF, s.calcolaDirezione(x,y,xF,yF));
-			s.muovi(m1);
+			s.muovi(m1,1);
 			System.out.println("Il Player 1 effettua la mossa "+ m1);
 			System.out.println("");
 			mossePartita++;
