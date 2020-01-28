@@ -69,6 +69,19 @@ public class NaiveHeuristic implements HeuristicInterface {
 				}
 
 			}
+			
+			if (adversaryMove == null && stato.possoMangiare(prec, giocatore,stato)){
+				//posso mangiare e non vengo mangiato
+				e += 21;	
+			}
+			if (adversaryMove == null && stato.possoMangiare(prec, giocatore,stato)&& stato.diagPrinc(prec)){
+				//posso mangiare e non vengo mangiato
+				e += 21;	
+			}
+			if(stato.miMangiaPochePedineEritornoAmangiarlo(prec, giocatore,stato)  ) {
+				e+=21;
+			}
+				
 			if (prec.getTipo() == 1) {
 				e = e + 21;
 //				System.out.println("qui  5  ");
