@@ -475,9 +475,11 @@ public class ScacchieraBit {
 				} else {// se non le sposta tutte
 
 					if (c == PEDINA_BIANCA) {
+						pedineI[1 - c] -= spostamento;
 						scacchieraNeri = modifyBit(0, xF * 4 + yF / 2, scacchieraNeri);
 						scacchieraBianchi = modifyBit(1, xF * 4 + yF / 2, scacchieraBianchi);
 					} else {
+						pedineI[1 - c] -= spostamento;
 						scacchieraBianchi = modifyBit(0, xF * 4 + yF / 2, scacchieraBianchi);
 						scacchieraNeri = modifyBit(1, xF * 4 + yF / 2, scacchieraNeri);
 					}
@@ -642,6 +644,7 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
+				System.out.println(mossa);
 				if (checkMosse(mossa, c)) {
 
 					listaMosse.add(mossa);
@@ -656,8 +659,22 @@ public class ScacchieraBit {
 
 		return listaMosse;
 	}
-
-	public boolean miMangia(Mossa m, ScacchieraBit board, int color) {
+	
+	public boolean diagPrinc(Mossa m) {
+		int x = m.getiEnd();// dove andrò
+		int y = m.getjEnd();
+		if(x==y)return true;
+		return false;
+	}
+	public boolean possoMangiare(Mossa m, int color, ScacchieraBit board) {
+		int x = m.getiEnd();// dove andrò
+		int y = m.getjEnd();
+		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
+		if(getColorePedina(x,y)==(1-color) && board.getNumeroPedine(x, y)<=n)
+			return true;
+		return false;
+	}
+	public boolean miMangiaPochePedineEritornoAmangiarlo(Mossa m, int color,ScacchieraBit board) {
 		int x = m.getiEnd();// dove andrò
 		int y = m.getjEnd();
 		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd()); // n di pedine sullo
@@ -665,48 +682,101 @@ public class ScacchieraBit {
 		// dove andrò == di quanto mi sono spostato
 
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
+		if (n <= 2) {
+			if (color == PEDINA_BIANCA) {
+				int nPedStack = 0;
 
-		if (color == PEDINA_BIANCA) {
-			int nPedStack = 0;
+				for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
 
-			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+					listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
+							PEDINA_NERA);
+					for (Mossa mossa : listaMosse) {
+						// System.out.println("mosse in cui mi mangia " + mossa);
+						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 
-				listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
-						1 - color);
-				for (Mossa mossa : listaMosse) {
-					// System.out.println("mosse in cui mi mangia " + mossa);
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
-					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
+							if(board.miMangiaGetMossa(mossa, 1-color, board)!=null) {
+								return true;
+							}
 
-						return true;
+						}
+
+					}
+				}
+			} else if (color == PEDINA_NERA) {
+				int nPedStack = 0;
+
+				for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+
+					listaMosse = board.generaListaMosse(board.listaPedineBianche[i] / 8,
+							board.listaPedineBianche[i] % 8, PEDINA_BIANCA);
+					for (Mossa mossa : listaMosse) {
+						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
+
+							if(board.miMangiaGetMossa(mossa, 1-color, board)!=null) {
+								return true;
+							};
+
+						}
 
 					}
 
 				}
-			}
-		} else if (color == PEDINA_NERA) {
-			int nPedStack = 0;
-
-			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
-
-				listaMosse = board.generaListaMosse(board.listaPedineBianche[i] / 8, board.listaPedineBianche[i] % 8,
-						1 - color);
-				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
-					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
-
-						return true;
-
-					}
-
-				}
-
 			}
 		}
-
 		return false;
 	}
+	
+	public boolean loMangio(Mossa adversary, ScacchieraBit board, int color) {
+		int x = adversary.getiEnd();// dove andrò
+		int y = adversary.getjEnd();
+		int n = board.calcolaSpostamento(adversary.getiStart(), adversary.getiEnd(), adversary.getjStart(), adversary.getjEnd()); // n di pedine sullo
+																									// stack
+		// dove andrò == di quanto mi sono spostato
 
+		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
+		
+			if (color == PEDINA_BIANCA) {
+				int nPedStack = 0;
+
+				for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+
+					listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
+							1 - color);
+					for (Mossa mossa : listaMosse) {
+						// System.out.println("mosse in cui mi mangia " + mossa);
+						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
+
+							return true;
+
+						}
+
+					}
+				}
+			} else if (color == PEDINA_NERA) {
+				int nPedStack = 0;
+
+				for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+
+					listaMosse = board.generaListaMosse(board.listaPedineBianche[i] / 8,
+							board.listaPedineBianche[i] % 8, 1 - color);
+					for (Mossa mossa : listaMosse) {
+						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
+
+							return true;
+
+						}
+
+					}
+
+				}
+			}
+		
+		return false;
+	}
 	public Mossa miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();// dove andrò
 		int y = m.getjEnd();
@@ -900,7 +970,6 @@ public class ScacchieraBit {
 		int y = m.getjStart();
 		int xF = m.getiEnd();
 		int yF = m.getjEnd();
-
 		int spostamento = calcolaSpostamento(x, y, xF, yF);
 		int spostamentoFuori = calcolaCelleFuori(x, y, xF, yF);
 
@@ -917,35 +986,36 @@ public class ScacchieraBit {
 		// TODO: controllo mosse fuori
 
 		if (checkPosOut(xF, yF) & scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
-			// System.out.println("a");
+			System.out.println("a");
 			return false;
 		}
 
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento) {
-			// System.out.println("b");
+			System.out.println("b");
 			return false;
 		}
 		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-			// System.out.println("c");
+			System.out.println("c");
 			return true;
 		}
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
 		if (!checkMosseInAvanti(m, x, y, c)
 				&& ((scacchiera.getValue(xF * 8 + yF) == 0) || (getColorePedina(xF, yF) == c))) {
-			// System.out.println("d");
+			System.out.println("d");
 			return false;
 		}
 
 		// CAPTURE
 		if (scacchiera.getNumeroPedine(x, y) < scacchiera.getNumeroPedine(xF, yF)) {
-			// System.out.println("e");
+			System.out.println("e");
 			return false;
 		}
 
 		if (scacchiera.getNumeroPedine(xF, yF) > spostamento) {
-			// System.out.println("f");
+
+			System.out.println("f");
 			return false;
 		}
 
