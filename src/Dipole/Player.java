@@ -33,7 +33,7 @@ public class Player {
 
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
-		this.root = scacchiera;
+		this.root = new ScacchieraBit(scacchiera);
 //		this.transpositionTable = new TTElement[size]; TODO
 		zobrist = new Zobrist();
 		euristica = new NaiveHeuristic();
@@ -41,6 +41,10 @@ public class Player {
 		turnoGiocatore = scacchiera.getTurnoGiocatore();
 	}
 
+	public void muovi(Mossa m, int player);
+	
+	public Mossa elaboraProssimaMossa();
+	
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 
 		// STAMPE INIZIALI
