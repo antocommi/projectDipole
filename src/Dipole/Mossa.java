@@ -65,7 +65,7 @@ public class Mossa implements MossaI, Serializable {
 		else
 			spostamento = calcolaSpostamento(iStart,jStart,iEnd,jEnd);
 		
-		return "MOVE " + RIGHE[iStart]+jStart+","+ DIR[direction]+","+spostamento;
+		return "MOVE " + RIGHE[iStart]+jStart+","+ DIR[direction]+","+(spostamento+1);
 	}
 	
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {

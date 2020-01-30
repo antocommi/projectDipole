@@ -119,11 +119,11 @@ public class Client {
 					System.out.println("Mossa dell'avversario: " + answer.substring(2));
 					String[] campi = answer.substring(6).split(",");
 					int x = rowMap.get(campi[0].substring(0,0));
-					int y = Integer.valueOf(campi[0].substring(1));
+					int y = Integer.valueOf(campi[0].substring(1))-1;
 					int dir = dirMap.get(campi[1]);
 					int spostamento = Integer.valueOf(campi[2]);
 					int[] dest = calcola_indici(x, y, dir, spostamento);
-					Mossa m = new Mossa(x, y, dest[0],dest[1], dir);
+					Mossa m = new Mossa(x, y, dest[0], dest[1], dir);
 					g.muovi(m,1-player);
 					// g.draw2();
 				} else if (answer.startsWith("VICTORY")) {
