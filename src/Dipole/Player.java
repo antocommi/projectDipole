@@ -202,7 +202,7 @@ public class Player {
 			Mossa mossa = player.elaboraProssimaMossa();
 			player.muovi(mossa, PEDINA_BIANCA);
 			System.out.println("");
-			System.out.println("Il Player 0 effettua la " + mossa);
+			System.out.println("Il Player 0 effettua la " + mossa.oldtoString());
 			System.out.println("");
 			player.stampaScacchiera();
 			System.out.println("");
@@ -218,7 +218,7 @@ public class Player {
 			int yF = Integer.parseInt(scanner.nextLine());
 			Mossa m1 = new Mossa(x, y, xF, yF, root.calcolaDirezione(x, y, xF, yF));
 			player.muovi(m1, PEDINA_NERA);
-			System.out.println("Il Player 1 effettua la mossa " + m1);
+			System.out.println("Il Player 1 effettua la mossa " + m1.oldtoString());
 			System.out.println("");
 			mossePartita++;
 			player.stampaScacchiera();

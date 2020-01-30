@@ -20,11 +20,10 @@ public class Mossa implements MossaI, Serializable {
 
 	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
 	
-//	@Override
-//	public String oldtoString() {
-//		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
-//				+ "]";
-//	}
+	public String oldtoString() {
+		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
+				+ "]";
+	}
 	
 	public int calcolaSpostamento(int a, int b, int x, int y) {
 		int k, m;
