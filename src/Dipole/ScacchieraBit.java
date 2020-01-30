@@ -35,22 +35,34 @@ public class ScacchieraBit {
 	private static final int CELLA_NERA = 1;
 	private static final int STACK_BIANCO = 12;
 	private static final int STACK_NERO = 12;
-	public final int NORTH = 0;
-	public final int SOUTH = 1;
-	public final int NORTHEAST = 2;
-	public final int SOUTHWEST = 3;
-	public final int SOUTHEAST = 4;
-	public final int NORTHWEST = 5;
-	public final int EAST = 6;
-	public final int WEST = 7;
+	private static final int NORTH = 0;
+	private static final int SOUTH = 1;
+	private static final int NORTHEAST = 2;
+	private static final int SOUTHWEST = 3;
+	private static final int SOUTHEAST = 4;
+	private static final int NORTHWEST = 5;
+	private static final int EAST = 6;
+	private static final int WEST = 7;
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
 	private static final int MAX_MOSSE = 60;
-	public final int[] posInteressantiBianchi = { NORTH, NORTHEAST, NORTHWEST };
-	public final int[] posInteressantiNero = { SOUTH, SOUTHWEST, SOUTHEAST };
+	private static final int[] posInteressantiBianchi = { NORTH, NORTHEAST, NORTHWEST };
+	private static final int[] posInteressantiNero = { SOUTH, SOUTHWEST, SOUTHEAST };
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
 	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
+
+	public int getMosseMaxBianco() {
+		return mosseMaxBianco;
+	}
+
+	public int getMosseMaxNero() {
+		return mosseMaxNero;
+	}
+
+	public int getNumeroPedineTot(int colore) {
+		return pedineI[colore];
+	}
 
 	public void debugStatus(boolean stampaMosse, String nome) {
 //		private ByteMap scacchiera; //
@@ -517,6 +529,10 @@ public class ScacchieraBit {
 
 		}
 
+		if (turnoGiocatore)
+			mosseMaxBianco--;
+		else
+			mosseMaxNero--;
 		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 
@@ -784,10 +800,10 @@ public class ScacchieraBit {
 	}
 
 	public Mossa miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
-		int x = m.getiEnd();// dove andrò 6,5
+		int x = m.getiEnd();// dove andrò
 		int y = m.getjEnd();
 		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd()); // n di pedine sullo
-		//if(x==6 && y==5)System.out.println(m);																							// stack
+																									// stack
 		// dove andrò == di quanto mi sono spostato
 		ArrayList<Mossa> listaMosseReturn = new ArrayList<Mossa>();
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
@@ -800,16 +816,10 @@ public class ScacchieraBit {
 				listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
 						1 - color);
 				for (Mossa mossa : listaMosse) {
-					//
-//					if (mossa.getiEnd() == 6 && mossa.getjEnd() == 5) {
-//						System.out.println("mosse in cui mi mangia " + mossa);
-//						System.out.println(nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart()));
-//						System.out.println(n);
-//						System.out.println(x + "  " + y);
-//					}
+					// System.out.println("mosse in cui mi mangia " + mossa);
 					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
-						System.out.println("quelle che prende nella lista " + mossa);
+
 						listaMosseReturn.add(mossa);
 
 					}

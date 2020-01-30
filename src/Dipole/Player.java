@@ -149,6 +149,22 @@ public class Player {
 		}
 	}
 
+	public int getVincitore() {
+		if (root.getMosseMaxBianco() == 0 || root.getMosseMaxNero() == 0) {
+			if (root.getNumeroPedineTot(PEDINA_BIANCA) > root.getNumeroPedineTot(PEDINA_NERA))
+				return PEDINA_BIANCA;
+			if (root.getNumeroPedineTot(PEDINA_NERA) > root.getNumeroPedineTot(PEDINA_BIANCA))
+				return PEDINA_NERA;
+			if (root.getNumeroPedineTot(PEDINA_NERA) == root.getNumeroPedineTot(PEDINA_BIANCA))
+				return 2;
+		}
+		if (root.getNumeroStackGiocatore(PEDINA_BIANCA) == 0 || root.zeroMosse(PEDINA_BIANCA))
+			return PEDINA_NERA;
+		if (root.getNumeroStackGiocatore(PEDINA_NERA) == 0 || root.zeroMosse(PEDINA_NERA))
+			return PEDINA_BIANCA;
+		return -1;
+	}
+
 	public void stampaScacchiera() {
 		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
