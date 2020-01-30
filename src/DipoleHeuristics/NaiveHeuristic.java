@@ -9,14 +9,6 @@ import Dipole.ScacchieraBit;
 
 public class NaiveHeuristic implements HeuristicInterface {
 
-//	@Override
-//	public int valuta(ScacchieraBit stato) {
-//		int k=0;
-//		for(int i=0;i<stato;i++) {
-//			
-//		}
-//		return 0;
-//	
 	private int[] v = { 1, 7, 8, 14, 17, 23, 24, 30, 33, 39, 40, 46, 49, 55, 56, 62 };
 
 	private HashMap<Integer, Integer> POSIZIONI_BORDI;
@@ -69,19 +61,6 @@ public class NaiveHeuristic implements HeuristicInterface {
 				}
 
 			}
-			
-			if (adversaryMove == null && stato.possoMangiare(prec, giocatore,stato)){
-				//posso mangiare e non vengo mangiato
-				e += 21;	
-			}
-			if (adversaryMove == null && stato.possoMangiare(prec, giocatore,stato)&& stato.diagPrinc(prec)){
-				//posso mangiare e non vengo mangiato
-				e += 21;	
-			}
-			if(stato.miMangiaPochePedineEritornoAmangiarlo(prec, giocatore,stato)  ) {
-				e+=21;
-			}
-				
 			if (prec.getTipo() == 1) {
 				e = e + 20000;
 //				System.out.println("qui  5  ");
@@ -112,9 +91,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 					else {
 //						System.out.println("qui  9  ");
 						e -= 2;
-					}
-						
-						
+					}				
 				}
 
 				if (nPedine < 2) {
@@ -145,6 +122,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	private int perturbazioneRandom() {
 		Random r = new Random();
 		return r.nextInt(100) - 50;
