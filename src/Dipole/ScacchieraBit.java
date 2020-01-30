@@ -644,7 +644,7 @@ public class ScacchieraBit {
 			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
 				curr_pos += DIRECTIONS[dir];
 				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
-				System.out.println(mossa);
+//				System.out.println(mossa);
 				if (checkMosse(mossa, c)) {
 
 					listaMosse.add(mossa);
@@ -986,36 +986,36 @@ public class ScacchieraBit {
 		// TODO: controllo mosse fuori
 
 		if (checkPosOut(xF, yF) & scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
-			System.out.println("a");
+//			System.out.println("a");
 			return false;
 		}
 
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento) {
-			System.out.println("b");
+//			System.out.println("b");
 			return false;
 		}
 		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-			System.out.println("c");
+//			System.out.println("c");
 			return true;
 		}
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
 		if (!checkMosseInAvanti(m, x, y, c)
 				&& ((scacchiera.getValue(xF * 8 + yF) == 0) || (getColorePedina(xF, yF) == c))) {
-			System.out.println("d");
+//			System.out.println("d");
 			return false;
 		}
 
 		// CAPTURE
 		if (scacchiera.getNumeroPedine(x, y) < scacchiera.getNumeroPedine(xF, yF)) {
-			System.out.println("e");
+//			System.out.println("e");
 			return false;
 		}
 
 		if (scacchiera.getNumeroPedine(xF, yF) > spostamento) {
 
-			System.out.println("f");
+//			System.out.println("f");
 			return false;
 		}
 
