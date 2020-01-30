@@ -33,6 +33,7 @@ public class Mossa implements MossaI, Serializable {
 		return k >= m ? k : m;
 	}
 	
+	
 	private int calcolaCelleFuori(int a, int b, int x, int y) {
 		int dir = direction;
 		if (dir == ScacchieraBit.NORTH)
