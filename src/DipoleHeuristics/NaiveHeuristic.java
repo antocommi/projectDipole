@@ -49,13 +49,13 @@ public class NaiveHeuristic implements HeuristicInterface {
 //				System.out.println("qui  1  ");
 			}
 			if (adversaryMove != null) {
-				e=e-41;
+				e=e-81;
 
 			}
 				
 //			FARE SEMPRE UN MERGE VICINO ----> MOLTA IMPORTANZA SE NO SI SPOSTA TROPPO IN AVANTI
 			
-			if (adversaryMove != null && spost > 3 && pedinePerse <= 1) {
+			if (adversaryMove != null && spost > 3 && pedinePerse == 1) {
 //				System.out.println("qui  2  ");
 				int numMosseMangianti = stato.generaMosseSenzaCheck(adversaryMove,giocatoreAdversary);
 //				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
@@ -70,9 +70,11 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 			}
 			if (prec.getTipo() == 1) {
-				e = e + 111;
+				e = e + 20000;
 //				System.out.println("qui  5  ");
 			}
+			
+
 
 			for (int pedina = 0; pedina < stato.getNumeroStackGiocatore(giocatore); pedina++) {
 
@@ -81,22 +83,22 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 				if (giocatore == 1) {
 					if (pos < 32) {
-						e += nPedine;
+						e += 2;
 //						System.out.println("qui  6  ");
 					}
 					else {
-						e -= nPedine;
+						e -= 2;
 //						System.out.println("qui  7  ");
 					}
 				} else {
 					if (pos >= 32) {
 //						System.out.println("qui  8  ");
-						e += nPedine;
+						e += 2;
 					}
 						
 					else {
 //						System.out.println("qui  9  ");
-						e -= nPedine;
+						e -= 2;
 					}
 						
 						
