@@ -15,9 +15,58 @@ public class Mossa implements MossaI, Serializable {
 	private int jEnd;
 	private int direction;
 	private int tipo;
-	private static String[] DIR = { "NORTH", "SOUTH", "NORTHEAST", "SOUTHWEST", "SOUTHEAST", "NORTHWEST", "EAST",
-			"WEST" };
+	private static String[] DIR = { "N", "S", "NE", "SW", "SE", "NW", "E",
+			"W" };
 
+	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
+	
+//	@Override
+//	public String oldtoString() {
+//		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
+//				+ "]";
+//	}
+	
+	public int calcolaSpostamento(int a, int b, int x, int y) {
+		int k, m;
+		k = Math.abs(a - x);
+		m = Math.abs(b - y);
+		return k >= m ? k : m;
+	}
+	
+	private int calcolaCelleFuori(int a, int b, int x, int y) {
+		int dir = direction;
+		if (dir == ScacchieraBit.NORTH)
+			return a + Math.abs(x);
+		if (dir == ScacchieraBit.NORTHEAST)
+			return (y - b);
+		if (dir == ScacchieraBit.NORTHWEST)
+			return (b + Math.abs(y));
+		if (dir == ScacchieraBit.SOUTH)
+			return x - a;
+		if (dir == ScacchieraBit.SOUTHEAST)
+			return (y - b);
+		if (dir == ScacchieraBit.SOUTHWEST)
+			return (b + Math.abs(y));
+		return -1;
+	}
+	
+	public boolean checkPosOut(int i, int j) {
+		if (i > 7 || j > 7 || i < 0 || j < 0)
+			return true;
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		int spostamento = 0;
+		if(checkPosOut(iEnd,jEnd)) 
+			spostamento = calcolaCelleFuori(iStart,jStart,iEnd,jEnd);
+		else
+			spostamento = calcolaSpostamento(iStart,jStart,iEnd,jEnd);
+		
+		return "MOVE " + RIGHE[iStart]+jStart+","+ DIR[direction]+","+spostamento;
+	}
+	
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		super();
 		this.iStart = iStart;
@@ -119,10 +168,5 @@ public class Mossa implements MossaI, Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
-				+ "]";
-	}
 
 }

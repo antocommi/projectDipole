@@ -53,16 +53,16 @@ public class Client {
 				answer = in.readLine();
 				if (answer.startsWith("YOUR_TURN")) {
 					long init = System.currentTimeMillis();
-					String s = g.elaborateMove();
+					Mossa m = g.elaboraProssimaMossa();
 					long dur = System.currentTimeMillis() - init;
-					out.println("MOVE " + s);
-					char c = s.charAt(0);
-					int x = (int) c - A;
-					int y = Integer.valueOf(s.substring(1)) - 1;
-					Move m = new Move(x, y, player);
-					g.makeMove(m);
+					out.println(m);
+//					char c = s.charAt(0);
+//					int x = (int) c - A;
+//					int y = Integer.valueOf(s.substring(1)) - 1;
+//					Move m = new Move(x, y, player);
+					g.muovi(m,player);
 					System.out.println("Ho scelto di fare la mossa " + s + " in " + dur);
-					g.draw();
+					
 				} else if (answer.startsWith("VALID_MOVE"))
 					System.out.println("Mossa valida, attendi...");
 				else if (answer.startsWith("ILLEGAL_MOVE")) {
@@ -75,7 +75,7 @@ public class Client {
 					int x = (int) c - A;
 					int y = Integer.valueOf(answer.substring(15)) - 1;
 					Move m = new Move(x, y, 1 - player);
-					g.makeMove(m);
+					g.muovi(m);
 					g.draw();
 					// g.draw2();
 				} else if (answer.startsWith("VICTORY")) {
