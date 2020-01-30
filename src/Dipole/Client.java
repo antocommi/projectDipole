@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.HashMap;
 
 public class Client {
 
@@ -14,19 +14,70 @@ public class Client {
 	private Player g;
 	private int player;
 	private static final int A = 65;
-
+	private HashMap<String, Integer> dirMap,rowMap;
+	
 //	public Player(String serverAddress, int port) throws Exception {
 //		socket = new Socket(serverAddress, port);
 //		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 //		out = new PrintWriter(socket.getOutputStream(), true);
 //	} // costruttore
 
+	private static String[] DIR = { "N", "S", "NE", "SW", "SE", "NW", "E",
+	"W" };
+	
+	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
+	
 	public Client(String serverAddress, int port) throws Exception {
 		socket = new Socket(serverAddress, port);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
+		dirMap = new HashMap<String, Integer>();
+		rowMap = new HashMap<String, Integer>();
+		for(int i=0;i<8;i++){
+			dirMap.put(DIR[i],i);
+			rowMap.put(RIGHE[i], i);
+		}
 	} // costruttore
 
+	private int[] calcola_indici(int i, int j, int dir, int nCelleMove) {
+		int[] ris = new int[2];
+		switch (dir) {
+		case ScacchieraBit.NORTH:
+			ris[0] = i - nCelleMove;
+			ris[1] = j;
+			break;
+		case ScacchieraBit.NORTHEAST:
+			ris[1] = j + nCelleMove;
+			ris[0] = i - nCelleMove;
+			break;
+		case ScacchieraBit.EAST:
+			ris[1] = j + nCelleMove;
+			ris[0] = i;
+			break;
+		case ScacchieraBit.SOUTHEAST:
+			ris[1] = j + nCelleMove;
+			ris[0] = i + nCelleMove;
+			break;
+		case ScacchieraBit.SOUTH:
+			ris[0] = i + nCelleMove;
+			ris[1] = j;
+			break;
+		case ScacchieraBit.SOUTHWEST:
+			ris[1] = j - nCelleMove;
+			ris[0] = i + nCelleMove;
+			break;
+		case ScacchieraBit.WEST:
+			ris[1] = j - nCelleMove;
+			ris[0] = i;
+			break;
+		case ScacchieraBit.NORTHWEST:
+			ris[1] = j - nCelleMove;
+			ris[0] = i - nCelleMove;
+			break;
+		}
+		return ris;
+	}
+	
 	public void play() throws Exception {
 		String colour = null;
 		String answer;
@@ -53,16 +104,12 @@ public class Client {
 				answer = in.readLine();
 				if (answer.startsWith("YOUR_TURN")) {
 					long init = System.currentTimeMillis();
-					String s = g.elaborateMove();
+					Mossa m = g.elaboraProssimaMossa();
 					long dur = System.currentTimeMillis() - init;
-					out.println("MOVE " + s);
-					char c = s.charAt(0);
-					int x = (int) c - A;
-					int y = Integer.valueOf(s.substring(1)) - 1;
-					Move m = new Move(x, y, player);
-					g.makeMove(m);
-					System.out.println("Ho scelto di fare la mossa " + s + " in " + dur);
-					g.draw();
+					out.println(m);
+					g.muovi(m,player);
+					System.out.println("Ho scelto di fare la mossa " + m + " in " + dur);
+					
 				} else if (answer.startsWith("VALID_MOVE"))
 					System.out.println("Mossa valida, attendi...");
 				else if (answer.startsWith("ILLEGAL_MOVE")) {
@@ -70,13 +117,14 @@ public class Client {
 					break;
 				} else if (answer.startsWith("OPPONENT_MOVE")) {
 					System.out.println("Mossa dell'avversario: " + answer.substring(2));
-					// partita.applicaMossa(risposta.substring(14).toUpperCase());
-					char c = answer.charAt(14);
-					int x = (int) c - A;
-					int y = Integer.valueOf(answer.substring(15)) - 1;
-					Move m = new Move(x, y, 1 - player);
-					g.makeMove(m);
-					g.draw();
+					String[] campi = answer.substring(6).split(",");
+					int x = rowMap.get(campi[0].substring(0,0));
+					int y = Integer.valueOf(campi[0].substring(1));
+					int dir = dirMap.get(campi[1]);
+					int spostamento = Integer.valueOf(campi[2]);
+					int[] dest = calcola_indici(x, y, dir, spostamento);
+					Mossa m = new Mossa(x, y, dest[0],dest[1], dir);
+					g.muovi(m,1-player);
 					// g.draw2();
 				} else if (answer.startsWith("VICTORY")) {
 					System.out.println("HAI VINTO");
