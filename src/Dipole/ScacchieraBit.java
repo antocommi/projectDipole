@@ -35,14 +35,14 @@ public class ScacchieraBit {
 	private static final int CELLA_NERA = 1;
 	private static final int STACK_BIANCO = 12;
 	private static final int STACK_NERO = 12;
-	public final int NORTH = 0;
-	public final int SOUTH = 1;
-	public final int NORTHEAST = 2;
-	public final int SOUTHWEST = 3;
-	public final int SOUTHEAST = 4;
-	public final int NORTHWEST = 5;
-	public final int EAST = 6;
-	public final int WEST = 7;
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int NORTHEAST = 2;
+	public static final int SOUTHWEST = 3;
+	public static final int SOUTHEAST = 4;
+	public static final int NORTHWEST = 5;
+	public static final int EAST = 6;
+	public static final int WEST = 7;
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
@@ -1203,7 +1203,9 @@ public class ScacchieraBit {
 			System.out.println("jEnd \n");
 			int jEnd = Integer.parseInt(scanner.nextLine());
 			Mossa m = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
+			
 			scacchiera.muovi(m, 0);
+			scacchiera.miMangiaGetMossa(m, 0, scacchiera) ;
 			System.out.println("Il Player 0 effettua la mossa " + m);
 			System.out.println("");
 			scacchiera.stampaScacchiera();
@@ -1224,6 +1226,8 @@ public class ScacchieraBit {
 			jEnd = Integer.parseInt(scanner.nextLine());
 			Mossa m1 = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
 			scacchiera.muovi(m1, 1);
+			
+
 			System.out.println("Il Player 1 effettua la mossa " + m1);
 			System.out.println("");
 			scacchiera.stampaScacchiera();
