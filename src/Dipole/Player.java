@@ -65,7 +65,7 @@ public class Player {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 			int e = 0;
 			if (path[path.length - 1] != null)
-				System.out.println("ei"+giocatore);
+//				System.out.println("ei"+giocatore);
 				e = euristica.valuta(board, giocatore, path[path.length - 1], depth);
 			return new Object[] { e, null };
 		}

@@ -23,7 +23,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 	@Override
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
 
-		System.out.println("giocatore= "+ giocatore);
+//		System.out.println("giocatore= "+ giocatore);
 
 		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
@@ -118,7 +118,8 @@ public class NaiveHeuristic implements HeuristicInterface {
 	@Override
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec, int deph) {
 
-		System.out.println("giocatore= "+ giocatore);		int e = 0;
+//		System.out.println("giocatore= "+ giocatore);		
+		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
 		int giocatoreAdversary = 1 - giocatore;
 //		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {

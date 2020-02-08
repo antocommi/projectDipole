@@ -85,14 +85,15 @@ public class ScacchieraBit {
 
 		System.out.print("Pedine del giocatore bianco: [");
 		for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
-			System.out.print(listaPedineBianche[i]);
+			System.out.print("["+(listaPedineBianche[i]/8)+"."+(listaPedineBianche[i]%8)+"]");
 			if (i < numeroStackGiocatore[PEDINA_BIANCA] - 1)
 				System.out.print(", ");
 		}
 		System.out.println("]");
 		System.out.print("Pedine del giocatore nero: [");
 		for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
-			System.out.print(listaPedineNere[i]);
+//			System.out.print(listaPedineNere[i]);
+			System.out.print("["+(listaPedineNere[i]/8)+"."+(listaPedineNere[i]%8)+"]");
 			if (i < numeroStackGiocatore[PEDINA_NERA] - 1)
 				System.out.print(", ");
 		}
@@ -332,7 +333,6 @@ public class ScacchieraBit {
 
 	public int muovi(Mossa m, int c) {
 		int tipo = 0;
-		System.out.println("sto muovendo " + c);
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
 		int x = m.getiStart();
 		int y = m.getjStart();
