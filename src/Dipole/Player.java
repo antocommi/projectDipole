@@ -98,7 +98,6 @@ public class Player {
 				max = alfa;
 			}
 			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path);
-
 			try {
 				score = ((int) res[0]);
 				currMove = path[depth - 1];

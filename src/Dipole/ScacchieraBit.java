@@ -65,21 +65,37 @@ public class ScacchieraBit {
 	}
 
 	public void debugStatus(boolean stampaMosse, String nome) {
-//		private ByteMap scacchiera; //
-//		private boolean turnoGiocatore; //
-//		private int scacchieraBianchi, scacchieraNeri; //
-//		private int[] numeroStackGiocatore; //
-//		private byte[] listaPedineBianche; //
-//		private byte[] listaPedineNere; //
-//		private int[] MAX_SPOSTAMENTO; // Per ogni direzione -> max_spost in quella direzione
-//		private ArrayList<Mossa> moves; // lista delle mosse generate
-//		private int mosseMaxBianco;
-//		private int mosseMaxNero;
 		System.out.println("======================DEBUG INFO: " + nome + "=========================");
 		scacchiera.printValues();
 		System.out.println("TurnoGiocatore: " + turnoGiocatore);
-		System.out.println("ScacchieraBianchi: " + (Integer.toBinaryString(scacchieraBianchi)));
-		System.out.println("ScacchieraNeri: " + (Integer.toBinaryString(scacchieraNeri)));
+		String dx = Integer.toBinaryString(scacchieraBianchi);
+		String sx = "";
+		System.out.println("ScacchieraBianchi: ");
+		for(int i=0;i<32-dx.length();i++) {
+			sx += "0";
+		}
+		dx = sx+dx;
+		for(int i=0;i<8;i++) {
+			for(int j=0;j<4;j++) {
+				System.out.print(dx.charAt(i*4+j) + " ");
+			}
+			System.out.println("");
+		}
+		System.out.println("ScacchieraNeri: ");
+		dx = Integer.toBinaryString(scacchieraNeri);
+		sx = "";
+		for(int i=0;i<32-dx.length();i++) {
+			sx += "0";
+		}
+		dx = sx+dx;
+		for(int i=0;i<8;i++) {
+			for(int j=0;j<4;j++) {
+				System.out.print(dx.charAt(i*4+j) + " ");
+			}
+			System.out.println("");
+		}
+//		System.out.println("ScacchieraBianchi: " + ());
+		
 		System.out.format("# stack bianco: %d \n# stack nero: %d \n", numeroStackGiocatore[PEDINA_BIANCA],
 				numeroStackGiocatore[PEDINA_NERA]);
 
