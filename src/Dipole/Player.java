@@ -61,6 +61,7 @@ public class Player {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 			int e = 0;
 			if (path[path.length - 1] != null)
+				System.out.println("ei"+giocatore);
 				e = euristica.valuta(board, giocatore, path[path.length - 1], depth);
 			return new Object[] { e, null };
 		}
@@ -80,6 +81,7 @@ public class Player {
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
 			try {
+				
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
 			} catch (Exception e) {
 				e.printStackTrace();

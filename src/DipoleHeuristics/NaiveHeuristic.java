@@ -23,7 +23,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 	@Override
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
 
-//		System.out.println("giocatore= "+ giocatore);
+		System.out.println("giocatore= "+ giocatore);
 
 		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
@@ -118,8 +118,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 	@Override
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec, int deph) {
 
-//		System.out.println("giocatore= "+ giocatore);
-		int e = 0;
+		System.out.println("giocatore= "+ giocatore);		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
 		int giocatoreAdversary = 1 - giocatore;
 //		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
@@ -159,7 +158,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 			
 			//Le posizioni che l'avversaro occupa sono in questo intervallo
 			if (numMosseMangianti <= 14 && numMosseMangianti > 8) {
-//				if(deph==1)System.out.println("QUI £"+ numMosseMangianti);
+//				if(deph==1)System.out.println("QUI ï¿½"+ numMosseMangianti);
 //					System.out.println("qui  3  ");
 				e = e - 20; // secondo me non va bene
 			}

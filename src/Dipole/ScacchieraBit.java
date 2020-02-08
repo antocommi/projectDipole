@@ -332,6 +332,7 @@ public class ScacchieraBit {
 
 	public int muovi(Mossa m, int c) {
 		int tipo = 0;
+		System.out.println("sto muovendo " + c);
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
 		int x = m.getiStart();
 		int y = m.getjStart();
@@ -533,7 +534,7 @@ public class ScacchieraBit {
 			mosseMaxBianco--;
 		else
 			mosseMaxNero--;
-//		turnoGiocatore = !turnoGiocatore;
+		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 
 	}
@@ -682,6 +683,56 @@ public class ScacchieraBit {
 		if (x == y)
 			return true;
 		return false;
+	}
+
+
+	public boolean miMangiaStackRestante(Mossa m, int color, ScacchieraBit board) {
+		int x = m.getiStart();// da dove parto
+		int y = m.getjStart();
+
+		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd()); // n di pedine sullo
+		int stackRestante = board.getNumeroPedine(x, y) - n;
+
+		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
+
+		if (color == PEDINA_BIANCA) {
+			int nPedStack = 0;
+			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+
+				listaMosse = board.generaListaMosse(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
+						1 - color);
+				for (Mossa mossa : listaMosse) {
+					// System.out.println("mosse in cui mi mangia " + mossa);
+					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= stackRestante) {
+
+						return true;
+
+					}
+
+				}
+			}
+		} else if (color == PEDINA_NERA) {
+			int nPedStack = 0;
+
+			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+
+				listaMosse = board.generaListaMosse(board.listaPedineBianche[i] / 8, board.listaPedineBianche[i] % 8,
+						1 - color);
+				for (Mossa mossa : listaMosse) {
+					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= stackRestante) {
+
+						return true;
+
+					}
+
+				}
+
+			}
+		}
+		return false;
+
 	}
 
 	public boolean possoMangiare(Mossa m, int color, ScacchieraBit board) {
