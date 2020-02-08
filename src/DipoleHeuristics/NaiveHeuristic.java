@@ -123,8 +123,8 @@ public class NaiveHeuristic implements HeuristicInterface {
 		int giocatoreAdversary = 1 - giocatore;
 //		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
 		Mossa adversaryMove = stato.miMangiaGetMossa(prec, giocatore, stato);// mossa che mi mangia
-		if (deph == 1)
-			System.out.println(adversaryMove);
+//		if (deph == 1)
+//			System.out.println(adversaryMove);
 		int pedinePerse = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(), prec.getjEnd());
 //			System.out.println("pedine perse _____"+ pedinePerse);
 		int spost = 0;
@@ -215,7 +215,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 		}
 
 //		}
-		if(deph == 1) System.out.println("VAL EURISTICA  "+ (e));
+//		if(deph == 1) System.out.println("VAL EURISTICA  "+ (e));
 		return e;
 	}
 

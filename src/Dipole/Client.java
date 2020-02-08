@@ -31,8 +31,8 @@ public class Client {
 		socket = new Socket(serverAddress, port);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
-		dirMap = new HashMap<String, Integer>();
-		rowMap = new HashMap<String, Integer>();
+		dirMap = new HashMap<>();
+		rowMap = new HashMap<>();
 		for(int i=0;i<8;i++){
 			dirMap.put(DIR[i],i);
 			rowMap.put(RIGHE[i], i);
@@ -107,7 +107,9 @@ public class Client {
 					Mossa m = g.elaboraProssimaMossa();
 					long dur = System.currentTimeMillis() - init;
 					out.println(m);
+					g.debug(false, "Sto per cambiare per mossa mia");
 					g.muovi(m,player);
+					g.debug(false, "Ho cambiato per mossa mia");
 					System.out.println("Ho scelto di fare la mossa " + m + " in " + dur);
 					
 				} else if (answer.startsWith("VALID_MOVE"))
@@ -116,15 +118,19 @@ public class Client {
 					System.out.println("Hai effettuato una mossa non consentita");
 					break;
 				} else if (answer.startsWith("OPPONENT_MOVE")) {
-					System.out.println("Mossa dell'avversario: " + answer.substring(2));
-					String[] campi = answer.substring(6).split(",");
-					int x = rowMap.get(campi[0].substring(0,0));
+					System.out.println("Mossa dell'avversario: " + answer.substring(14));
+					String[] campi = answer.substring(14).split(",");
+					String xS = campi[0].substring(0,1);
+					System.out.println("xS: "+xS);
+					int x = rowMap.get(xS);
 					int y = Integer.valueOf(campi[0].substring(1))-1;
 					int dir = dirMap.get(campi[1]);
 					int spostamento = Integer.valueOf(campi[2]);
 					int[] dest = calcola_indici(x, y, dir, spostamento);
 					Mossa m = new Mossa(x, y, dest[0], dest[1], dir);
+					g.debug(false, "Sto per cambiare per mossa avversaria");
 					g.muovi(m,1-player);
+					g.debug(false, "Stato cambiato per mossa avversaria");
 					// g.draw2();
 				} else if (answer.startsWith("VICTORY")) {
 					System.out.println("HAI VINTO");
