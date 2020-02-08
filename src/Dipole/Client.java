@@ -111,7 +111,6 @@ public class Client {
 					g.muovi(m,player);
 					g.debug(false, "Ho cambiato per mossa mia");
 					System.out.println("Ho scelto di fare la mossa " + m + " in " + dur);
-					
 				} else if (answer.startsWith("VALID_MOVE"))
 					System.out.println("Mossa valida, attendi...");
 				else if (answer.startsWith("ILLEGAL_MOVE")) {
