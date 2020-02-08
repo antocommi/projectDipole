@@ -20,8 +20,7 @@ public class Mossa implements MossaI, Serializable {
 
 	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
 	
-	@Override
-	public String toString() {
+	public String oldtoString() {
 		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
 				+ "]";
 	}
@@ -32,7 +31,6 @@ public class Mossa implements MossaI, Serializable {
 		m = Math.abs(b - y);
 		return k >= m ? k : m;
 	}
-	
 	
 	private int calcolaCelleFuori(int a, int b, int x, int y) {
 		int dir = direction;
@@ -57,8 +55,8 @@ public class Mossa implements MossaI, Serializable {
 		return false;
 	}
 	
-	
-	public String oldtoString() {
+	@Override
+	public String toString() {
 		int spostamento = 0;
 		if(checkPosOut(iEnd,jEnd)) 
 			spostamento = calcolaCelleFuori(iStart,jStart,iEnd,jEnd);

@@ -533,7 +533,7 @@ public class ScacchieraBit {
 			mosseMaxBianco--;
 		else
 			mosseMaxNero--;
-//		turnoGiocatore = !turnoGiocatore;
+		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 
 	}
@@ -582,10 +582,10 @@ public class ScacchieraBit {
 		int cont = 0;
 		int pos, curr_pos, numeroCelleSpostamento = 0;
 		if (checkPosOut(x, y))
-			throw new RuntimeException("Indici non consentiti");
-		if (scacchiera.getIndex(x, y) == 0) {
-			throw new RuntimeException("Nessuna pedina disponibile");
-		}
+			return 0;
+//		if (scacchiera.getIndex(x, y) == 0) {
+//			throw new RuntimeException("Nessuna pedina disponibile");
+//		}
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int dir = 0; dir < 8; dir++) {
 			pos = x * 8 + y;
@@ -649,7 +649,7 @@ public class ScacchieraBit {
 		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0) {
-			throw new RuntimeException("Nessuna pedina disponibile");
+			return listaMosse;
 		}
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int dir = 0; dir < 8; dir++) {

@@ -44,6 +44,10 @@ public class Player {
 		return (Mossa) res[1];
 	}
 
+	public void debug(boolean stampaMosse, String nome) {
+		root.debugStatus(stampaMosse, nome);
+	}
+	
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
@@ -75,7 +79,7 @@ public class Player {
 		}
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");
-			board.debugStatus(true, "Nessuna mossa disponibile");
+//			board.debugStatus(true, "Nessuna mossa disponibile");
 		}
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
@@ -163,6 +167,10 @@ public class Player {
 		if (root.getNumeroStackGiocatore(PEDINA_NERA) == 0 || root.zeroMosse(PEDINA_NERA))
 			return PEDINA_BIANCA;
 		return -1;
+	}
+	
+	public boolean getTurnoGiocatore() {
+		return root.getTurnoGiocatore();
 	}
 
 	public void stampaScacchiera() {
