@@ -67,6 +67,7 @@ public class ScacchieraBit {
 	public void debugStatus(boolean stampaMosse, String nome) {
 		System.out.println("======================DEBUG INFO: " + nome + "=========================");
 		scacchiera.printValues();
+		stampaScacchiera();
 		System.out.println("TurnoGiocatore: " + turnoGiocatore);
 		String dx = Integer.toBinaryString(scacchieraBianchi);
 		String sx = "";

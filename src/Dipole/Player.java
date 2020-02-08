@@ -128,6 +128,11 @@ public class Player {
 		int bestScore = Integer.MIN_VALUE;
 		int alfa = -MAX;
 		int beta = MAX;
+		
+		for(Mossa m :root.getAllMoves()) {
+			System.out.println(m);
+		}
+			
 		for (int i = 1; i <= PROFONDITA; i++) {
 			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
 			if (bestConfig[1] != null) {
