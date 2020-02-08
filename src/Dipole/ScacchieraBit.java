@@ -533,7 +533,7 @@ public class ScacchieraBit {
 			mosseMaxBianco--;
 		else
 			mosseMaxNero--;
-		turnoGiocatore = !turnoGiocatore;
+//		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 
 	}
