@@ -36,6 +36,7 @@ public class Player {
 	}
 
 	public void muovi(Mossa mossa, int player) {
+		root.setTurnoGiocatore(!root.getTurnoGiocatore());
 		root.muovi(mossa, player);
 	}
 
@@ -51,7 +52,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 900) {
+		if (controlloTempo >= 800) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -63,6 +64,7 @@ public class Player {
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
+			System.out.println("giocatore "+ giocatore);
 			int e = 0;
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
@@ -77,6 +79,8 @@ public class Player {
 			mosse = trasposition.getM();
 		} else {
 			mosse = board.getAllMoves();
+			for(Mossa m : mosse)
+				System.out.println("getAll "+ m);
 		}
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");
@@ -130,7 +134,7 @@ public class Player {
 		int beta = MAX;
 		
 		for(Mossa m :root.getAllMoves()) {
-			System.out.println(m);
+			System.out.println("stampa mosse"+m);
 		}
 			
 		for (int i = 1; i <= PROFONDITA; i++) {
