@@ -36,7 +36,6 @@ public class Player {
 	}
 
 	public void muovi(Mossa mossa, int player) {
-		root.setTurnoGiocatore(!root.getTurnoGiocatore());
 		root.muovi(mossa, player);
 	}
 
@@ -52,7 +51,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 800) {
+		if (controlloTempo >= 700) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -64,11 +63,11 @@ public class Player {
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
-			System.out.println("giocatore "+ giocatore);
+			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
-				e = euristica.valuta(board, giocatore, path[path.length - 1], depth);
+				e = euristica.valuta(board, PLAYER, path[path.length - 1], depth);
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
@@ -89,8 +88,10 @@ public class Player {
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
 			try {
-				
+				System.out.println("prima"+ board.getTurnoGiocatore() );
+
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
+				System.out.println("dopo"+ board.getTurnoGiocatore() );
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

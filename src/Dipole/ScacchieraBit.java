@@ -27,14 +27,9 @@ public class ScacchieraBit {
 	public static final int SIZE = 8;
 
 	private static HashMap<String, Integer> riga; //
-	private static final int DIMENSION = 4;
-	private static final int VUOTA = -1;
+
 	private static final int PEDINA_BIANCA = 0;
 	private static final int PEDINA_NERA = 1;
-	private static final int CELLA_BIANCA = 0;
-	private static final int CELLA_NERA = 1;
-	private static final int STACK_BIANCO = 12;
-	private static final int STACK_NERO = 12;
 	public static final int NORTH = 0;
 	public static final int SOUTH = 1;
 	public static final int NORTHEAST = 2;
@@ -46,7 +41,6 @@ public class ScacchieraBit {
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
-	private static final int MAX_MOSSE = 60;
 	public final int[] posInteressantiBianchi = { NORTH, NORTHEAST, NORTHWEST };
 	public final int[] posInteressantiNero = { SOUTH, SOUTHWEST, SOUTHEAST };
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
@@ -551,7 +545,7 @@ public class ScacchieraBit {
 			mosseMaxBianco--;
 		else
 			mosseMaxNero--;
-//		turnoGiocatore = !turnoGiocatore;
+		turnoGiocatore = !turnoGiocatore;
 		return tipo;
 
 	}
@@ -583,6 +577,7 @@ public class ScacchieraBit {
 	public boolean checkFin(ScacchieraBit s) {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
 		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
+			System.out.println(s.mosseMaxBianco+ " " + s.mosseMaxNero);
 			return true;
 		}
 		if ((s.numeroStackGiocatore[PEDINA_BIANCA] == 0 || s.numeroStackGiocatore[PEDINA_NERA] == 0)
@@ -1048,7 +1043,7 @@ public class ScacchieraBit {
 		this.turnoGiocatore = turnoGiocatore;
 	}
 
-	public boolean checkMosseInAvanti(Mossa m, int x, int y, int c) {
+	public boolean checkMosseInAvanti(Mossa m, int c) {
 		// Valido sia per BASE che MERGE ossia solo mosse in avanti
 
 		if (c == PEDINA_BIANCA
@@ -1060,17 +1055,7 @@ public class ScacchieraBit {
 		return true;
 	}
 
-	public boolean checkMosseInAvanti(Mossa m, int c) {
-		// Valido sia per BASE che MERGE ossia solo mosse in avanti
-
-		if (c == PEDINA_BIANCA
-				&& (m.getDirection() == NORTH || m.getDirection() == NORTHEAST || m.getDirection() == NORTHWEST))
-			return false;
-		else if (c == PEDINA_NERA
-				&& (m.getDirection() == SOUTH || m.getDirection() == SOUTHEAST || m.getDirection() == SOUTHWEST))
-			return false;
-		return true;
-	}
+	
 
 	public boolean checkMosseIndietro(Mossa m, int c) {
 		// Valido sia per BASE che MERGE ossia solo mosse in avanti
@@ -1099,9 +1084,8 @@ public class ScacchieraBit {
 //			System.out.println("(!turnoGiocatore && c == PEDINA_BIANCA)"+(!turnoGiocatore && c == PEDINA_BIANCA));
 //			System.out.println("scacchiera.getNumeroPedine(x, y) < spostamento:"+ (scacchiera.getNumeroPedine(x, y) < spostamento));
 //		}
-
 		if(c != getColorePedina(x, y)) return false;
-		
+			
 		if (turnoGiocatore && c != PEDINA_BIANCA)
 			return false;
 
@@ -1119,13 +1103,14 @@ public class ScacchieraBit {
 //			System.out.println("b");
 			return false;
 		}
+		
 		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
 //			System.out.println("c");
 			return true;
 		}
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
-		if (!checkMosseInAvanti(m, x, y, c)
+		if (!checkMosseInAvanti(m, c)
 				&& ((scacchiera.getValue(xF * 8 + yF) == 0) || (getColorePedina(xF, yF) == c))) {
 //			System.out.println("d");
 			return false;
@@ -1160,9 +1145,9 @@ public class ScacchieraBit {
 //			System.out.println("scacchiera.getNumeroPedine(x, y) < spostamento:"+ (scacchiera.getNumeroPedine(x, y) < spostamento));
 //		}
 
-		if(c != getColorePedina(x, y)) return false;
 		
 		// TODO: controllo mosse fuori
+		
 
 		if (checkPosOut(xF, yF) & scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
 //			System.out.println("a");
@@ -1180,7 +1165,7 @@ public class ScacchieraBit {
 		}
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
-		if (!checkMosseInAvanti(m, x, y, c)
+		if (!checkMosseInAvanti(m, c)
 				&& ((scacchiera.getValue(xF * 8 + yF) == 0) || (getColorePedina(xF, yF) == c))) {
 //			System.out.println("d");
 			return false;
@@ -1352,9 +1337,13 @@ public class ScacchieraBit {
 
 		scacchiera.stampaScacchiera();
 		// System.out.println(scacchiera.getNumeroPedine(0, 3));
-
+	for(Mossa m :scacchiera.generaListaMosse(0, 3, PEDINA_NERA))
+		System.out.println("cico"+m);
+	for(Mossa m :scacchiera.generaListaMosse(7, 4, PEDINA_BIANCA))
+		System.out.println(m+"ei");
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			
 			ArrayList<Mossa> mosse = scacchiera.getAllMoves();
 			for (Mossa m : mosse)
 				System.out.println(m);
