@@ -132,13 +132,13 @@ public class Client {
 					g.debug(false, "Stato cambiato per mossa avversaria");
 					// g.draw2();
 				} else if (answer.startsWith("VICTORY")) {
-					System.out.println("HAI VINTO");
+					System.out.println("HAI VINTO " + player);
 					break;
 				} else if (answer.startsWith("TIMEOUT")) {
 					System.out.println("TIMEOUT");
 					break;
 				} else if (answer.startsWith("DEFEAT")) {
-					System.out.println("HAI PERSO");
+					System.out.println("HAI PERSO " + (1-player));
 					break;
 				} else if (answer.startsWith("TIE")) {
 					System.out.println("HAI PAREGGIATO");
