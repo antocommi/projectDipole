@@ -40,10 +40,19 @@ public class ScacchieraBit {
 	private static final int NESSUNA_VITTORIA = 0;
 	private static final int VITTORIA_BIANCO = 1;
 	private static final int VITTORIA_NERO = 2;
-	public final int[] posInteressantiBianchi = { NORTH, NORTHEAST, NORTHWEST };
-	public final int[] posInteressantiNero = { SOUTH, SOUTHWEST, SOUTHEAST };
+	public final int[] posInteressantiBianchi = { NORTHEAST, NORTHWEST };
+	public final int[] posInteressantiNero = { SOUTHWEST, SOUTHEAST };
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
-	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
+	private static int[] OUT_DIRECTIONS = { 
+			-2, 0, 
+			2, 0, 
+			-1, 1, 
+			1, -1, 
+			1, 1, 
+			-1, -1, 
+			0, 2, 
+			0, -2
+	};
 	private static int[] OUT_DIRECTIONS2 = { -1, 0, 1, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 1, 0, -1 };
 	
 	public int getMosseMaxBianco() {
@@ -317,32 +326,13 @@ public class ScacchieraBit {
 //		return -1;
 //	}
 
-	private int calcolaCelleFuori(int a, int b, int x, int y) {
-		int dir = calcolaDirezione(a, b, x, y);
-		if (dir == NORTH)
-			return a + Math.abs(x);
-		if (dir == NORTHEAST)
-			return (y - b);
-		if (dir == NORTHWEST)
-			return (b + Math.abs(y));
-		if (dir == SOUTH)
-			return x - a;
-		if (dir == SOUTHEAST)
-			return (y - b);
-		if (dir == SOUTHWEST)
-			return (b + Math.abs(y));
-		return -1;
-	}
+
 
 	public static ScacchieraBit muovi(Mossa m, ScacchieraBit confI, int c) {
 //		confI.debugStatus(false,"xx");
 		ScacchieraBit confF = new ScacchieraBit(confI);
 //		confF.debugStatus(false,"xy");
-		if (confF.turnoGiocatore)
-			confF.mosseMaxBianco--;
-		else
-			confF.mosseMaxNero--;
-
+		
 		confF.muovi(m, c);
 
 		return confF;
@@ -368,6 +358,7 @@ public class ScacchieraBit {
 		int nPedineOld = scacchiera.getValue(oldPositionOnBoard);
 		int nPedineNew;
 		int spostamento;
+		int dir = calcolaDirezione(x, y, xF, yF);
 		byte[] listaPedine = c == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
 		if(x==xF && y==yF) {
 			turnoGiocatore = !turnoGiocatore;
@@ -378,7 +369,7 @@ public class ScacchieraBit {
 		if (checkPosOut(xF, yF)) {
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
 
-			int pedineDaEliminare = calcolaCelleFuori(x, y, xF, yF);
+			int pedineDaEliminare = Mossa.calcolaCelleFuori(x, y, xF, yF,dir);
 			pedineI[c] -= pedineDaEliminare;
 			if (pedineDaEliminare == nPedineOld) { // se le elimina tutte in una volta
 				for (int l = 0; l < 12; l++) {
@@ -645,7 +636,7 @@ public class ScacchieraBit {
 		if (checkPosOut(x, y))
 			throw new RuntimeException("Indici non consentiti");
 		if (scacchiera.getIndex(x, y) == 0)
-			throw new RuntimeException("Nessuna pedina disponibile");
+			return false;
 		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 		for (int dir = 0; dir < 8; dir++) {
 			pos = x * 8 + y;
@@ -708,6 +699,7 @@ public class ScacchieraBit {
 
 		return listaMosse;
 	}
+	
 	public ArrayList<Mossa> generaListaMosseAusiliario(int x, int y, int c) {
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		int pos, curr_pos, numeroCelleSpostamento = 0;
@@ -995,25 +987,27 @@ public class ScacchieraBit {
 	}
 	
 	public ArrayList<Mossa> generaMosseFuori(int x, int y, int c) {
-		int numeroCelleSpostamento = 0;
+		int numeroCelleSpostamento = scacchiera.getValue(x*8+y);
 		ArrayList<Mossa> listaMosse = new ArrayList<>();
-		calcolaMassimoSpostamentoFuori(MAX_SPOSTAMENTO, x, y);
+		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
 //		for(int i:MAX_SPOSTAMENTO)
 //			System.out.println("max"+i);
 //		
 		int[] v = getMinimo(MAX_SPOSTAMENTO, x, y);
-//		for(int i:v)
-//			System.out.println("min"+i);
+		
 //		int curr_pos = (x * 8 + y) + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0]];
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
 		int curr_y = y + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2 + 1];
-		while (numeroCelleSpostamento++ < 12) {
-			curr_x += OUT_DIRECTIONS2[v[0] * 2];
-			curr_y += OUT_DIRECTIONS2[v[0] * 2 + 1];
+		while (numeroCelleSpostamento-- > 0) {
+			curr_x += OUT_DIRECTIONS[v[0] * 2];
+			curr_y += OUT_DIRECTIONS[v[0] * 2 + 1];
 			Mossa m = new Mossa(x, y, curr_x, curr_y, v[0]);
+//			System.out.format("%d %d %d %d %d ", x, y, curr_x, curr_y, Mossa.calcolaCelleFuori(x, y, curr_x, curr_y, v[0]));
 			if (checkMosse(m, c)) {
+//				System.out.println("Aggiunta");
 				listaMosse.add(m);
 			}
+//			else System.out.println("");
 
 		}
 
@@ -1118,7 +1112,8 @@ public class ScacchieraBit {
 		int xF = m.getiEnd();
 		int yF = m.getjEnd();
 		int spostamento = calcolaSpostamento(x, y, xF, yF);
-		int spostamentoFuori = calcolaCelleFuori(x, y, xF, yF);
+		int dir = calcolaDirezione(x, y, xF, yF);
+		int spostamentoFuori = Mossa.calcolaCelleFuori(x, y, xF, yF,dir);
 
 //		if(!turnoGiocatore) {
 //			System.out.println("(!turnoGiocatore && c == PEDINA_BIANCA)"+(!turnoGiocatore && c == PEDINA_BIANCA));
@@ -1126,6 +1121,7 @@ public class ScacchieraBit {
 //		}
 		if(c != getColorePedina(x, y)) return false;
 			
+		
 		if (turnoGiocatore && c != PEDINA_BIANCA) {
 			return false;
 		}
@@ -1135,18 +1131,19 @@ public class ScacchieraBit {
 		}
 		// TODO: controllo mosse fuori
 
-		if (checkPosOut(xF, yF) && scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
+		if (checkPosOut(xF, yF) && scacchiera.getNumeroPedine(x, y) >= spostamentoFuori) {
+			return true;
+		}
+		else if (checkPosOut(xF,yF)) {
 			return false;
 		}
-
+		
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento) {
 			return false;
 		}
 		
-		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-			return true;
-		}
+		
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
 		if (!checkMosseInAvanti(m, c)
@@ -1177,7 +1174,8 @@ public class ScacchieraBit {
 		int xF = m.getiEnd();
 		int yF = m.getjEnd();
 		int spostamento = calcolaSpostamento(x, y, xF, yF);
-		int spostamentoFuori = calcolaCelleFuori(x, y, xF, yF);
+		int dir = calcolaDirezione(x, y, xF, yF);
+		int spostamentoFuori = Mossa.calcolaCelleFuori(x, y, xF, yF,dir);
 
 //		if(!turnoGiocatore) {
 //			System.out.println("(!turnoGiocatore && c == PEDINA_BIANCA)"+(!turnoGiocatore && c == PEDINA_BIANCA));
@@ -1193,15 +1191,17 @@ public class ScacchieraBit {
 			return false;
 		}
 
+		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
+//			System.out.println("c");
+			return true;
+		}
+		
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento) {
 //			System.out.println("b");
 			return false;
 		}
-		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-//			System.out.println("c");
-			return true;
-		}
+		
 
 		// mossa indietro e uguale a 0 ==> non può mangiare
 		if (!checkMosseInAvanti(m, c)
