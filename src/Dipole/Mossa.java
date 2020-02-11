@@ -33,22 +33,21 @@ public class Mossa implements MossaI, Serializable {
 	}
 	
 	public static int calcolaCelleFuori(int a, int b, int x, int y, int dir) {
-//		int dir = direction;
-//		if (dir == ScacchieraBit.NORTH)
-//			return a + Math.abs(x);
-//		if (dir == ScacchieraBit.NORTHEAST)
-//			return Math.min(Ma,(Math.abs(x) - a));
-//		if (dir == ScacchieraBit.NORTHWEST)
-////			return ();
-//			return Math.min(x-a, a+Math.abs(x));
-//		if (dir == ScacchieraBit.SOUTH)
-//			return x-a;
-//		if (dir == ScacchieraBit.SOUTHEAST)
-//			return Math.min(x-a, y-b);
-//		if (dir == ScacchieraBit.SOUTHWEST)
-//			return Math.min(Math.abs(y)-b, x-a);
-		return (int) Math.sqrt(Math.pow(a-x, 2)+Math.pow(b-y, 2));
-//		return -1;
+		if (dir == ScacchieraBit.NORTH)
+			return a + Math.abs(x);
+		if (dir == ScacchieraBit.NORTHEAST)
+			return y-b;
+		if (dir == ScacchieraBit.NORTHWEST) {
+			if(a>b) return b + Math.abs(y);
+			else return a + Math.abs(x);
+		}
+		if (dir == ScacchieraBit.SOUTH)
+			return x-a;
+		if (dir == ScacchieraBit.SOUTHEAST)
+			return y-b;
+		if (dir == ScacchieraBit.SOUTHWEST)
+			return x-a;
+		return -1;
 	}
 	
 	public boolean checkPosOut(int i, int j) {
