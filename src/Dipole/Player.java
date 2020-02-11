@@ -36,6 +36,11 @@ public class Player {
 	}
 
 	public void muovi(Mossa mossa, int player) {
+//		if(mossa==null) {
+//			System.out.println("Passata una mossa nulla");
+//			root.debugStatus(true, "Si vuole muovere con una mossa null");
+//			throw new RuntimeException("Null");
+//		}
 		root.muovi(mossa, player);
 	}
 
@@ -63,7 +68,7 @@ public class Player {
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
 			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
-			System.out.println("giocatore Fin "+ giocatore);
+//			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
@@ -78,20 +83,18 @@ public class Player {
 			mosse = trasposition.getM();
 		} else {
 			mosse = board.getAllMoves();
-			for(Mossa m : mosse)
-				System.out.println("getAll "+ m);
+//			for(Mossa m : mosse)
+//				System.out.println("getAll "+ m);
 		}
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");
-//			board.debugStatus(true, "Nessuna mossa disponibile");
+			board.debugStatus(true, "Nessuna mossa disponibile");
 		}
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
 			try {
-				System.out.println("prima"+ board.getTurnoGiocatore() );
-
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
-				System.out.println("dopo"+ board.getTurnoGiocatore() );
+				assert(newBoard.getTurnoGiocatore()!=board.getTurnoGiocatore());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -133,10 +136,6 @@ public class Player {
 		int bestScore = Integer.MIN_VALUE;
 		int alfa = -MAX;
 		int beta = MAX;
-		
-		for(Mossa m :root.getAllMoves()) {
-			System.out.println("stampa mosse"+m);
-		}
 			
 		for (int i = 1; i <= PROFONDITA; i++) {
 			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
@@ -149,10 +148,6 @@ public class Player {
 			}
 		}
 		return new Object[] { bestScore, bestMove };
-	}
-
-	public void saveState() {
-		stampaMosse(root.generaListaMosse(0, 3, PLAYER));
 	}
 
 	public void stampaMosse(ArrayList<Mossa> m) {
@@ -183,67 +178,4 @@ public class Player {
 	public boolean getTurnoGiocatore() {
 		return root.getTurnoGiocatore();
 	}
-
-	public void stampaScacchiera() {
-		System.out.println("CONFIGURAZINE SCACCHIERA:");
-		System.out.println();
-		int r, c;
-		for (r = 0; r < SIZE; r++) {
-			for (c = 0; c < SIZE; c++) {
-				System.out.print(" - ");
-			}
-			System.out.println("-");
-			for (c = 0; c < SIZE; c++) {
-				if (root.getNumeroPedine(r, c) == 0)
-					if ((r % 2 == 0 && c % 2 != 0) || (r % 2 != 0 && c % 2 == 0))
-						System.out.print(" N ");
-					else
-						System.out.print(" B ");
-				if (root.getNumeroPedine(r, c) > 0)
-					if (root.getColorePedina(r, c) == PEDINA_NERA)
-						System.out.print(root.getNumeroPedine(r, c) + "N");
-					else if (root.getColorePedina(r, c) == PEDINA_BIANCA)
-						System.out.print(root.getNumeroPedine(r, c) + "B");
-			}
-			System.out.println("");
-		}
-		for (c = 0; c < SIZE; c++)
-			System.out.print(" - ");
-		System.out.println(" - ");
-	}
-
-	public static void main(String[] args) {
-		ScacchieraBit root = new ScacchieraBit();
-		Player player = new Player(root, PEDINA_BIANCA);
-		int mossePartita = 0;
-		Scanner scanner = new Scanner(System.in);
-		while (mossePartita < player.NUMERO_MAX_MOSSE) {
-			Mossa mossa = player.elaboraProssimaMossa();
-			player.muovi(mossa, PEDINA_BIANCA);
-			System.out.println("");
-			System.out.println("Il Player 0 effettua la " + mossa.oldtoString());
-			System.out.println("");
-			player.stampaScacchiera();
-			System.out.println("");
-			System.out.println("Inserire la mossa dell'avversario: ");
-			System.out.println("");
-			System.out.print("x: \n");
-			int x = Integer.parseInt(scanner.nextLine());
-			System.out.println("y \n");
-			int y = Integer.parseInt(scanner.nextLine());
-			System.out.println("xF \n");
-			int xF = Integer.parseInt(scanner.nextLine());
-			System.out.println("yF \n");
-			int yF = Integer.parseInt(scanner.nextLine());
-			Mossa m1 = new Mossa(x, y, xF, yF, root.calcolaDirezione(x, y, xF, yF));
-			player.muovi(m1, PEDINA_NERA);
-			System.out.println("Il Player 1 effettua la mossa " + m1.oldtoString());
-			System.out.println("");
-			mossePartita++;
-			player.stampaScacchiera();
-			System.out.println("");
-		}
-		scanner.close();
-	}
-
 }

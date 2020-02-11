@@ -5,10 +5,14 @@ import java.util.Random;
 public class Zobrist {
 
 	private final long[][][] zobrist;
+	private final long[] zobrist_turn;
 
 	public Zobrist() {
 		Random random = new Random();
 		zobrist = new long[64][2][13];
+		zobrist_turn = new long[2];
+		zobrist_turn[0] = random.nextLong();
+		zobrist_turn[1] = random.nextLong();
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 2; j++) {
 				for (int k = 0; k < 13; k++) {
@@ -37,10 +41,12 @@ public class Zobrist {
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
 			k = scacchiera.getNumeroPedine(j / 8, j % 8);
-			zhash ^= zobrist[j][colore][k]; // TODO: Da ricontrollare
+			zhash ^= zobrist[j][1-colore][k]; // TODO: Da ricontrollare
 		}
-
-		return zhash;
+		
+		zhash ^= zobrist_turn[colore];
+		
+		return zhash ;
 	}
 	
 	

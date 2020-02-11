@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import cestinoDipole.Cella;
 import util.ByteMap;;
 
 public class ScacchieraBit {
@@ -60,9 +59,9 @@ public class ScacchieraBit {
 
 	public void debugStatus(boolean stampaMosse, String nome) {
 		System.out.println("======================DEBUG INFO: " + nome + "=========================");
+		System.out.println("-Deve muovere : " + (turnoGiocatore ? "Bianco" : "Nero"));
 		scacchiera.printValues();
 		stampaScacchiera();
-		System.out.println("TurnoGiocatore: " + turnoGiocatore);
 		String dx = Integer.toBinaryString(scacchieraBianchi);
 		String sx = "";
 		System.out.println("ScacchieraBianchi: ");
@@ -111,6 +110,16 @@ public class ScacchieraBit {
 		System.out.println("]");
 		System.out.println("MosseMaxBianco: " + mosseMaxBianco);
 		System.out.println("MosseMaxNero: " + mosseMaxNero);
+		if(stampaMosse) {
+			ArrayList<Mossa> moves = getAllMoves();
+			System.out.println("Mosse disponibili per chi gioca:");
+			if(moves.size()>0) {
+				for(Mossa m:moves) {
+					System.out.println("\t"+m);
+				}
+			}
+			else System.out.println("\tNessuna mossa disponibile in questa configurazione per " + (turnoGiocatore ? "Bianco" : "Nero"));
+		}
 		System.out.println("======================DEBUG INFO=========================");
 	}
 
@@ -355,6 +364,12 @@ public class ScacchieraBit {
 		int nPedineNew;
 		int spostamento;
 		byte[] listaPedine = c == PEDINA_BIANCA ? listaPedineBianche : listaPedineNere;
+		if(x==xF && y==yF) {
+			turnoGiocatore = !turnoGiocatore;
+			if(c==PEDINA_BIANCA) mosseMaxBianco--; // TODO: Da controllare se necessario decrementare.
+			else mosseMaxNero--;
+			return -1;
+		}
 		if (checkPosOut(xF, yF)) {
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
 
@@ -1021,16 +1036,24 @@ public class ScacchieraBit {
 						.addAll(generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
 			}
 			moves = listaMosse;
-			if (moves.size() == 0)
-				turnoGiocatore = !turnoGiocatore;
+			
+			if (moves.size() == 0) {
+				int i=listaPedineBianche[0] / 8,j=listaPedineBianche[0]%8;
+				listaMosse.add(new Mossa(i,j,i,j,0));
+			}
+			
 			return listaMosse;
 		} else {
 			for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
 				listaMosse.addAll(generaListaMosse(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 			}
 			moves = listaMosse;
-			if (moves.size() == 0)
-				turnoGiocatore = !turnoGiocatore;
+			if (moves.size() == 0) {
+				int i=listaPedineNere[0] / 8;
+				int j=listaPedineNere[0] % 8;
+				listaMosse.add(new Mossa(i,j,i,j,0));
+			}
+
 			return listaMosse;
 		}
 	}
