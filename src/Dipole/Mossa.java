@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class Mossa implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private int iStart;
@@ -12,58 +15,58 @@ public class Mossa implements Serializable {
 	private int jEnd;
 	private int direction;
 	private int tipo;
-	private static String[] DIR = { "N", "S", "NE", "SW", "SE", "NW", "E", "W" };
+	private static String[] DIR = { "N", "S", "NE", "SW", "SE", "NW", "E",
+			"W" };
 
-	private static String[] RIGHE = { "A", "B", "C", "D", "E", "F", "G", "H" };
-
+	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
+	
 	public String oldtoString() {
 		return "Mossa [(" + iStart + ", " + jStart + ") -> (" + iEnd + ", " + jEnd + "); direction=" + DIR[direction]
 				+ "]";
 	}
-
+	
 	public int calcolaSpostamento(int a, int b, int x, int y) {
 		int k, m;
 		k = Math.abs(a - x);
 		m = Math.abs(b - y);
 		return k >= m ? k : m;
 	}
-
+	
 	public static int calcolaCelleFuori(int a, int b, int x, int y, int dir) {
-//		int dir = direction;
-//		if (dir == ScacchieraBit.NORTH)
-//			return a + Math.abs(x);
-//		if (dir == ScacchieraBit.NORTHEAST)
-//			return Math.min(Ma,(Math.abs(x) - a));
-//		if (dir == ScacchieraBit.NORTHWEST)
-////			return ();
-//			return Math.min(x-a, a+Math.abs(x));
-//		if (dir == ScacchieraBit.SOUTH)
-//			return x-a;
-//		if (dir == ScacchieraBit.SOUTHEAST)
-//			return Math.min(x-a, y-b);
-//		if (dir == ScacchieraBit.SOUTHWEST)
-//			return Math.min(Math.abs(y)-b, x-a);
-		return (int) Math.sqrt(Math.pow(a - x, 2) + Math.pow(b - y, 2));
-//		return -1;
+		if (dir == ScacchieraBit.NORTH)
+			return a + Math.abs(x);
+		if (dir == ScacchieraBit.NORTHEAST)
+			return y-b;
+		if (dir == ScacchieraBit.NORTHWEST) {
+			if(a>b) return b + Math.abs(y);
+			else return a + Math.abs(x);
+		}
+		if (dir == ScacchieraBit.SOUTH)
+			return x-a;
+		if (dir == ScacchieraBit.SOUTHEAST)
+			return y-b;
+		if (dir == ScacchieraBit.SOUTHWEST)
+			return x-a;
+		return -1;
 	}
-
+	
 	public boolean checkPosOut(int i, int j) {
 		if (i > 7 || j > 7 || i < 0 || j < 0)
 			return true;
 		return false;
 	}
-
+	
 	@Override
 	public String toString() {
 		int spostamento = 0;
-		if (checkPosOut(iEnd, jEnd))
-			spostamento = calcolaCelleFuori(iStart, jStart, iEnd, jEnd, direction);
+		if(checkPosOut(iEnd,jEnd)) 
+			spostamento = calcolaCelleFuori(iStart,jStart,iEnd,jEnd,direction);
 		else
-			spostamento = calcolaSpostamento(iStart, jStart, iEnd, jEnd);
-
-		return "MOVE " + RIGHE[iStart] + (jStart + 1) + "," + DIR[direction] + "," + (spostamento);
+			spostamento = calcolaSpostamento(iStart,jStart,iEnd,jEnd);
+		
+		return "MOVE " + RIGHE[iStart]+(jStart+1)+","+ DIR[direction]+","+(spostamento);
 	}
-
+	
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction) {
 		super();
 		this.iStart = iStart;
@@ -164,5 +167,6 @@ public class Mossa implements Serializable {
 			return false;
 		return true;
 	}
+
 
 }
