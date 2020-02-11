@@ -2,8 +2,8 @@
 package Dipole;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+import DipoleHeuristics.B_Heuristic;
 import DipoleHeuristics.HeuristicInterface;
 import DipoleHeuristics.NaiveHeuristic;
 import util.TraspositionTable;
@@ -20,7 +20,7 @@ public class Player {
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
-	private int NUMERO_MAX_MOSSE = 60;
+//	private int NUMERO_MAX_MOSSE = 60;
 	public static final int SIZE = 8;
 
 	private HeuristicInterface euristica;
@@ -31,7 +31,11 @@ public class Player {
 		this.PLAYER = player;
 		this.root = new ScacchieraBit(scacchiera);
 		zobrist = new Zobrist();
-		euristica = new NaiveHeuristic();
+		if (player == PEDINA_BIANCA) {
+			euristica = new B_Heuristic();
+		} else {
+			euristica = new NaiveHeuristic();
+		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
 
@@ -52,7 +56,7 @@ public class Player {
 	public void debug(boolean stampaMosse, String nome) {
 		root.debugStatus(stampaMosse, nome);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
@@ -67,12 +71,12 @@ public class Player {
 		Mossa currMove = null;
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
-			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
+//			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
-				e = euristica.valuta(board, PLAYER, path[path.length - 1], depth);
+				e = euristica.valuta(board, PLAYER, path[path.length - 1]);
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
@@ -92,7 +96,7 @@ public class Player {
 			path[currDepth] = mossa;
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
-				assert(newBoard.getTurnoGiocatore()!=board.getTurnoGiocatore());
+				assert (newBoard.getTurnoGiocatore() != board.getTurnoGiocatore());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -134,7 +138,7 @@ public class Player {
 		int bestScore = Integer.MIN_VALUE;
 		int alfa = -MAX;
 		int beta = MAX;
-			
+
 		for (int i = 1; i <= PROFONDITA; i++) {
 			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
 			if (bestConfig[1] != null) {
@@ -172,7 +176,7 @@ public class Player {
 			return PEDINA_BIANCA;
 		return -1;
 	}
-	
+
 	public boolean getTurnoGiocatore() {
 		return root.getTurnoGiocatore();
 	}

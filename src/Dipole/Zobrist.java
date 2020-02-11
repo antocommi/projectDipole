@@ -35,7 +35,7 @@ public class Zobrist {
 			zhash ^= zobrist[j][colore][k]; 
 		}
 		
-		listaPosizioni = scacchiera.getListaPosizioni(1-colore);
+//		listaPosizioni = scacchiera.getListaPosizioni(1-colore);
 		numeroStackGiocatore = scacchiera.getNumeroStackGiocatore(1-colore);
 		
 		for (i = 0; i < numeroStackGiocatore; i++) {
