@@ -83,8 +83,6 @@ public class Player {
 			mosse = trasposition.getM();
 		} else {
 			mosse = board.getAllMoves();
-//			for(Mossa m : mosse)
-//				System.out.println("getAll "+ m);
 		}
 		if (mosse.size() == 0) {
 			System.out.println("Nessuna mossa disponibile!!!");

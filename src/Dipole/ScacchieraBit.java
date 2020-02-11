@@ -44,7 +44,8 @@ public class ScacchieraBit {
 	public final int[] posInteressantiNero = { SOUTH, SOUTHWEST, SOUTHEAST };
 	private static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
 	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
-
+	private static int[] OUT_DIRECTIONS2 = { -1, 0, 1, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 1, 0, -1 };
+	
 	public int getMosseMaxBianco() {
 		return mosseMaxBianco;
 	}
@@ -354,6 +355,10 @@ public class ScacchieraBit {
 	public int muovi(Mossa m, int c) {
 		int tipo = 0;
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
+		if(m==null) {
+			this.debugStatus(true, "m è null");
+			throw new RuntimeException("mossa null");
+		}
 		int x = m.getiStart();
 		int y = m.getjStart();
 		int xF = m.getiEnd();
@@ -978,10 +983,21 @@ public class ScacchieraBit {
 
 	}
 
+	private void calcolaMassimoSpostamentoFuori(int[] v, int x, int y) {
+		v[NORTH] = x;
+		v[SOUTH] = (7 - x);
+		v[EAST] = (7 - y);
+		v[WEST] = y;
+		v[NORTHWEST] = Math.min(x, y);
+		v[NORTHEAST] = Math.min(x, 7 - y);
+		v[SOUTHEAST] = Math.min(7 - x, 7 - y);
+		v[SOUTHWEST] = Math.min(7 - x, y);
+	}
+	
 	public ArrayList<Mossa> generaMosseFuori(int x, int y, int c) {
 		int numeroCelleSpostamento = 0;
 		ArrayList<Mossa> listaMosse = new ArrayList<>();
-		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
+		calcolaMassimoSpostamentoFuori(MAX_SPOSTAMENTO, x, y);
 //		for(int i:MAX_SPOSTAMENTO)
 //			System.out.println("max"+i);
 //		
@@ -992,11 +1008,10 @@ public class ScacchieraBit {
 		int curr_x = x + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2];
 		int curr_y = y + MAX_SPOSTAMENTO[v[0]] * OUT_DIRECTIONS[v[0] * 2 + 1];
 		while (numeroCelleSpostamento++ < 12) {
-			curr_x += OUT_DIRECTIONS[v[0] * 2];
-			curr_y += OUT_DIRECTIONS[v[0] * 2 + 1];
+			curr_x += OUT_DIRECTIONS2[v[0] * 2];
+			curr_y += OUT_DIRECTIONS2[v[0] * 2 + 1];
 			Mossa m = new Mossa(x, y, curr_x, curr_y, v[0]);
 			if (checkMosse(m, c)) {
-
 				listaMosse.add(m);
 			}
 
@@ -1035,25 +1050,27 @@ public class ScacchieraBit {
 				listaMosse
 						.addAll(generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
 			}
-			moves = listaMosse;
 			
-			if (moves.size() == 0) {
+			
+			if (listaMosse.size() == 0) {
 				int i=listaPedineBianche[0] / 8,j=listaPedineBianche[0]%8;
 				listaMosse.add(new Mossa(i,j,i,j,0));
 			}
-			
+			moves = listaMosse;
 			return listaMosse;
 		} else {
 			for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
 				listaMosse.addAll(generaListaMosse(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 			}
-			moves = listaMosse;
-			if (moves.size() == 0) {
+			
+			
+			
+			if (listaMosse.size() == 0) {
 				int i=listaPedineNere[0] / 8;
 				int j=listaPedineNere[0] % 8;
 				listaMosse.add(new Mossa(i,j,i,j,0));
 			}
-
+			moves = listaMosse;
 			return listaMosse;
 		}
 	}
@@ -1109,26 +1126,25 @@ public class ScacchieraBit {
 //		}
 		if(c != getColorePedina(x, y)) return false;
 			
-		if (turnoGiocatore && c != PEDINA_BIANCA)
+		if (turnoGiocatore && c != PEDINA_BIANCA) {
 			return false;
+		}
 
-		if (!turnoGiocatore && c != PEDINA_NERA)
+		if (!turnoGiocatore && c != PEDINA_NERA) {
 			return false;
+		}
 		// TODO: controllo mosse fuori
 
-		if (checkPosOut(xF, yF) & scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
-//			System.out.println("a");
+		if (checkPosOut(xF, yF) && scacchiera.getNumeroPedine(x, y) < spostamentoFuori) {
 			return false;
 		}
 
 		// se lo spostamento richiede un numero di pedine maggiore di quello disponibile
 		if (scacchiera.getNumeroPedine(x, y) < spostamento) {
-//			System.out.println("b");
 			return false;
 		}
 		
 		if (checkPosOut(m.getiEnd(), m.getjEnd())) {
-//			System.out.println("c");
 			return true;
 		}
 
@@ -1246,10 +1262,10 @@ public class ScacchieraBit {
 	}
 
 	private void calcolaMassimoSpostamento(int[] v, int x, int y) {
-		v[NORTH] = x / 2;
-		v[SOUTH] = (7 - x) / 2;
-		v[EAST] = (7 - y) / 2;
-		v[WEST] = y / 2;
+		v[NORTH] = x/2;
+		v[SOUTH] = (7 - x)/2;
+		v[EAST] = (7 - y)/2;
+		v[WEST] = y/2;
 		v[NORTHWEST] = Math.min(x, y);
 		v[NORTHEAST] = Math.min(x, 7 - y);
 		v[SOUTHEAST] = Math.min(7 - x, 7 - y);

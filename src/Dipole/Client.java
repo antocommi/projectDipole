@@ -118,8 +118,10 @@ public class Client {
 					System.out.println("Mossa valida, attendi...");
 				else if (answer.startsWith("ILLEGAL_MOVE")) {
 					System.out.println("Hai effettuato una mossa non consentita");
+					g.debug(true, "Mossa invalida");
 					break;
-				} else if (answer.startsWith("OPPONENT_MOVE")) {
+				}
+				else if (answer.startsWith("OPPONENT_MOVE")) {
 					System.out.println("Mossa dell'avversario: " + answer.substring(14));
 					String[] campi = answer.substring(14).split(",");
 					int x = rowMap.get(campi[0].substring(0,1));
@@ -147,57 +149,11 @@ public class Client {
 				} else if (answer.startsWith("MESSAGE"))
 					System.out.println(answer.substring(8));
 			}
+			g.debug(true, "mossa invalida");
 		} finally {
 			socket.close();
 		}
 	}
-
-//	public void play2() throws Exception {
-//		Scanner sc = new Scanner(System.in);
-//		try {
-//			sc.nextLine();
-//			Player g1 = null;
-//			Player g2 = null;
-//			g1 = new Player(0, 4);
-//			g2 = new Player(1, 4);
-//			int turn = 0;
-//			while (true) {
-//				// answer = sc.nextLine();
-//				// if (answer.startsWith("next")) {
-//				long init = System.currentTimeMillis();
-//				String s = null;
-//				String s2 = null;
-//				if (turn == 0) {
-//					// s2= g11.elaborateMoveM();
-//					s = g1.elaborateMove();
-//				} else {
-//					s = g2.elaborateMove();
-//					// s2= g22.elaborateMoveM();
-//				}
-//
-//				long dur = System.currentTimeMillis() - init;
-//				// String x = partita.calcolaMossa();
-//				char c = s.charAt(0);
-//				int x = (int) c - A;
-//				int y = Integer.valueOf(s.substring(1)) - 1;
-//				Move m = new Move(x, y, turn);
-//				g1.makeMove(m);
-//				g2.makeMove(m);
-//				System.out.println("Ho scelto di fare la mossa " + s + " in " + dur);
-//				System.out.println("A profondità 4 avrebbe messo " + s2);
-//				// out.println(x);
-//				g1.draw();
-//				if (g1.endGame) {
-//					System.out.println("HA VINTO" + turn);
-//					break;
-//				}
-//				turn = 1 - turn;
-//			}
-//		} finally {
-//			sc.close();
-//			// socket.close();
-//		}
-//	}
 
 	public static void main(String[] args) throws Exception {
 		String serverAddress = (args.length >= 1) ? args[0] : "localhost";

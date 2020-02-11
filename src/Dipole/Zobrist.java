@@ -32,7 +32,7 @@ public class Zobrist {
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
 			k = scacchiera.getNumeroPedine(j / 8, j % 8);
-			zhash ^= zobrist[j][colore][k]; // TODO: Da ricontrollare
+			zhash ^= zobrist[j][colore][k]; 
 		}
 		
 		listaPosizioni = scacchiera.getListaPosizioni(1-colore);
@@ -41,7 +41,7 @@ public class Zobrist {
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
 			k = scacchiera.getNumeroPedine(j / 8, j % 8);
-			zhash ^= zobrist[j][1-colore][k]; // TODO: Da ricontrollare
+			zhash ^= zobrist[j][1-colore][k]; 
 		}
 		
 		zhash ^= zobrist_turn[colore];
