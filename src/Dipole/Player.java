@@ -47,6 +47,7 @@ public class Player {
 //			throw new RuntimeException("Null");
 //		}
 		root.muovi(mossa, player);
+		root.debugStatus(true, "ciao");
 	}
 
 	public Mossa elaboraProssimaMossa() {
@@ -61,7 +62,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 600) {
+		if (controlloTempo >= 500) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -81,6 +82,7 @@ public class Player {
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
+	
 		long ttKey = zobrist.getHashcode(board, board.getTurnoGiocatore() ? 0 : 1);
 		ArrayList<Mossa> mosse;
 		if (traspositionTable.contains(ttKey)) {
@@ -95,7 +97,7 @@ public class Player {
 		}
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
-			System.out.println("mossa in player"+mossa);
+			
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
 				assert (newBoard.getTurnoGiocatore() != board.getTurnoGiocatore());

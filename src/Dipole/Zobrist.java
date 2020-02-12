@@ -41,7 +41,10 @@ public class Zobrist {
 		for (i = 0; i < numeroStackGiocatore; i++) {
 			j = listaPosizioni[i];
 			k = scacchiera.getNumeroPedine(j / 8, j % 8);
+			if(k==15)
+				scacchiera.debugStatus(true, "k=15");
 			zhash ^= zobrist[j][1-colore][k]; 
+			
 		}
 		
 		zhash ^= zobrist_turn[colore];

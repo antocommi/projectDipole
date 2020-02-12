@@ -10,7 +10,7 @@ public class N_Heuristic implements HeuristicInterface {
 
 	private int[] v = { 1, 7, 8, 14, 17, 23, 24, 30, 33, 39, 40, 46, 49, 55, 56, 62 };
 	private HashMap<Integer, Integer> POSIZIONI_BORDI;
-	private Random r = new Random();
+	private Random r = new Random(10);
 
 	public N_Heuristic() {
 		POSIZIONI_BORDI = new HashMap<Integer, Integer>();
