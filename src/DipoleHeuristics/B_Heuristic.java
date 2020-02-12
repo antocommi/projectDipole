@@ -72,13 +72,13 @@ public class B_Heuristic implements HeuristicInterface {
 		}
 		
 		
-		if (possoMangiareENonMiMangia(prec, giocatore, stato) && miMangiaStackRestante(prec, giocatore, stato))
+		if (possoMangiareENonMiMangia(prec, giocatore, stato) && !miMangiaStackRestante(prec, giocatore, stato))
 			e = e + 20;
 
 		
 		// Se posso mangiare una pedina con un numero consistente di pedine e da
 		// scegliere
-		if (possoMangiareENonMiMangia(prec, giocatore, stato) && miMangiaStackRestante(prec, giocatore, stato)
+		if (possoMangiareENonMiMangia(prec, giocatore, stato) && !miMangiaStackRestante(prec, giocatore, stato)
 				&& getNumeroPedineMangiateAdv(prec, stato) > 1)
 			e = e + 20;
 
@@ -87,7 +87,7 @@ public class B_Heuristic implements HeuristicInterface {
 		if (possoMangiareENonMiMangia(prec, giocatore, stato) && pedinePerse < 4
 				&& miMangiaStackRestante(prec, giocatore, stato))
 			e = e + 21;
-		if (possoMangiareENonMiMangia(prec, giocatore, stato) && miMangiaStackRestante(prec, giocatore, stato))
+		if (possoMangiareENonMiMangia(prec, giocatore, stato) && !miMangiaStackRestante(prec, giocatore, stato))
 			e = e + 10;
 
 		if (miMangiaPochePedineEritornoAmangiarlo(prec, giocatore, stato)) {
@@ -147,7 +147,7 @@ public class B_Heuristic implements HeuristicInterface {
 				e = e + 2;
 			}
 		}
-		System.out.println("VALORE EURISTICA " + (-e) + " MOSSA " + prec.oldtoString());
+		//System.out.println("VALORE EURISTICA " + (-e) + " MOSSA " + prec.oldtoString());
 		return -e;
 //		}
 //		return 0;

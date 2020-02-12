@@ -335,6 +335,11 @@ public class ScacchieraBit {
 	public int muovi(Mossa m, int c) {
 		int tipo = 0;
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
+//		if(!checkMosse(m, c)) {
+//			System.out.println("Mossa invalida " + m);
+//			debugStatus(true, "mossa invalida in muovi");
+//			throw new RuntimeException("mOSSA INVALIDA ");
+		//}
 		if (m == null) {
 			this.debugStatus(true, "m � null");
 			throw new RuntimeException("mossa null");
@@ -346,8 +351,8 @@ public class ScacchieraBit {
 		int xF = m.getiEnd();
 		int yF = m.getjEnd();
 	
-				debugStatus(true, "prima");
-				System.out.println("antonio è cazzone"+m);
+//				debugStatus(true, "prima");
+//				System.out.println("antonio è cazzone"+m);
 		
 		int oldPositionOnBoard = x * 8 + y;
 		int newPositionOnBoard = xF * 8 + yF;
@@ -403,8 +408,9 @@ public class ScacchieraBit {
 					for (int l = 0; l < 12; l++) {
 						if (listaPedine[l] == oldPositionOnBoard) {
 							listaPedine[l] = (byte) newPositionOnBoard;
+							break;
 						}
-						break;
+						
 
 					}
 
@@ -474,7 +480,8 @@ public class ScacchieraBit {
 							if (listaPedineBianche[l] == oldPositionOnBoard) {
 								listaPedineBianche[l] = (byte) newPositionOnBoard;
 
-							} else if (listaPedineNere[l] == newPositionOnBoard) {
+							} 
+							if (listaPedineNere[l] == newPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineNere[k - 1] = listaPedineNere[k];
 								}
@@ -484,7 +491,8 @@ public class ScacchieraBit {
 							if (listaPedineNere[l] == oldPositionOnBoard) {
 								listaPedineNere[l] = (byte) newPositionOnBoard;
 
-							} else if (listaPedineBianche[l] == newPositionOnBoard) {
+							} 
+							if (listaPedineBianche[l] == newPositionOnBoard) {
 								for (int k = l + 1; k < 12; k++) {
 									listaPedineBianche[k - 1] = listaPedineBianche[k];
 
@@ -552,7 +560,7 @@ public class ScacchieraBit {
 			}
 
 		}
-		if(getNumeroPedine(xF, yF)==15) {
+		if(!checkPosOut(xF, yF) && getNumeroPedine(xF, yF)==15) {
 			debugStatus(true, "dopo");
 			System.out.println("XXXXXXXXXXX");
 		}

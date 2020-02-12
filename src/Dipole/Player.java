@@ -33,9 +33,9 @@ public class Player {
 		this.root = new ScacchieraBit(scacchiera);
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new B_Heuristic();
-		} else {
 			euristica = new N_Heuristic();
+		} else {
+			euristica = new B_Heuristic();
 		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
