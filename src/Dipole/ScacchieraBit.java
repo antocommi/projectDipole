@@ -593,29 +593,7 @@ public class ScacchieraBit {
 		return false;
 	}
 
-	public boolean generaMosse(int x, int y, int c) {
-		int pos, curr_pos, numeroCelleSpostamento = 0;
-		if (checkPosOut(x, y))
-			throw new RuntimeException("Indici non consentiti");
-		if (scacchiera.getIndex(x, y) == 0)
-			return false;
-		calcolaMassimoSpostamento(MAX_SPOSTAMENTO, x, y);
-		for (int dir = 0; dir < 8; dir++) {
-			pos = x * 8 + y;
-			numeroCelleSpostamento = 0;
-			curr_pos = pos;
-			while (numeroCelleSpostamento++ < MAX_SPOSTAMENTO[dir] && curr_pos > 0 && curr_pos < 64) {
-				curr_pos += DIRECTIONS[dir];
-				Mossa mossa = new Mossa(x, y, curr_pos / 8, curr_pos % 8, dir);
-
-				if (checkMosse(mossa, c)) {
-					return true;
-				}
-
-			}
-		}
-		return false;
-	}
+	
 
 	public void addAllMoves(ArrayList<Mossa> mosse) {
 		moves.addAll(mosse);
