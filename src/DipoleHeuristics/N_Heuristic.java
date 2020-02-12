@@ -22,7 +22,7 @@ public class N_Heuristic implements HeuristicInterface {
 	@Override
 	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
 		// TODO Auto-generated method stub
-		return 0;
+		return perturbazioneRandom();
 	}
 
 	@SuppressWarnings("unused")

@@ -215,25 +215,25 @@ public class NaiveHeuristic implements HeuristicInterface {
 		return e + perturbazioneRandom();
 	}
 
-//	@SuppressWarnings("unused")
-//	private int perturbazioneRandom() {
-//		Random r = new Random();
-//		return r.nextInt(6) - 3;
-//	}
-
+	@SuppressWarnings("unused")
 	private int perturbazioneRandom() {
 		Random r = new Random();
-		int soglia = r.nextInt(100);
-		if (soglia > 60 && soglia < 90) {
-			return r.nextInt(16) - 6;
-		}
-		if (soglia > 90) {
-			return r.nextInt(20) - r.nextInt(10);
-		}
-		if (soglia < 60) {
-			return r.nextInt(6) - 3;
-		}
-		return r.nextInt(12) - 4;
+		return r.nextInt(12) - r.nextInt((6));
 	}
+
+//	private int perturbazioneRandom() {
+//		Random r = new Random();
+//		int soglia = r.nextInt(100);
+//		if (soglia > 60 && soglia < 90) {
+//			return r.nextInt(16) - 6;
+//		}
+//		if (soglia > 90) {
+//			return r.nextInt(20) - r.nextInt(10);
+//		}
+//		if (soglia < 60) {
+//			return r.nextInt(6) - 3;
+//		}
+//		return r.nextInt(12) - 4;
+//	}
 
 }

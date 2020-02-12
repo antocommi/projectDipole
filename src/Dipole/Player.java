@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import DipoleHeuristics.B_Heuristic;
 import DipoleHeuristics.HeuristicInterface;
+import DipoleHeuristics.N_Heuristic;
 import DipoleHeuristics.NaiveHeuristic;
 import util.TraspositionTable;
 
@@ -16,7 +17,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 5;
+	private int PROFONDITA = 9;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -34,7 +35,7 @@ public class Player {
 		if (player == PEDINA_BIANCA) {
 			euristica = new B_Heuristic();
 		} else {
-			euristica = new NaiveHeuristic();
+			euristica = new B_Heuristic();
 		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
@@ -60,7 +61,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 700) {
+		if (controlloTempo >= 960) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;

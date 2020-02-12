@@ -338,6 +338,8 @@ public class ScacchieraBit {
 		if (m == null) {
 			this.debugStatus(true, "m è null");
 			throw new RuntimeException("mossa null");
+			
+			//E' null quando c'è una situazione di stallo!
 		}
 		int x = m.getiStart();
 		int y = m.getjStart();
@@ -651,9 +653,9 @@ public class ScacchieraBit {
 				}
 			}
 		}
-		if (mosseMaxBianco < 55 || mosseMaxNero < 55) {
+//		if (mosseMaxBianco < 55 || mosseMaxNero < 55) {
 			listaMosse.addAll(generaMosseFuori(x, y, c));
-		}
+//		}
 
 		// TODO va aggiustato
 

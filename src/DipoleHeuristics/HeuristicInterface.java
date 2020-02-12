@@ -44,6 +44,7 @@ public interface HeuristicInterface {
 	public default boolean possoMangiareENonMiMangia(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
+		if(x < 0 || y < 0) return false;
 		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
 		if (board.getColorePedina(x, y) == (1 - color) && board.getNumeroPedine(x, y) <= n)
 			if (miMangiaGetMossa(m, color, board) == null)
@@ -59,6 +60,7 @@ public interface HeuristicInterface {
 
 	public default int cornice(int x, int y, int giocatore, ScacchieraBit board) {
 		int cont = 0;
+		if(x < 0 || y < 0) return -1;
 		if (board.getColorePedina(x - 1, y - 1) == (1 - giocatore) & board.getNumeroPedine(x - 1, y - 1) > 1)
 			cont++;
 		if (board.getColorePedina(x - 1, y + 1) == (1 - giocatore) & board.getNumeroPedine(x - 1, y + 1) > 1)
@@ -73,6 +75,7 @@ public interface HeuristicInterface {
 	public default Mossa miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
+		if(x < 0 || y < 0) return null;
 		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
 		ArrayList<Mossa> listaMosseReturn = new ArrayList<Mossa>();
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
@@ -126,6 +129,7 @@ public interface HeuristicInterface {
 	public default boolean miMangiaPochePedineEritornoAmangiarlo(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
+		if(x < 0 || y < 0) return false;
 		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (n <= 2) {
@@ -175,6 +179,7 @@ public interface HeuristicInterface {
 	public default int generaMosseSenzaCheck(Mossa m, int c, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
+		if(x < 0 || y < 0) return -1;
 		int cont = 0;
 		int pos, curr_pos, numeroCelleSpostamento = 0;
 		if (board.checkPosOut(x, y))
@@ -258,6 +263,7 @@ public interface HeuristicInterface {
 	public default boolean loMangio(Mossa adversary, ScacchieraBit board, int color) {
 		int x = adversary.getiEnd();
 		int y = adversary.getjEnd();
+		if(x < 0 || y < 0) return false;
 		int n = board.calcolaSpostamento(adversary.getiStart(), adversary.getiEnd(), adversary.getjStart(),
 				adversary.getjEnd());
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();

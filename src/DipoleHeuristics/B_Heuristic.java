@@ -34,6 +34,8 @@ public class B_Heuristic implements HeuristicInterface {
 			spost = -1;
 		}
 
+		//
+		
 		// VALUTIAMO UNA MOSSA ANCHE IN BASE ALLO SPOSTAMENTO
 		int numPedineSpostate = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(),
 				prec.getjEnd());
@@ -68,7 +70,12 @@ public class B_Heuristic implements HeuristicInterface {
 		} else {
 			e = e + 8;
 		}
+		
+		
+		if (possoMangiareENonMiMangia(prec, giocatore, stato) && miMangiaStackRestante(prec, giocatore, stato))
+			e = e + 20;
 
+		
 		// Se posso mangiare una pedina con un numero consistente di pedine e da
 		// scegliere
 		if (possoMangiareENonMiMangia(prec, giocatore, stato) && miMangiaStackRestante(prec, giocatore, stato)
@@ -99,18 +106,18 @@ public class B_Heuristic implements HeuristicInterface {
 			int nPedine = stato.getNumeroPedine(x, y);
 
 			// CONTROLLIAMO IL NUMERO DI PEDINE VICINE
-			if (nPedine > 1) {
-				int numeroPedineCornice = cornice(x, y, giocatore, stato);
-				if (numeroPedineCornice == 1) {
-					e = e + 6;
-				}
-				if (numeroPedineCornice == 2) {
-					e = e + 4;
-				}
-				if (numeroPedineCornice > 2) {
-					e = e - 2;
-				}
-			}
+//			if (nPedine > 1) {
+//				int numeroPedineCornice = cornice(x, y, giocatore, stato);
+//				if (numeroPedineCornice == 1) {
+//					e = e + 6;
+//				}
+//				if (numeroPedineCornice == 2) {
+//					e = e + 4;
+//				}
+//				if (numeroPedineCornice > 2) {
+//					e = e - 2;
+//				}
+//			}
 
 			if (giocatore == 1) {
 				if (pos < 32) {
