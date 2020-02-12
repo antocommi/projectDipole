@@ -372,7 +372,8 @@ public class ScacchieraBit {
 		if (checkPosOut(xF, yF)) {
 			// TODO: GESTIRE PEDINE FUORI DOPO AVER SCELTO FORMATO MOSSA PER MOSSE FUORI
 
-			int pedineDaEliminare = Mossa.calcolaCelleFuori(x, y, xF, yF, dir);
+//			int pedineDaEliminare = Mossa.calcolaCelleFuori(x, y, xF, yF, dir);
+			int pedineDaEliminare = 1;
 			pedineI[c] -= pedineDaEliminare;
 			if (pedineDaEliminare == nPedineOld) { // se le elimina tutte in una volta
 				for (int l = 0; l < 12; l++) {
