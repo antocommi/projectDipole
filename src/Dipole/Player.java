@@ -35,7 +35,7 @@ public class Player {
 		if (player == PEDINA_BIANCA) {
 			euristica = new B_Heuristic();
 		} else {
-			euristica = new B_Heuristic();
+			euristica = new N_Heuristic();
 		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
