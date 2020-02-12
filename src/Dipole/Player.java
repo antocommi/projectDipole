@@ -2,6 +2,7 @@
 package Dipole;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import DipoleHeuristics.B_Heuristic;
 import DipoleHeuristics.HeuristicInterface;
@@ -82,7 +83,7 @@ public class Player {
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
-	
+
 		long ttKey = zobrist.getHashcode(board, board.getTurnoGiocatore() ? 0 : 1);
 		ArrayList<Mossa> mosse;
 		if (traspositionTable.contains(ttKey)) {
@@ -97,7 +98,7 @@ public class Player {
 		}
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
-			
+
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
 				assert (newBoard.getTurnoGiocatore() != board.getTurnoGiocatore());
@@ -183,5 +184,62 @@ public class Player {
 
 	public boolean getTurnoGiocatore() {
 		return root.getTurnoGiocatore();
+	}
+
+	public static void main(String[] args) {
+		ScacchieraBit scacchiera = new ScacchieraBit();
+
+		scacchiera.stampaScacchiera();
+//		// System.out.println(scacchiera.getNumeroPedine(0, 3));
+//		for (Mossa m : scacchiera.generaListaMosse(0, 3, PEDINA_NERA))
+//			System.out.println("cico" + m);
+//		for (Mossa m : scacchiera.generaListaMosse(7, 4, PEDINA_BIANCA))
+//			System.out.println(m + "ei");
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+
+			ArrayList<Mossa> mosse = scacchiera.getAllMoves();
+			for (Mossa m : mosse)
+				System.out.println(m);
+			Player p= new Player(scacchiera, 0);
+			System.out.println("");
+			System.out.println("Inserire la mossa del bianco: ");
+			System.out.println("");
+			System.out.print("iStart: \n");
+			Mossa m=p.elaboraProssimaMossa();
+			int iStart = m.getiStart();
+			System.out.println("jStart \n");
+			int jStart = m.getjStart();
+			System.out.println("iEnd \n");
+			int iEnd = m.getiEnd();
+			System.out.println("jEnd \n");
+			int jEnd = m.getjEnd();
+			scacchiera.muovi(m, 0);
+			System.out.println("Il Player 0 effettua la mossa " + m);
+			System.out.println("");
+			scacchiera.stampaScacchiera();
+			System.out.println("");
+			ArrayList<Mossa> mosse1 = scacchiera.getAllMoves();
+			for (Mossa m1 : mosse1)
+				System.out.println(m1);
+			System.out.println("");
+			System.out.println("Inserire la mossa del nero: ");
+			System.out.println("");
+			System.out.print("iStart: \n");
+			iStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("jStart \n");
+			jStart = Integer.parseInt(scanner.nextLine());
+			System.out.println("iEnd \n");
+			iEnd = Integer.parseInt(scanner.nextLine());
+			System.out.println("jEnd \n");
+			jEnd = Integer.parseInt(scanner.nextLine());
+			Mossa m1 = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
+			scacchiera.muovi(m1, 1);
+			System.out.println("Il Player 1 effettua la mossa " + m1);
+			System.out.println("");
+			scacchiera.stampaScacchiera();
+			System.out.println("");
+
+		}
 	}
 }
