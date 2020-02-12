@@ -61,7 +61,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 960) {
+		if (controlloTempo >= 600) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -95,6 +95,7 @@ public class Player {
 		}
 		for (Mossa mossa : mosse) {
 			path[currDepth] = mossa;
+			System.out.println("mossa in player"+mossa);
 			try {
 				newBoard = ScacchieraBit.muovi(mossa, board, board.getTurnoGiocatore() ? 0 : 1);
 				assert (newBoard.getTurnoGiocatore() != board.getTurnoGiocatore());
