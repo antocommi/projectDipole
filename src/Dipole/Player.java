@@ -74,7 +74,7 @@ public class Player {
 		Mossa currMove = null;
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
-			System.out.println("Profondita" + depth);
+			//System.out.println("Profondita" + depth);
 //			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;

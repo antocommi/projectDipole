@@ -45,7 +45,7 @@ public interface HeuristicInterface {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
 		if(board.checkPosOut(x, y)) return false;
-		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
+		int n = board.calcolaSpostamento(m.getiStart(), m.getjStart(),m.getiEnd() ,m.getjEnd());
 		if (board.getColorePedina(x, y) == (1 - color) && board.getNumeroPedine(x, y) <= n)
 			if (miMangiaGetMossa(m, color, board) == null)
 				return true;
@@ -75,10 +75,14 @@ public interface HeuristicInterface {
 	}
 
 	public default Mossa miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
+		
+		
 		int x = m.getiEnd();
 		int y = m.getjEnd();
+		if(board.getColorePedina(m.getiStart(), m.getiEnd())!= color)return null;
+//		System.out.println("Mossa di partenza "+m.oldtoString());
 		if(board.checkPosOut(x, y)) return null;
-		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
+		int n = board.calcolaSpostamento(m.getiStart(),  m.getjStart(),m.getiEnd(), m.getjEnd());
 		ArrayList<Mossa> listaMosseReturn = new ArrayList<Mossa>();
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (color == PEDINA_BIANCA) {
@@ -87,9 +91,10 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
 						1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
-
+						System.out.println("x "+x+"y "+y+"n "+n+"nadv "+ nPedStack);
+						System.out.println("Mossa che mangia "+mossa.oldtoString());
 						listaMosseReturn.add(mossa);
 					}
 				}
@@ -100,7 +105,7 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineBianche[i] / 8,
 						board.listaPedineBianche[i] % 8, 1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 
 						listaMosseReturn.add(mossa);
@@ -125,14 +130,18 @@ public interface HeuristicInterface {
 			}
 		} else
 			return null;
+//		return listaMosseReturn;
 
 	}
+//	public Mossa getMossaMiMangia(ArrayList<Mossa> listaMosseReturn){
+//		
+//	}
 
 	public default boolean miMangiaPochePedineEritornoAmangiarlo(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
 		if(board.checkPosOut(x, y)) return false;
-		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
+		int n = board.calcolaSpostamento(m.getiStart(),  m.getjStart(),m.getiEnd(), m.getjEnd());
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (n <= 2) {
 			if (color == PEDINA_BIANCA) {
@@ -141,7 +150,7 @@ public interface HeuristicInterface {
 					listaMosse = generaListaMosseAusiliario(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
 							PEDINA_NERA, board);
 					for (Mossa mossa : listaMosse) {
-						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 							if (miMangiaGetMossa(mossa, 1 - color, board) != null) {
 								return true;
@@ -155,7 +164,7 @@ public interface HeuristicInterface {
 					listaMosse = generaListaMosseAusiliario(board.listaPedineBianche[i] / 8,
 							board.listaPedineBianche[i] % 8, PEDINA_BIANCA, board);
 					for (Mossa mossa : listaMosse) {
-						nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+						nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 						if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 							if (miMangiaGetMossa(mossa, 1 - color, board) != null) {
 								return true;
@@ -205,7 +214,7 @@ public interface HeuristicInterface {
 		int x = m.getiStart();
 		int y = m.getjStart();
 		
-		int n = board.calcolaSpostamento(m.getiStart(), m.getiEnd(), m.getjStart(), m.getjEnd());
+		int n = board.calcolaSpostamento(m.getiStart(), m.getjStart(),m.getiEnd(), m.getjEnd());
 		int stackRestante = board.getNumeroPedine(x, y) - n;
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (color == PEDINA_BIANCA) {
@@ -214,7 +223,7 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
 						1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= stackRestante) {
 						return true;
 					}
@@ -226,7 +235,7 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineBianche[i] / 8,
 						board.listaPedineBianche[i] % 8, 1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= stackRestante) {
 						return true;
 					}
@@ -266,7 +275,7 @@ public interface HeuristicInterface {
 		int x = adversary.getiEnd();
 		int y = adversary.getjEnd();
 		if(board.checkPosOut(x, y)) return false;
-		int n = board.calcolaSpostamento(adversary.getiStart(), adversary.getiEnd(), adversary.getjStart(),
+		int n = board.calcolaSpostamento(adversary.getiStart(),  adversary.getjStart(),adversary.getiEnd(),
 				adversary.getjEnd());
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (color == PEDINA_BIANCA) {
@@ -275,7 +284,7 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
 						1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 						return true;
 					}
@@ -287,7 +296,7 @@ public interface HeuristicInterface {
 				listaMosse = generaListaMosseAusiliario(board.listaPedineBianche[i] / 8,
 						board.listaPedineBianche[i] % 8, 1 - color, board);
 				for (Mossa mossa : listaMosse) {
-					nPedStack = board.getNumeroPedine(mossa.getiStart(), mossa.getjStart());
+					nPedStack = board.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(),mossa.getiEnd(), mossa.getjEnd());
 					if ((mossa.getiEnd() == x && mossa.getjEnd() == y) & nPedStack >= n) {
 						return true;
 					}
