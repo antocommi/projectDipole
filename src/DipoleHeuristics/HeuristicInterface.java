@@ -74,7 +74,7 @@ public interface HeuristicInterface {
 		return cont;
 	}
 
-	public default Mossa miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
+	public default ArrayList<Mossa> miMangiaGetMossa(Mossa m, int color, ScacchieraBit board) {
 		
 		
 		int x = m.getiEnd();
@@ -82,7 +82,7 @@ public interface HeuristicInterface {
 		if(board.getColorePedina(m.getiStart(), m.getiEnd())!= color)return null;
 //		System.out.println("Mossa di partenza "+m.oldtoString());
 		if(board.checkPosOut(x, y)) return null;
-		int n = board.calcolaSpostamento(m.getiStart(),  m.getjStart(),m.getiEnd(), m.getjEnd());
+		int n = board.calcolaSpostamento(m.getiStart(),  m.getjStart(),m.getiEnd(), m.getjEnd());//quante me ne mangerà
 		ArrayList<Mossa> listaMosseReturn = new ArrayList<Mossa>();
 		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
 		if (color == PEDINA_BIANCA) {
@@ -114,23 +114,9 @@ public interface HeuristicInterface {
 			}
 		}
 
-		if (listaMosseReturn.size() != 0) {
-			if (listaMosseReturn.size() == 1) {
-				return listaMosseReturn.get(0);
-			} else {
-				int max = 0;
-				Mossa mR = null;
-				for (Mossa move : listaMosseReturn) {
-					if (board.getNumeroPedine(move.getiStart(), move.getjStart()) > max) {
-						mR = move;
-						max = board.getNumeroPedine(move.getiStart(), move.getjStart());
-					}
-				}
-				return mR;
-			}
-		} else
-			return null;
-//		return listaMosseReturn;
+		
+			
+		return listaMosseReturn;
 
 	}
 //	public Mossa getMossaMiMangia(ArrayList<Mossa> listaMosseReturn){

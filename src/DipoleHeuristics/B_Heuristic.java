@@ -22,14 +22,17 @@ public class B_Heuristic implements HeuristicInterface {
 		int e = 0;
 		byte[] listaPedine = stato.getListaPosizioni(giocatore);
 		int giocatoreAdversary = 1 - giocatore;
-		
+		Mossa advMove=null;
 //		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
-		Mossa advMove = miMangiaGetMossa(prec, giocatore, stato);
+		if(miMangiaGetMossa(prec, giocatore, stato)!=null && miMangiaGetMossa(prec, giocatore, stato).size() !=0  ) {
+			advMove = miMangiaGetMossa(prec, giocatore, stato).get(0);
+		}
+		
 		int pedinePerse = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(), prec.getjEnd());
 		int spost = 0;
 		if (advMove != null) {
 			spost = stato.calcolaSpostamento(advMove.getiStart(), advMove.getjStart(), advMove.getiEnd(),
-					advMove.getjEnd());
+					advMove.getjEnd());//ne mangia >=spost
 		} else {
 			spost = -1;
 		}
