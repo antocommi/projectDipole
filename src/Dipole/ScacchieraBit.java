@@ -352,7 +352,6 @@ public class ScacchieraBit {
 		int yF = m.getjEnd();
 	
 //				debugStatus(true, "prima");
-//				System.out.println("antonio è cazzone"+m);
 		
 		int oldPositionOnBoard = x * 8 + y;
 		int newPositionOnBoard = xF * 8 + yF;
@@ -752,7 +751,9 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(
 							generaMosseFuori(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
+					
 				}
+				
 				if (listaMosse.size() == 0) {
 
 					int i = listaPedineBianche[0] / 8;
@@ -772,6 +773,7 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(generaMosseFuori(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 				}
+				
 
 				if (listaMosse.size() == 0) {
 					int i = listaPedineNere[0] / 8;
@@ -799,6 +801,7 @@ public class ScacchieraBit {
 					listaMosse.addAll(
 							generaMosseFuori(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
 				}
+				
 				if (listaMosse.size() == 0) {
 
 					int i = listaPedineBianche[0] / 8;
@@ -818,7 +821,7 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(generaMosseFuori(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 				}
-
+				
 				if (listaMosse.size() == 0) {
 					int i = listaPedineNere[0] / 8;
 					int j = listaPedineNere[0] % 8;
