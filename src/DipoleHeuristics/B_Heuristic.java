@@ -34,6 +34,12 @@ public class B_Heuristic implements HeuristicInterface {
 			spost = -1;
 		}
 
+		int xs = prec.getiEnd();
+		int ys = prec.getjEnd();
+		if(stato.checkPosOut(xs, ys)) {
+			e =e-12;
+		}
+		
 		//
 		
 		// VALUTIAMO UNA MOSSA ANCHE IN BASE ALLO SPOSTAMENTO
@@ -74,7 +80,7 @@ public class B_Heuristic implements HeuristicInterface {
 		
 		if (possoMangiareENonMiMangia(prec, giocatore, stato) && !miMangiaStackRestante(prec, giocatore, stato))
 			e = e + 20;
-
+		
 		
 		// Se posso mangiare una pedina con un numero consistente di pedine e da
 		// scegliere

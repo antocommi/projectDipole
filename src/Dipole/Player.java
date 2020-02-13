@@ -34,7 +34,7 @@ public class Player {
 		this.root = new ScacchieraBit(scacchiera);
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new N_Heuristic();
+			euristica = new NaiveHeuristic();
 		} else {
 			euristica = new B_Heuristic();
 		}
@@ -63,7 +63,7 @@ public class Player {
 	@SuppressWarnings("deprecation")
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 500) {
+		if (controlloTempo >= 920) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -74,6 +74,7 @@ public class Player {
 		Mossa currMove = null;
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
+			System.out.println("Profondita" + depth);
 //			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
