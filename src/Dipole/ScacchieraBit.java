@@ -26,7 +26,7 @@ public class ScacchieraBit {
 	public static final int SIZE = 8;
 
 	private static HashMap<String, Integer> riga; //
-
+	private static String[] RIGHE = {"A","B","C","D","E","F","G","H"};
 	private static final int PEDINA_BIANCA = 0;
 	private static final int PEDINA_NERA = 1;
 	public static final int NORTH = 0;
@@ -96,15 +96,14 @@ public class ScacchieraBit {
 
 		System.out.print("Pedine del giocatore bianco: [");
 		for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
-			System.out.print("[" + (listaPedineBianche[i] / 8) + "." + (listaPedineBianche[i] % 8) + "]");
+			System.out.print(RIGHE[(listaPedineBianche[i] / 8)] + ((listaPedineBianche[i] % 8)+1));
 			if (i < numeroStackGiocatore[PEDINA_BIANCA] - 1)
 				System.out.print(", ");
 		}
 		System.out.println("]");
 		System.out.print("Pedine del giocatore nero: [");
 		for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
-//			System.out.print(listaPedineNere[i]);
-			System.out.print("[" + (listaPedineNere[i] / 8) + "." + (listaPedineNere[i] % 8) + "]");
+			System.out.print(RIGHE[(listaPedineNere[i] / 8)] + ((listaPedineNere[i] % 8)+1));
 			if (i < numeroStackGiocatore[PEDINA_NERA] - 1)
 				System.out.print(", ");
 		}
@@ -707,13 +706,13 @@ public class ScacchieraBit {
 			Mossa m = new Mossa(x, y, curr_x, curr_y, v[0]);
 //			System.out.format("%d %d %d %d %d ", x, y, curr_x, curr_y, Mossa.calcolaCelleFuori(x, y, curr_x, curr_y, v[0]));
 			if (checkMosse(m, c)) {
-//				System.out.println("Aggiunta");
+//				System.out.println("Aggiunta mossa fuori"+ m);
 				listaMosse.add(m);
 			}
 //			else System.out.println("");
 
 		}
-
+		
 		return listaMosse;
 	}
 
