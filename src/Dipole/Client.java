@@ -149,7 +149,7 @@ public class Client {
 				} else if (answer.startsWith("MESSAGE"))
 					System.out.println(answer.substring(8));
 			}
-			g.debug(true, "mossa invalida");
+			g.debug(true, "stato finale - uscito dal while");
 		} finally {
 			socket.close();
 		}
