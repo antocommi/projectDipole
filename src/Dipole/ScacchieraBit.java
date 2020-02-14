@@ -332,7 +332,7 @@ public class ScacchieraBit {
 	}
 
 	public int muovi(Mossa m, int c) {
-		int tipo = 0;
+		int tipo = -1;
 		// PRE-CONDIZIONE: m e' una mossa ammissibile.
 //		if(!checkMosse(m, c)) {
 //			System.out.println("Mossa invalida " + m);
