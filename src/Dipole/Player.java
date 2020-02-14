@@ -18,7 +18,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 10;
+	private int PROFONDITA = 1;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -37,7 +37,7 @@ public class Player {
 		this.oldBoard = root;
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new N_Heuristic();
+			euristica = new B_Heuristic();
 		} else {
 			euristica = new B_Heuristic();
 		}
@@ -53,7 +53,6 @@ public class Player {
 		
 		oldBoard = root;
 		root.muovi(mossa, player);
-		root.debugStatus(true, "ciao");
 	}
 
 	public Mossa elaboraProssimaMossa() {
@@ -70,7 +69,7 @@ public class Player {
 		long controlloTempo = System.currentTimeMillis() - start;
 		if (controlloTempo >= 920) {
 			return new Object[] { new Integer(-1), null };
-		} 
+		}
 		ScacchieraBit newBoard = null;
 		int bestScore = Integer.MIN_VALUE;
 		int currScore = 0;
@@ -79,20 +78,12 @@ public class Player {
 		Mossa currMove = null;
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
-			//System.out.println("Profondita" + depth);
 //			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
-//			board.debugStatus(true, "questa è una foglia");
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
-//				System.out.println("MOSSA VECCHIA "+  path[path.length - 1].oldtoString());
-				e = euristica.valuta(board, PLAYER, path[path.length - 1], oldBoard);
-				System.out.println("");
-				System.out.println("______________________");
-//				System.out.println("Euristica "+ e + " "+ path[path.length - 1].oldtoString());
-				System.out.println("______________________");
-				System.out.println("");
+				e = euristica.valuta(board, PLAYER, path[path.length - 1]);
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
@@ -177,22 +168,6 @@ public class Player {
 		for (Mossa mossa : m) {
 			System.out.println(mossa);
 		}
-	}
-
-	public int getVincitore() {
-		if (root.getMosseMaxBianco() == 0 || root.getMosseMaxNero() == 0) {
-			if (root.getNumeroPedineTot(PEDINA_BIANCA) > root.getNumeroPedineTot(PEDINA_NERA))
-				return PEDINA_BIANCA;
-			if (root.getNumeroPedineTot(PEDINA_NERA) > root.getNumeroPedineTot(PEDINA_BIANCA))
-				return PEDINA_NERA;
-			if (root.getNumeroPedineTot(PEDINA_NERA) == root.getNumeroPedineTot(PEDINA_BIANCA))
-				return 2;
-		}
-		if (root.getNumeroStackGiocatore(PEDINA_BIANCA) == 0 || root.zeroMosse(PEDINA_BIANCA))
-			return PEDINA_NERA;
-		if (root.getNumeroStackGiocatore(PEDINA_NERA) == 0 || root.zeroMosse(PEDINA_NERA))
-			return PEDINA_BIANCA;
-		return -1;
 	}
 
 	public boolean getTurnoGiocatore() {
