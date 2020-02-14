@@ -130,7 +130,7 @@ public class ScacchieraBit {
 		mosseMaxBianco = 60;
 		mosseMaxNero = 60;
 		MAX_SPOSTAMENTO = new int[8];
-		scacchiera = new ByteMap(8 * 4);
+		scacchiera = new ByteMap(8);
 		moves = new ArrayList<>();
 		listaPedineBianche = new byte[12];
 		listaPedineNere = new byte[12];
