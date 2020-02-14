@@ -18,7 +18,7 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 1;
+	private int PROFONDITA = 10;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
@@ -37,7 +37,7 @@ public class Player {
 		this.oldBoard = root;
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new B_Heuristic();
+			euristica = new N_Heuristic();
 		} else {
 			euristica = new B_Heuristic();
 		}
@@ -90,7 +90,7 @@ public class Player {
 				e = euristica.valuta(board, PLAYER, path[path.length - 1], oldBoard);
 				System.out.println("");
 				System.out.println("______________________");
-				System.out.println("Euristica "+ e + " "+ path[path.length - 1].oldtoString());
+//				System.out.println("Euristica "+ e + " "+ path[path.length - 1].oldtoString());
 				System.out.println("______________________");
 				System.out.println("");
 			return new Object[] { e, null };

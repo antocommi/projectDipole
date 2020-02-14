@@ -65,6 +65,10 @@ public class B_Heuristic implements HeuristicInterface {
 		} else {
 			spostamentoAvversarioMossaTop = -1;
 		}
+		
+		// VALUTIAMO UNA MOSSA ANCHE IN BASE ALLO SPOSTAMENTO
+		boolean possoMangiareENonMangia = possoMangiareENonMiMangia(prec, giocatore, oldBoard, listaMosseMiMangia);
+
 
 		if (stato.checkPosOut(prec.getjEnd(), prec.getiEnd())) {
 			e = e - 12;
@@ -72,8 +76,6 @@ public class B_Heuristic implements HeuristicInterface {
 
 		// ---------------------------------------------------------------
 
-		// VALUTIAMO UNA MOSSA ANCHE IN BASE ALLO SPOSTAMENTO
-		boolean possoMangiareENonMangia = possoMangiareENonMiMangia(prec, giocatore, oldBoard, listaMosseMiMangia);
 
 		if (numPedineSpostateNOSTRE < 2 && possoMangiareENonMangia) {
 			e = e + 7;
