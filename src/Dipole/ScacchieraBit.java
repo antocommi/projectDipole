@@ -328,7 +328,6 @@ public class ScacchieraBit {
 		int yF = m.getjEnd();
 	
 //				debugStatus(true, "prima");
-//				System.out.println("antonio è cazzone"+m);
 		
 		int oldPositionOnBoard = x * 8 + y;
 		int newPositionOnBoard = xF * 8 + yF;
@@ -538,7 +537,7 @@ public class ScacchieraBit {
 		}
 		if(!checkPosOut(xF, yF) && getNumeroPedine(xF, yF)==15) {
 			debugStatus(true, "dopo");
-			System.out.println("XXXXXXXXXXX");
+//			System.out.println("XXXXXXXXXXX");
 		}
 			
 		if (turnoGiocatore)
@@ -575,7 +574,7 @@ public class ScacchieraBit {
 	public boolean checkFin(ScacchieraBit s) {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
 		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
-			System.out.println(s.mosseMaxBianco + " " + s.mosseMaxNero);
+//			System.out.println(s.mosseMaxBianco + " " + s.mosseMaxNero);
 			return true;
 		}
 		if ((s.numeroStackGiocatore[PEDINA_BIANCA] == 0 || s.numeroStackGiocatore[PEDINA_NERA] == 0)
@@ -714,7 +713,9 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(
 							generaMosseFuori(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
+					
 				}
+				
 				if (listaMosse.size() == 0) {
 
 					int i = listaPedineBianche[0] / 8;
@@ -734,6 +735,7 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(generaMosseFuori(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 				}
+				
 
 				if (listaMosse.size() == 0) {
 					int i = listaPedineNere[0] / 8;
@@ -761,6 +763,7 @@ public class ScacchieraBit {
 					listaMosse.addAll(
 							generaMosseFuori(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
 				}
+				
 				if (listaMosse.size() == 0) {
 
 					int i = listaPedineBianche[0] / 8;
@@ -780,7 +783,7 @@ public class ScacchieraBit {
 				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
 					listaMosse.addAll(generaMosseFuori(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
 				}
-
+				
 				if (listaMosse.size() == 0) {
 					int i = listaPedineNere[0] / 8;
 					int j = listaPedineNere[0] % 8;
@@ -985,7 +988,7 @@ public class ScacchieraBit {
 //		private int scacchieraBianchi, scacchieraNeri; //
 //		System.out.println("bit bianchi: " + scacchieraBianchi);
 //		System.out.println("bit neri: " + scacchieraNeri);
-		System.out.println("CONFIGURAZINE SCACCHIERA:");
+//		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
 		int r, c;
 //		scacchiera.printValues();

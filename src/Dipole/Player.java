@@ -18,12 +18,14 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 9;
+	private int PROFONDITA = 1;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
 //	private int NUMERO_MAX_MOSSE = 60;
 	public static final int SIZE = 8;
+	
+	public ScacchieraBit oldBoard;
 
 	private HeuristicInterface euristica;
 	private Zobrist zobrist;
@@ -32,9 +34,10 @@ public class Player {
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
 		this.root = new ScacchieraBit(scacchiera);
+		this.oldBoard = root;
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new N_Heuristic();
+			euristica = new B_Heuristic();
 		} else {
 			euristica = new B_Heuristic();
 		}
@@ -47,6 +50,8 @@ public class Player {
 //			root.debugStatus(true, "Si vuole muovere con una mossa null");
 //			throw new RuntimeException("Null");
 //		}
+		
+		oldBoard = root;
 		root.muovi(mossa, player);
 	}
 
@@ -60,9 +65,9 @@ public class Player {
 	}
 
 	@SuppressWarnings("deprecation")
-	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
+	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path, ScacchieraBit oldBoard) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 500) {
+		if (controlloTempo >= 920) {
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -111,7 +116,7 @@ public class Player {
 			} else {
 				max = alfa;
 			}
-			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path);
+			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path, board);
 			try {
 				score = ((int) res[0]);
 				currMove = path[depth - 1];
@@ -144,7 +149,7 @@ public class Player {
 		int beta = MAX;
 
 		for (int i = 1; i <= PROFONDITA; i++) {
-			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
+			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i], oldBoard);
 			if (bestConfig[1] != null) {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
