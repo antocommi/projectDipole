@@ -67,7 +67,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 		if (adversaryMove != null && spost > 1 && pedinePerse <= 1) {
 //			System.out.println("qui  2  ");
-			int numMosseMangianti = generaMosseSenzaCheck(adversaryMove, giocatoreAdversary, stato);
+			int numMosseMangianti = 0;//generaMosseSenzaCheck(adversaryMove, giocatoreAdversary, stato); 
 //				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
 			if (numMosseMangianti <= 14 && numMosseMangianti > 8) {
 //					System.out.println("qui  3  ");
