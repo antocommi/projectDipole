@@ -560,7 +560,7 @@ public class ScacchieraBit {
 		}
 		if(!checkPosOut(xF, yF) && getNumeroPedine(xF, yF)==15) {
 			debugStatus(true, "dopo");
-			System.out.println("XXXXXXXXXXX");
+//			System.out.println("XXXXXXXXXXX");
 		}
 			
 		if (turnoGiocatore)
@@ -599,7 +599,7 @@ public class ScacchieraBit {
 	public boolean checkFin(ScacchieraBit s) {
 		// TODO caso in cui non può più cacciare fuori ma ha ancora pedine
 		if (s.mosseMaxBianco == 0 || s.mosseMaxNero == 0) {
-			System.out.println(s.mosseMaxBianco + " " + s.mosseMaxNero);
+//			System.out.println(s.mosseMaxBianco + " " + s.mosseMaxNero);
 			return true;
 		}
 		if ((s.numeroStackGiocatore[PEDINA_BIANCA] == 0 || s.numeroStackGiocatore[PEDINA_NERA] == 0)
@@ -1025,7 +1025,7 @@ public class ScacchieraBit {
 //		private int scacchieraBianchi, scacchieraNeri; //
 //		System.out.println("bit bianchi: " + scacchieraBianchi);
 //		System.out.println("bit neri: " + scacchieraNeri);
-		System.out.println("CONFIGURAZINE SCACCHIERA:");
+//		System.out.println("CONFIGURAZINE SCACCHIERA:");
 		System.out.println();
 		int r, c;
 //		scacchiera.printValues();

@@ -18,12 +18,14 @@ public class Player {
 
 	private int PLAYER;
 	private ScacchieraBit root;
-	private int PROFONDITA = 9;
+	private int PROFONDITA = 10;
 	private long start = 0;
 	private final static int FINE_GIOCO = 100000;
 	private static final int TT_SIZE = 10000;
 //	private int NUMERO_MAX_MOSSE = 60;
 	public static final int SIZE = 8;
+	
+	public ScacchieraBit oldBoard;
 
 	private HeuristicInterface euristica;
 	private Zobrist zobrist;
@@ -32,11 +34,12 @@ public class Player {
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
 		this.root = new ScacchieraBit(scacchiera);
+		this.oldBoard = root;
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
-			euristica = new B_Heuristic();
+			euristica = new N_Heuristic();
 		} else {
-			euristica = new B_Heuristic();
+			euristica = new N_Heuristic();
 		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
@@ -47,6 +50,8 @@ public class Player {
 //			root.debugStatus(true, "Si vuole muovere con una mossa null");
 //			throw new RuntimeException("Null");
 //		}
+		
+		oldBoard = root;
 		root.muovi(mossa, player);
 		root.debugStatus(true, "ciao");
 	}
@@ -61,11 +66,11 @@ public class Player {
 	}
 
 	@SuppressWarnings("deprecation")
-	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path) {
+	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path, ScacchieraBit oldBoard) {
 		long controlloTempo = System.currentTimeMillis() - start;
 		if (controlloTempo >= 920) {
 			return new Object[] { new Integer(-1), null };
-		}
+		} 
 		ScacchieraBit newBoard = null;
 		int bestScore = Integer.MIN_VALUE;
 		int currScore = 0;
@@ -78,9 +83,11 @@ public class Player {
 //			int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //			System.out.println("giocatore Fin "+ giocatore);
 			int e = 0;
+//			board.debugStatus(true, "questa è una foglia");
 			if (path[path.length - 1] != null)
 //				System.out.println("ei"+giocatore);
-				e = euristica.valuta(board, PLAYER, path[path.length - 1]);
+//				System.out.println("MOSSA VECCHIA "+  path[path.length - 1].oldtoString());
+				e = euristica.valuta(board, PLAYER, path[path.length - 1], oldBoard);
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
@@ -113,7 +120,7 @@ public class Player {
 			} else {
 				max = alfa;
 			}
-			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path);
+			res = abNegamax(newBoard, depth, currDepth + 1, -beta, -max, path, board);
 			try {
 				score = ((int) res[0]);
 				currMove = path[depth - 1];
@@ -146,7 +153,7 @@ public class Player {
 		int beta = MAX;
 
 		for (int i = 1; i <= PROFONDITA; i++) {
-			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i]);
+			bestConfig = abNegamax(root, i, 0, alfa, beta, new Mossa[i], oldBoard);
 			if (bestConfig[1] != null) {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
@@ -199,41 +206,43 @@ public class Player {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 
-			ArrayList<Mossa> mosse = scacchiera.getAllMoves();
-			for (Mossa m : mosse)
-				System.out.println(m);
+//			ArrayList<Mossa> mosse = scacchiera.getAllMoves();
+//			for (Mossa m : mosse)
+//				System.out.println(m.oldtoString());
 			Player p= new Player(scacchiera, 0);
 			System.out.println("");
-			System.out.println("Inserire la mossa del bianco: ");
-			System.out.println("");
-			System.out.print("iStart: \n");
+//			System.out.println("Inserire la mossa del bianco: ");
+//			System.out.println("");
+//			System.out.print("iStart: \n");
 			Mossa m=p.elaboraProssimaMossa();
-			int iStart = m.getiStart();
-			System.out.println("jStart \n");
-			int jStart = m.getjStart();
-			System.out.println("iEnd \n");
-			int iEnd = m.getiEnd();
-			System.out.println("jEnd \n");
-			int jEnd = m.getjEnd();
+//			int iStart = m.getiStart();
+//			System.out.println("jStart \n");
+//			int jStart = m.getjStart();
+//			System.out.println("iEnd \n");
+//			int iEnd = m.getiEnd();
+//			System.out.println("jEnd \n");
+//			int jEnd = m.getjEnd();
 			scacchiera.muovi(m, 0);
 			System.out.println("Il Player 0 effettua la mossa " + m);
 			System.out.println("");
+			System.out.println("-----------------------------------");
+			
 			scacchiera.stampaScacchiera();
 			System.out.println("");
-			ArrayList<Mossa> mosse1 = scacchiera.getAllMoves();
-			for (Mossa m1 : mosse1)
-				System.out.println(m1);
+//			ArrayList<Mossa> mosse1 = scacchiera.getAllMoves();
+//			for (Mossa m1 : mosse1)
+//				System.out.println(m1.oldtoString());
 			System.out.println("");
 			System.out.println("Inserire la mossa del nero: ");
 			System.out.println("");
 			System.out.print("iStart: \n");
-			iStart = Integer.parseInt(scanner.nextLine());
+			int iStart = Integer.parseInt(scanner.nextLine());
 			System.out.println("jStart \n");
-			jStart = Integer.parseInt(scanner.nextLine());
+			int jStart = Integer.parseInt(scanner.nextLine());
 			System.out.println("iEnd \n");
-			iEnd = Integer.parseInt(scanner.nextLine());
+			int iEnd = Integer.parseInt(scanner.nextLine());
 			System.out.println("jEnd \n");
-			jEnd = Integer.parseInt(scanner.nextLine());
+			int jEnd = Integer.parseInt(scanner.nextLine());
 			Mossa m1 = new Mossa(iStart, jStart, iEnd, jEnd, scacchiera.calcolaDirezione(iStart, jStart, iEnd, jEnd));
 			scacchiera.muovi(m1, 1);
 			System.out.println("Il Player 1 effettua la mossa " + m1);
