@@ -20,12 +20,12 @@ public class N_Heuristic implements HeuristicInterface {
 	}
 
 	@Override
-	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
+	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec, ScacchieraBit oldBoard) {
 		// TODO Auto-generated method stub
-		int e=0;
-		if (possoMangiareENonMiMangia(prec, giocatore, stato))
-			e = e + 100;
-		return e +perturbazioneRandom();
+		int e = 0;
+		if (possoMangiare(prec, giocatore, oldBoard))
+			e = e + 100000;
+		return - (e + perturbazioneRandom());
 	}
 
 	@SuppressWarnings("unused")
@@ -41,6 +41,12 @@ public class N_Heuristic implements HeuristicInterface {
 			return r.nextInt(6) - 3;
 		}
 		return r.nextInt(12) - 4;
+	}
+
+	@Override
+	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

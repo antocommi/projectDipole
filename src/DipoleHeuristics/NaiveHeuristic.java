@@ -1,5 +1,6 @@
 package DipoleHeuristics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 	}
 
 	@Override
-	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
+	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec, ScacchieraBit oldBoard) {
 
 //		System.out.println("giocatore= "+ giocatore);
 
@@ -29,7 +30,23 @@ public class NaiveHeuristic implements HeuristicInterface {
 		int giocatoreAdversary = 1 - giocatore;
 //		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
 
-		Mossa adversaryMove = miMangiaGetMossa(prec, giocatore, stato);// mossa che mi mangia
+//		Mossa adversaryMove = miMangiaGetMossa(prec, giocatore, oldBoard);// mossa che mi mangia
+		ArrayList<Mossa> listaMosseMiMangia = miMangiaGetMossa(prec, giocatore, oldBoard);
+		Mossa adversaryMove = null;
+		if (listaMosseMiMangia != null && listaMosseMiMangia.size() != 0) {
+			for (Mossa m : listaMosseMiMangia) {
+
+//				System.out.println("MOSSA CHE MI MANGIA" + m.oldtoString());
+//				System.out.println("SCACCHIERA OLD ");
+//				oldBoard.stampaScacchiera();
+//				System.out.println("");
+//				System.out.println("SCACCHIERA NEW");
+//				stato.stampaScacchiera();
+//				System.out.println("");
+				if (prec.getiEnd() == m.getiEnd() && prec.getjEnd() == m.getjEnd())
+					adversaryMove = m;
+			}
+		}
 		int pedinePerse = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(), prec.getjEnd());
 //			System.out.println("pedine perse _____"+ pedinePerse);
 		int spost = adversaryMove != null
@@ -50,7 +67,7 @@ public class NaiveHeuristic implements HeuristicInterface {
 
 		if (adversaryMove != null && spost > 1 && pedinePerse <= 1) {
 //			System.out.println("qui  2  ");
-			int numMosseMangianti = generaMosseSenzaCheck(adversaryMove, giocatoreAdversary, stato);
+			int numMosseMangianti = 0;//generaMosseSenzaCheck(adversaryMove, giocatoreAdversary, stato); 
 //				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
 			if (numMosseMangianti <= 14 && numMosseMangianti > 8) {
 //					System.out.println("qui  3  ");
@@ -114,111 +131,16 @@ public class NaiveHeuristic implements HeuristicInterface {
 		return -eu;
 	}
 
-	public int valutaDepht(ScacchieraBit stato, int giocatore, Mossa prec) {
-
-//		System.out.println("giocatore= "+ giocatore);		
-		int e = 0;
-		byte[] listaPedine = stato.getListaPosizioni(giocatore);
-		int giocatoreAdversary = 1 - giocatore;
-//		if (stato.nPedine(giocatore) == stato.nPedine(giocatoreAdversary)) {
-		Mossa adversaryMove = miMangiaGetMossa(prec, giocatore, stato);// mossa che mi mangia
-//		if (deph == 1)
-//			System.out.println(adversaryMove);
-		int pedinePerse = stato.calcolaSpostamento(prec.getiStart(), prec.getjStart(), prec.getiEnd(), prec.getjEnd());
-//			System.out.println("pedine perse _____"+ pedinePerse);
-		int spost = 0;
-		if (adversaryMove != null) {
-//			System.out.println(adversaryMove.oldtoString());
-			spost = stato.calcolaSpostamento(adversaryMove.getiStart(), adversaryMove.getjStart(),
-					adversaryMove.getiEnd(), adversaryMove.getjEnd());
-		}
-
-		// TODO: Da Fare
-//		Eseguire merge vicino ----> MOLTA IMPORTANZA SE NO SI SPOSTA TROPPO IN AVANTI
-
-		// Avversario Mangia e torna indietro
-		if (adversaryMove != null && checkMosseIndietro(adversaryMove, giocatoreAdversary)) {
-			e = e - 21;
-//				System.out.println("qui  1  ");
-		}
-
-		if (adversaryMove != null) {
-			e = e - 21;
-		}
-
-		if (adversaryMove != null && spost > 1 && pedinePerse <= 1) {
-//			if (deph == 1)
-//				System.out.println("qui  2  ");
-			int numMosseMangianti = generaMosseSenzaCheck(adversaryMove, giocatoreAdversary, stato);
-//				System.out.println("quanto mangia all indietro andando li "+ numMosseMangianti);
-
-			// Le posizioni che l'avversaro occupa sono in questo intervallo
-			if (numMosseMangianti <= 14 && numMosseMangianti > 8) {
-//				if(deph==1)System.out.println("QUI �"+ numMosseMangianti);
-//					System.out.println("qui  3  ");
-				e = e - 20; // secondo me non va bene
-			}
-			if (numMosseMangianti <= 10) {
-//				if(deph==1)System.out.println("QUI 70");
-//					System.out.println("qui  4 ");
-				e = e - 15;
-			}
-
-		}
-		if (prec.getTipo() == 1) {
-			e = e + 6;
-//				System.out.println("qui  5  ");
-		}
-
-		for (int pedina = 0; pedina < stato.getNumeroStackGiocatore(giocatore); pedina++) {
-			byte pos = listaPedine[pedina];
-			int nPedine = stato.getNumeroPedine(pos / 8, pos % 8);
-
-			if (giocatore == 1) {
-				if (pos < 32) {
-					e += 2;
-//						System.out.println("qui  6  ");
-				} else {
-					e -= 1;
-//						System.out.println("qui  7  ");
-				}
-			} else {
-				if (pos >= 32) {
-//						System.out.println("qui  8  ");
-					e += 1;
-				}
-
-				else {
-//						System.out.println("qui  9  ");
-					e -= 1;
-				}
-			}
-
-			if (nPedine < 2) {
-//					System.out.println("qui  10  ");
-				e = e - 4;
-			}
-
-			else {
-//					System.out.println("qui  11 ");
-				e = e + 4;
-			}
-
-			if (POSIZIONI_BORDI.containsKey(pos)) {
-//					System.out.println("qui  12 ");
-				e = e + 2;
-			}
-		}
-
-//		}
-//		if(deph == 1) System.out.println("VAL EURISTICA  "+ (e));
-		return e + perturbazioneRandom();
-	}
-
 	@SuppressWarnings("unused")
 	private int perturbazioneRandom() {
 		Random r = new Random();
 		return r.nextInt(12) - r.nextInt((6));
+	}
+
+	@Override
+	public int valuta(ScacchieraBit stato, int giocatore, Mossa prec) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 //	private int perturbazioneRandom() {
