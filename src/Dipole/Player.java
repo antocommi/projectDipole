@@ -14,7 +14,7 @@ public class Player {
 	private static final int PEDINA_NERA = 1;
 	private static final int MAX = Integer.MAX_VALUE;
 
-	private boolean inizio;
+//	private boolean inizio;
 	private int PLAYER;
 	private ScacchieraBit root;
 	private int PROFONDITA = 10;
@@ -30,7 +30,6 @@ public class Player {
 
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
-		this.inizio = true;
 		this.root = new ScacchieraBit(scacchiera);
 		this.oldBoard = root;
 		zobrist = new Zobrist();
@@ -164,19 +163,9 @@ public class Player {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
 				if (((Integer) bestConfig[0]) == FINE_GIOCO) {
-					if(inizio) {
-						System.out.println("CISOOOSOSOSOSO");
-						inizio = false;
-						return new Object[] { 1, new Mossa(7, 4, 6, 3, 5) };
-					}
-					else return new Object[] { bestScore, bestMove };
+					return new Object[] { bestScore, bestMove };
 				}
 			}
-		}
-		if(inizio) {
-			System.out.println("--------MM----------");
-			inizio = false;
-			return new Object[] { 1, new Mossa(7, 4, 6, 3, 5) };
 		}
 		return new Object[] { bestScore, bestMove };
 	}
