@@ -49,14 +49,14 @@ public class B_Heuristic implements HeuristicInterface {
 			}
 		}
 
-		System.out.println("");
-		System.out.println("________________________________");
-		if (advMove != null) {
-			System.out.println("MOSSA AVVERSARIO " + advMove.oldtoString());
-		}
-		System.out.println("MOSSA " + prec.oldtoString());
-		System.out.println("________________________________");
-		System.out.println("");
+//		System.out.println("");
+//		System.out.println("________________________________");
+//		if (advMove != null) {
+//			System.out.println("MOSSA AVVERSARIO " + advMove.oldtoString());
+//		}
+//		System.out.println("MOSSA " + prec.oldtoString());
+//		System.out.println("________________________________");
+//		System.out.println("");
 
 		int spostamentoAvversarioMossaTop = 0;
 		if (advMove != null) {
@@ -79,12 +79,12 @@ public class B_Heuristic implements HeuristicInterface {
 
 		if (numPedineSpostateNOSTRE < 2 && possoMangiareENonMangia) {
 			e = e + 7;
-			System.out.println("MI SPOSTO DI 2 MANGIANDO E NON MI MANGIA - numPedineSpostateNOSTRE: "
-					+ numPedineSpostateNOSTRE + " e:" + e);
+//			System.out.println("MI SPOSTO DI 2 MANGIANDO E NON MI MANGIA - numPedineSpostateNOSTRE: "
+//					+ numPedineSpostateNOSTRE + " e:" + e);
 		} else if (numPedineSpostateNOSTRE < 3 && possoMangiareENonMangia) {
 			e = e + 5;
-			System.out.println("MI SPOSTO DI 3 MANGIANDO E NON MI MANGIA - numPedineSpostateNOSTRE: "
-					+ numPedineSpostateNOSTRE + " e:" + e);
+//			System.out.println("MI SPOSTO DI 3 MANGIANDO E NON MI MANGIA - numPedineSpostateNOSTRE: "
+//					+ numPedineSpostateNOSTRE + " e:" + e);
 		}
 //		else {
 //			e = e - 7;
@@ -95,22 +95,22 @@ public class B_Heuristic implements HeuristicInterface {
 		// MOSSE IN CUI CI MANGIA
 		if (advMove != null && esisteMossaIndietro(listaMosseMiMangia, 1 - giocatore)) {
 			e = e - 21;
-			System.out.println("MI MANGIA E TORNA " + "e: " + e);
+//			System.out.println("MI MANGIA E TORNA " + "e: " + e);
 		}
 		if (advMove != null) {
 			e = e - 21;
-			System.out.println("MI MANGIA");
+//			System.out.println("MI MANGIA");
 		}
 
 		if (advMove != null && spostamentoAvversarioMossaTop > 1 && numPedineSpostateNOSTRE <= 1) {
 			int potenzaCella = powerCell(advMove, 1 - giocatore, stato);
 			if (potenzaCella <= 14 && potenzaCella > 8) {
 				e = e - 16;
-				System.out.println("MI MANGIA E SI EVOLVE - potenza:" + potenzaCella + " e:" + e);
+//				System.out.println("MI MANGIA E SI EVOLVE - potenza:" + potenzaCella + " e:" + e);
 			}
 			if (potenzaCella <= 8) {
 				e = e - 8;
-				System.out.println("MI MANGIA E SI EVOLVE POCO - potenza:" + potenzaCella + " e" + e);
+//				System.out.println("MI MANGIA E SI EVOLVE POCO - potenza:" + potenzaCella + " e" + e);
 			}
 		}
 
@@ -134,20 +134,20 @@ public class B_Heuristic implements HeuristicInterface {
 		// MOSSA MERGE
 		if (prec.getTipo() == 1 && campoNostro(prec, giocatore)) {
 			e = e + 12;
-			System.out.println("MERGE COMPO NOSTRO e: " + e);
+//			System.out.println("MERGE COMPO NOSTRO e: " + e);
 		} else if (prec.getTipo() == 1) {
 			e = e + 8;
-			System.out.println("MARGE CAMPO AVVERSARIO e: " + e);
+//			System.out.println("MARGE CAMPO AVVERSARIO e: " + e);
 		}
 
 		if (prec.getTipo() == 1 && spostamentoAvversarioMossaTop > 1) {
 			e = e - 21;
-			System.out.println("MERGE E MI MANGIA e: " + e);
+//			System.out.println("MERGE E MI MANGIA e: " + e);
 		}
 
 		if (possoMangiareENonMangia && !miMangiaStackRestante(prec, giocatore, stato)) {
 			e = e + 20;
-			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK " + e);
+//			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK " + e);
 		}
 
 		// Se posso mangiare una pedina con un numero consistente di pedine e da
@@ -155,7 +155,7 @@ public class B_Heuristic implements HeuristicInterface {
 		if (possoMangiareENonMangia && !miMangiaStackRestante(prec, giocatore, stato)
 				&& getNumeroPedineMangiateAdv(prec, stato) > 1) {
 			e = e + 20;
-			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK e MANGIO >2 PEDINE ADV " + e);
+//			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK e MANGIO >2 PEDINE ADV " + e);
 		}
 
 		// Posso mangiare, non vengo mangiato, non mi sposto molto in avanti, non lascio
@@ -170,11 +170,11 @@ public class B_Heuristic implements HeuristicInterface {
 
 		if (possoMangiareENonMangia && numPedineSpostateNOSTRE < 4 && !miMangiaStackRestante(prec, giocatore, stato)) {
 			e = e + 21;
-			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK e MI SPOSTO MAX 3 " + e);
+//			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK e MI SPOSTO MAX 3 " + e);
 		}
 		if (possoMangiareENonMangia && !miMangiaStackRestante(prec, giocatore, stato)) {
 			e = e + 10;
-			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK " + e);
+//			System.out.println("POSSO MANGIARE/NON MANGIA e NON MANGIA STACK " + e);
 		}
 //		if (miMangiaPochePedineEritornoAmangiarlo(prec, giocatore, stato)) {
 //			e = e + 40;
@@ -183,12 +183,12 @@ public class B_Heuristic implements HeuristicInterface {
 
 		if (possoMangiareENonMangia && numPedineSpostateNOSTRE < 5) {
 			e = e + 5;
-			System.out.println("POSSO MANGIARE/NON MANGIA e CI SPOSTIAMO MAX 4 " + e);
+//			System.out.println("POSSO MANGIARE/NON MANGIA e CI SPOSTIAMO MAX 4 " + e);
 		}
 
 		if (advMove != null && possoMangiare(advMove, giocatore, stato) && numPedineSpostateNOSTRE > 3) {
 			e = e - 60;
-			System.out.println("POSSO MANGIARE E MI SPOSTO DA 4 IN SU " + e);
+//			System.out.println("POSSO MANGIARE E MI SPOSTO DA 4 IN SU " + e);
 		}
 
 		for (int pedina = 0; pedina < stato.getNumeroStackGiocatore(giocatore); pedina++) {
@@ -217,37 +217,37 @@ public class B_Heuristic implements HeuristicInterface {
 			}
 			if (giocatore == 1) {
 				if (pos < 32) {
-					e += 2 * nPedine;
-					System.out.println(" SONO NERO CAMPO MIO e: " + e);
+					e += 2*nPedine;
+//					System.out.println(" SONO NERO CAMPO MIO e: " + e);
 				} else {
-					e -= 2 * nPedine;
-					System.out.println(" SONO NERO CAMPO ADV e: " + e);
+					e -= 2*nPedine;
+//					System.out.println(" SONO NERO CAMPO ADV e: " + e);
 				}
 			} else {
 				if (pos >= 32) {
-					e += 2 * nPedine;
-					System.out.println(" SONO BIANCO CAMPO MIO e: " + e);
+					e += 2*nPedine;
+//					System.out.println(" SONO BIANCO CAMPO MIO e: " + e);
 				}
 
 				else {
-					e -= 2 * nPedine;
-					System.out.println(" SONO NERO CAMPO ADV e: " + e);
+					e -= 2*nPedine;
+//					System.out.println(" SONO NERO CAMPO ADV e: " + e);
 				}
 			}
 
 			if (nPedine < 2) {
 				e = e - 1;
-				System.out.println(" NUM PEDINA == 1 -- e:" + e);
+//				System.out.println(" NUM PEDINA == 1 -- e:" + e);
 			}
 
 			else {
 				e = e + 1;
-				System.out.println("NUM PEDINE > 2 -- e:" + e);
+//				System.out.println("NUM PEDINE > 2 -- e:" + e);
 			}
 
 			if (POSIZIONI_BORDI.containsKey((Object) pos)) {
-				e = e + 2;
-				System.out.println("SIAMO AL BORDO -- e" + e);
+				e = e + 2*nPedine;
+//				System.out.println("SIAMO AL BORDO -- e" + e);
 			}
 		}
 		// System.out.println("VALORE EURISTICA " + (-e) + " MOSSA " +

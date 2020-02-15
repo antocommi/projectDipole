@@ -74,6 +74,7 @@ public class Mossa implements Serializable {
 		this.iEnd = iEnd;
 		this.jEnd = jEnd;
 		this.direction = direction;
+		this.tipo = -1;
 	}
 
 	public Mossa(int iStart, int jStart, int iEnd, int jEnd, int direction, int tipo) {

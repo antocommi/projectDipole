@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import DipoleHeuristics.B_Heuristic;
 import DipoleHeuristics.HeuristicInterface;
+import DipoleHeuristics.N_Heuristic;
 import util.TraspositionTable;
 
 public class Player {
@@ -13,6 +14,7 @@ public class Player {
 	private static final int PEDINA_NERA = 1;
 	private static final int MAX = Integer.MAX_VALUE;
 
+	private boolean inizio;
 	private int PLAYER;
 	private ScacchieraBit root;
 	private int PROFONDITA = 10;
@@ -28,13 +30,14 @@ public class Player {
 
 	public Player(ScacchieraBit scacchiera, int player) {
 		this.PLAYER = player;
+		this.inizio = true;
 		this.root = new ScacchieraBit(scacchiera);
 		this.oldBoard = root;
 		zobrist = new Zobrist();
 		if (player == PEDINA_BIANCA) {
 			euristica = new B_Heuristic();
 		} else {
-			euristica = new B_Heuristic();
+			euristica = new N_Heuristic();
 		}
 		traspositionTable = new TraspositionTable(TT_SIZE);
 	}
@@ -64,7 +67,8 @@ public class Player {
 	public Object[] abNegamax(ScacchieraBit board, int depth, int currDepth, int alfa, int beta, Mossa[] path,
 			ScacchieraBit oldBoard) {
 		long controlloTempo = System.currentTimeMillis() - start;
-		if (controlloTempo >= 920) {
+		if (controlloTempo >= 940) {
+//			System.out.println("NULL");
 			return new Object[] { new Integer(-1), null };
 		}
 		ScacchieraBit newBoard = null;
@@ -75,6 +79,7 @@ public class Player {
 		Mossa currMove = null;
 		Object[] res;
 		if (board.checkFin(board) || currDepth == depth) {
+//			System.out.println("CICOOOOOO " + depth);
 			// System.out.println("Profondita" + depth);
 //   int giocatore = board.getTurnoGiocatore() ? 0 : 1;
 //   System.out.println("giocatore Fin "+ giocatore);
@@ -84,11 +89,11 @@ public class Player {
 //    System.out.println("ei"+giocatore);
 //    System.out.println("MOSSA VECCHIA "+  path[path.length - 1].oldtoString());
 				e = euristica.valuta(board, PLAYER, path[path.length - 1], oldBoard);
-			System.out.println("");
-			System.out.println("______________________");
+//			System.out.println("");
+//			System.out.println("______________________");
 //			System.out.println("Euristica " + e + " " + path[path.length - 1].oldtoString());
-			System.out.println("______________________");
-			System.out.println("");
+//			System.out.println("______________________");
+//			System.out.println("");
 			return new Object[] { e, null };
 		}
 		TTElement trasposition;
@@ -159,9 +164,19 @@ public class Player {
 				bestMove = (Mossa) bestConfig[1];
 				bestScore = (int) bestConfig[0];
 				if (((Integer) bestConfig[0]) == FINE_GIOCO) {
-					return new Object[] { bestScore, bestMove };
+					if(inizio) {
+						System.out.println("CISOOOSOSOSOSO");
+						inizio = false;
+						return new Object[] { 1, new Mossa(7, 4, 6, 3, 5) };
+					}
+					else return new Object[] { bestScore, bestMove };
 				}
 			}
+		}
+		if(inizio) {
+			System.out.println("--------MM----------");
+			inizio = false;
+			return new Object[] { 1, new Mossa(7, 4, 6, 3, 5) };
 		}
 		return new Object[] { bestScore, bestMove };
 	}
