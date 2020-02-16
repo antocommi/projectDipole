@@ -42,8 +42,8 @@ public class ScacchieraBit {
 	public final int[] posInteressantiBianchi = { NORTHEAST, NORTHWEST };
 	public final int[] posInteressantiNero = { SOUTHWEST, SOUTHEAST };
 	public static int[] DIRECTIONS = { -16, 16, -7, 7, 9, -9, 2, -2 };
-	private static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
-	private static int[] OUT_DIRECTIONS2 = { -1, 0, 1, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 1, 0, -1 };
+	public static int[] OUT_DIRECTIONS = { -2, 0, 2, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 2, 0, -2 };
+	public static int[] OUT_DIRECTIONS2 = { -1, 0, 1, 0, -1, 1, 1, -1, 1, 1, -1, -1, 0, 1, 0, -1 };
 
 	public int getMosseMaxBianco() {
 		return mosseMaxBianco;
@@ -51,6 +51,11 @@ public class ScacchieraBit {
 
 	public int getMosseMaxNero() {
 		return mosseMaxNero;
+	}
+	public int getMosseMaxGiocatore(int giocatore) {
+		if(giocatore==PEDINA_BIANCA)
+			return mosseMaxBianco;
+		else return mosseMaxNero;
 	}
 
 	public int getNumeroPedineTot(int colore) {
@@ -700,7 +705,60 @@ public class ScacchieraBit {
 		return false;
 
 	}
+	public int stallo(int c) {
+		int stallo=0;
+		ArrayList<Mossa> listaMosse = new ArrayList<>();
+		if (c==PEDINA_BIANCA) {
+			for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
+				listaMosse
+						.addAll(generaListaMosse(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
+				break;
+			}
 
+			if (listaMosse.size() == 0) {
+				
+				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
+					listaMosse.addAll(
+							generaMosseFuori(listaPedineBianche[i] / 8, listaPedineBianche[i] % 8, PEDINA_BIANCA));
+					break;
+				}
+				stallo=1;
+				if (listaMosse.size() == 0) {
+					stallo=2;
+					int i = listaPedineBianche[0] / 8;
+					int j = listaPedineBianche[0] % 8;
+					listaMosse.add(new Mossa(i, j, i, j, 0));
+				}
+			}
+			moves = listaMosse;
+//			for(Mossa m: listaMosse)
+//				System.out.println("getALLB"+m);
+			return stallo;
+		} else {
+			for (int i = 0; i < numeroStackGiocatore[PEDINA_NERA]; i++) {
+				listaMosse.addAll(generaListaMosse(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
+			}
+			if (listaMosse.size() == 0) {
+				for (int i = 0; i < numeroStackGiocatore[PEDINA_BIANCA]; i++) {
+					
+					listaMosse.addAll(generaMosseFuori(listaPedineNere[i] / 8, listaPedineNere[i] % 8, PEDINA_NERA));
+				}
+				
+				stallo=1;
+				if (listaMosse.size() == 0) {
+					stallo=2;
+					int i = listaPedineNere[0] / 8;
+					int j = listaPedineNere[0] % 8;
+					listaMosse.add(new Mossa(i, j, i, j, 0));
+				}
+				
+			}
+			moves = listaMosse;
+//			for(Mossa m: listaMosse)
+//				System.out.println("getALLn"+m);
+			return stallo;
+		}
+	}
 	public ArrayList<Mossa> getAllMoves(int c) {
 		ArrayList<Mossa> listaMosse = new ArrayList<>();
 		if (c==PEDINA_BIANCA) {

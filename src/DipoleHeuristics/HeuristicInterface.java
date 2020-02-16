@@ -45,6 +45,86 @@ public interface HeuristicInterface {
 		}
 	}
 
+	public default boolean siPuoCaricareAdv(Mossa m, int color, ScacchieraBit board) {
+		int x = m.getiEnd();
+		int y = m.getjEnd();
+		if (board.checkPosOut(x, y))
+			return false;
+
+		ArrayList<Mossa> listaMosse = new ArrayList<Mossa>();
+		if (color == PEDINA_BIANCA) {
+
+			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+				listaMosse = generaListaMosseAusiliario(board.listaPedineNere[i] / 8, board.listaPedineNere[i] % 8,
+						1 - color, board);
+				for (Mossa mossa : listaMosse) {
+
+//					System.out.println("Mossa gen " + mossa.oldtoString());
+					if (eSullaLinea(x, y, mossa.getiStart(), mossa.getjStart())) {
+						return true;
+					}
+				}
+			}
+		} else if (color == PEDINA_NERA) {
+			for (int i = 0; i < board.numeroStackGiocatore[1 - color]; i++) {
+				listaMosse = generaListaMosseAusiliario(board.listaPedineBianche[i] / 8,
+						board.listaPedineBianche[i] % 8, 1 - color, board);
+				for (Mossa mossa : listaMosse) {
+
+//					System.out.println("Mossa gen " + mossa.oldtoString());
+					if (eSullaLinea(x, y, mossa.getiStart(), mossa.getjStart())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public static int calcolaSpostamento(int a, int b, int x, int y) {
+		int k, m;
+		k = Math.abs(a - x);
+		m = Math.abs(b - y);
+		return k >= m ? k : m;
+	}
+
+	public static int calcolaDirezione(int a, int b, int x, int y) {
+		int offsetA, offsetB;
+		offsetA = a - x;
+		offsetB = b - y;
+		if (offsetA < 0 && offsetB == 0)
+			return SOUTH;
+		if (offsetA < 0 && offsetB < 0)
+			return SOUTHEAST;
+		if (offsetA < 0 && offsetB > 0)
+			return SOUTHWEST;
+		if (offsetA == 0 && offsetB < 0)
+			return EAST;
+		if (offsetA == 0 && offsetB > 0)
+			return WEST;
+		if (offsetA > 0 && offsetB == 0)
+			return NORTH;
+		if (offsetA > 0 && offsetB < 0)
+			return NORTHEAST;
+		if (offsetA > 0 && offsetB > 0)
+			return NORTHWEST;
+		return -1;
+	}
+
+	public static boolean eSullaLinea(int x, int y, int xadv, int yadv) {
+		// ritorna la direzione se è sulla linea
+		// se non è sulla linea ritorna -1
+		//
+		int spostamento = calcolaSpostamento(x, y, xadv, yadv);
+		for (int dir = 0; dir < 8; dir++) {
+			int a = x + spostamento * ScacchieraBit.OUT_DIRECTIONS[2 * dir];
+			int b = y + spostamento * ScacchieraBit.OUT_DIRECTIONS[2 * dir + 1];
+			if (a == xadv && b == yadv)
+				return true;
+		}
+		return false;
+	}
+
 	public default boolean cacca(Mossa m, int color, ScacchieraBit board) {
 		int x = m.getiEnd();
 		int y = m.getjEnd();
@@ -66,6 +146,19 @@ public interface HeuristicInterface {
 		int n = board.calcolaSpostamento(m.getiStart(), m.getjStart(), x, y);
 		if (board.getColorePedina(x, y) == (1 - color) && board.getNumeroPedine(x, y) <= n)
 			if (listaMosseMiMangia == null || listaMosseMiMangia.size() == 0)
+				return true;
+		return false;
+	}
+
+	public default boolean possoMangiareEMiMangia(Mossa m, int color, ScacchieraBit board,
+			ArrayList<Mossa> listaMosseMiMangia) {
+		int x = m.getiEnd();
+		int y = m.getjEnd();
+		if (board.checkPosOut(x, y))
+			return false;
+		int n = board.calcolaSpostamento(m.getiStart(), m.getjStart(), x, y);
+		if (board.getColorePedina(x, y) == (1 - color) && board.getNumeroPedine(x, y) <= n)
+			if (listaMosseMiMangia != null && listaMosseMiMangia.size() != 0)
 				return true;
 		return false;
 	}
@@ -150,14 +243,14 @@ public interface HeuristicInterface {
 		return listaMosseReturn;
 	}
 
-	public default boolean miMangiaStackCurr(int x, int y ,int color, ScacchieraBit s) {
+	public default boolean miMangiaStackCurr(int x, int y, int color, ScacchieraBit s) {
 		int n = s.getNumeroPedine(x, y);
 		ArrayList<Mossa> listaMosse;
 		if (color == PEDINA_BIANCA) {
 			int nPedStack = 0;
 			for (int i = 0; i < s.numeroStackGiocatore[1 - color]; i++) {
-				listaMosse = generaListaMosseAusiliario(s.listaPedineNere[i] / 8, s.listaPedineNere[i] % 8,
-						1 - color, s);
+				listaMosse = generaListaMosseAusiliario(s.listaPedineNere[i] / 8, s.listaPedineNere[i] % 8, 1 - color,
+						s);
 				for (Mossa mossa : listaMosse) {
 					nPedStack = s.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(), mossa.getiEnd(),
 							mossa.getjEnd());
@@ -166,12 +259,11 @@ public interface HeuristicInterface {
 					}
 				}
 			}
-		}
-		else if (color == PEDINA_NERA) {
+		} else if (color == PEDINA_NERA) {
 			int nPedStack = 0;
 			for (int i = 0; i < s.numeroStackGiocatore[1 - color]; i++) {
-				listaMosse = generaListaMosseAusiliario(s.listaPedineBianche[i] / 8,
-						s.listaPedineBianche[i] % 8, 1 - color, s);
+				listaMosse = generaListaMosseAusiliario(s.listaPedineBianche[i] / 8, s.listaPedineBianche[i] % 8,
+						1 - color, s);
 				for (Mossa mossa : listaMosse) {
 					nPedStack = s.calcolaSpostamento(mossa.getiStart(), mossa.getjStart(), mossa.getiEnd(),
 							mossa.getjEnd());
@@ -179,9 +271,22 @@ public interface HeuristicInterface {
 						return true;
 					}
 				}
-			}			
+			}
 		}
 		return false;
+	}
+
+	public default int win(ScacchieraBit board, int giocatore) {
+		int stallo = board.stallo(1 - giocatore);
+		// stallo=1 vuol dire che ha solo mosse fuori
+		// stallo ==2 vuol dire che è bloccato
+		// stallo=0 se non è in stallo
+		if (board.getNumeroPedineTot(1 - giocatore) == 0 || stallo == 1 || stallo == 2
+				|| board.getMosseMaxGiocatore(1 - giocatore) == 0)
+			return stallo;
+
+		return -1;
+
 	}
 
 	public default boolean miMangiaPochePedineEritornoAmangiarlo(Mossa m, int color, ScacchieraBit board) {
