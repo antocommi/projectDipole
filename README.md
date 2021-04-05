@@ -1,5 +1,5 @@
 # Dipole Player - University project
-Antonio Commisso, Antonio Sola, Marco Dramisino 
+Authors: Antonio Commisso, Antonio Sola, Marco Dramisino 
 
 Autonomous Dipole player 
 
